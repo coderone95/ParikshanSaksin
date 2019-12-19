@@ -78,6 +78,18 @@
 #updateOptions li{
 	 list-style: none;
 }
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+	padding: 0 !important;
+	vertical-align: unset !important;
+}
+.table td, .table th {
+	padding: 0 !important;
+}
+.delete , .edit{
+	padding: 0.7rem;
+    cursor: pointer;
+}
+
 </style>
 <script>
 	var isAlreadyChecked = false;
@@ -141,8 +153,8 @@
 								+ groupName + '</td><td>' + createdBy + '</td><td>'
 								+ updatedBy + '</td><td>' + createdOn + '</td><td>'
 								+ updatedOn + '</td>'
-								+'<td><button class="btn btn-outline-danger" onclick="deleteGroup('+groupID+');"><i class="fa fa-trash"></i></button>|'
-								+'<a class="btn btn-outline-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');" href="#"><i class="fa fa-pencil"></i></a></td></tr>';
+								+'<td><i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>'
+								+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i></td></tr>';
  
 					}
 					/* <button class="btn btn-outline-primary" onclick="updateGroupDetails('+groupID+',\''+groupName+'\');"> */
