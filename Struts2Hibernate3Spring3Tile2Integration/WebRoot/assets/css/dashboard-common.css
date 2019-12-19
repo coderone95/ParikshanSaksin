@@ -1,0 +1,26 @@
+.main-panel {
+	background: -webkit-linear-gradient(left, #3931af, #00c6ff) !important;
+	color: #fff; 
+}
+
+.navbar.navbar-transparent a:not(.dropdown-item):not(.btn) {
+    color: #fffffe !important;
+}
+
+.navbar .form-group.no-border .form-control, .navbar .input-group.no-border .form-control {
+    color: #fffcf9 !important;
+}
+
+.form-group.no-border .form-control, .form-group.no-border .form-control+.input-group-prepend .input-group-text, .form-group.no-border .form-control+.input-group-append .input-group-text, .input-group.no-border .form-control, .input-group.no-border .form-control+.input-group-prepend .input-group-text, .input-group.no-border .form-control+.input-group-append .input-group-text {
+    background-color: rgb(0, 0, 0) !important;
+    border: medium none !important;
+}
+@media screen and (min-width: 992px){
+.sidebar .sidebar-wrapper li.active>a:not([data-toggle="collapse"]):after{
+    border-right: 17px solid #140c92 !important;
+}
+}
+
+.navbar .form-group.no-border .form-control, .navbar .input-group.no-border .form-control::placeholder {
+    color: #ffffff !important;
+}

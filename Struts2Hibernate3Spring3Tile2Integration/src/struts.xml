@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+ 	
+    <constant name="struts.devMode" value="true" />
+ 
+	<package name="default" extends="struts-default,json-default" >
+	
+		    <interceptors>
+        <interceptor name="Authorizeuser" class="com.codesvila.interceptor.AuthorizationInterceptor"></interceptor>
+
+        <interceptor-stack name="myStack">
+            <interceptor-ref name="defaultStack" />
+            <interceptor-ref name="Authorizeuser" />
+        </interceptor-stack>
+    </interceptors>
+
+    <default-interceptor-ref name="myStack" />
+    <global-results>
+          <result name="login">/WEB-INF/jsp/index.jsp</result>
+     </global-results>
+      
+      	 <action name="login" class="com.codesvila.action.LoginAction" method="execute">
+            <result name="ADM">/WEB-INF/jsp/adminDashboard/dashboard.jsp</result>
+            <result name="STD">/WEB-INF/jsp/candidate/testAuth.jsp</result> 
+            <result name="failure">/WEB-INF/jsp/index.jsp</result> 
+        </action>
+        <action name="logout" class="com.codesvila.action.LogoutAction" method="logoutSession">
+            <result name="success">/WEB-INF/jsp/index.jsp</result> 
+        </action>
+        <action name="registerUser" class="com.codesvila.action.UserAction" method="execute">
+			<result name="success">/WEB-INF/jsp/index.jsp</result> 
+        </action>
+      	 <action name="adminDashboardPage" class="com.codesvila.action.AdminDashboardPageAction" method="execute">
+            <result name="success">/WEB-INF/jsp/adminDashboard/dashboard.jsp</result>  
+        </action>
+        <action name="adminIconsPage" class="com.codesvila.action.AdminDashboardPageAction" method="execute">
+            <result name="success">/WEB-INF/jsp/adminDashboard/icons.jsp</result>  
+        </action>
+        <action name="adminUserProfilePage" class="com.codesvila.action.AdminUserProfilePageAction" method="execute">
+            <result name="success">/WEB-INF/jsp/adminDashboard/userProfile.jsp</result>  
+        </action> 
+         <action name="getUserProfile" class="com.codesvila.action.AdminUserProfilePageAction" method="getUserProfile">
+            <result type="json" name="success">/WEB-INF/jsp/adminDashboard/userProfile.jsp</result> 
+        </action> 
+        <action name="adminUserListePage" class="com.codesvila.action.AdminUserListAction" method="execute">
+            <result name="success">/WEB-INF/jsp/adminDashboard/userList.jsp</result>  
+        </action>
+        <action name="getUsers" class="com.codesvila.action.AdminUserListAction" method="getUsers">
+            <result name="success" type="json">/WEB-INF/jsp/adminDashboard/userList.jsp</result>  
+        </action>
+        <action name="getmydata" class="com.codesvila.action.MyAction">
+			<result name="SUCCESS" type="json"></result>
+		</action>
+		 <action name="addUserByManagementUsers" class="com.codesvila.action.UserAction" method="execute">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="getUserInfo" class="com.codesvila.action.UserAction" method="getUserInfo">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+		 <action name="deleteUser" class="com.codesvila.action.AdminUserListAction" method="deleteUser">
+			 <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref>
+			<result name="success" type="json"></result>
+		</action>
+		<action name="disableUser" class="com.codesvila.action.AdminUserListAction" method="disableUser">
+			 <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref>
+			<result name="success" type="json"></result>
+		</action>
+		<action name="enableUser" class="com.codesvila.action.AdminUserListAction" method="enableUser">
+			 <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref>
+			<result name="success" type="json"></result>
+		</action>
+		 <action name="updateProfile" class="com.codesvila.action.UserAction" method="updateProfile">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="populateCandidateCount" class="com.codesvila.action.AdminDashboardPageAction" method="populateCandidateCount">
+			<result name="success" type="json"></result>
+		</action>
+		 <action name="getCandidateUsers" class="com.codesvila.action.AdminDashboardPageAction" method="getCandidateUsers">
+            <result name="success" type="json"></result>  
+        </action>
+        <action name="candidateUserList" class="com.codesvila.action.AdminDashboardPageAction" method="candidateUserListPage">
+            <result name="success" >/WEB-INF/jsp/adminDashboard/dashboardCandidateList.jsp</result>  
+        </action>
+        <action name="addQuestion" class="com.codesvila.action.QuestionAction" method="addQuestion">
+			 <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref>
+			<result name="success" type="json"></result>
+		</action>
+		<action name="getAllQuestions" class="com.codesvila.action.QuestionAction" method="getAllQuestions">
+            <result name="success" type="json">/WEB-INF/jsp/adminDashboard/tests.jsp</result>
+        </action>
+<!--         <action name="getquestionsMapJson" class="com.codesvila.action.QuestionAction"> -->
+<!-- 			<result type="json" > -->
+<!--        	 		<param name="root">questionsMap</param> -->
+<!--        	 	</result> -->
+<!-- 		</action> -->
+<!-- 		 <action name="resultAction"  -->
+<!-- 	        class="com.codesvila.action.AutoCompleterAction" > -->
+<!-- 		<result name="success">/WEB-INF/jsp/adminDashboard/tests.jsp</result> -->
+<!-- 	    </action> -->
+
+		<action name="populateAdminUsersCount" class="com.codesvila.action.AdminDashboardPageAction" method="populateAdminUsersCount">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="populateQuestionsCount" class="com.codesvila.action.AdminDashboardPageAction" method="populateQuestionsCount">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="deleteQuestion" class="com.codesvila.action.QuestionAction" method="deleteQuestion">
+			 <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref>
+			<result name="success" type="json"></result>
+		</action>
+		<action name="getQuestionDetails" class="com.codesvila.action.QuestionAction" method="getQuestionDetails">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="updateQuestionDetails" class="com.codesvila.action.QuestionAction" method="updateQuestionDetails">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="groups" class="com.codesvila.action.GroupAction" method="show">
+			<result name="success">/WEB-INF/jsp/adminDashboard/groups.jsp</result>
+		</action>
+		 <action name="createGroup" class="com.codesvila.action.GroupAction" method="execute">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="questionsPage" class="com.codesvila.action.QuestionAction" method="show">
+			<result name="success">/WEB-INF/jsp/adminDashboard/questions.jsp</result>
+		</action>
+		<action name="getAllGroupsInfo" class="com.codesvila.action.GroupAction" method="getAllGroupsInfo">
+            <result name="success" type="json">/WEB-INF/jsp/adminDashboard/groups.jsp</result>  
+        </action>
+         <action name="addSelectedQuestionsToGroup" class="com.codesvila.action.GroupAction" method="addSelectedQuestionsToGroup">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+         <action name="allAddedQuestionsOfSelectedGroup" class="com.codesvila.action.GroupAction" method="allAddedQuestionsOfSelectedGroup">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+         <action name="deleteSelectedGroup" class="com.codesvila.action.GroupAction" method="deleteSelectedGroup">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+         <action name="removeSelectedQuestionFromGroup" class="com.codesvila.action.GroupUpdateAction" method="removeSelectedQuestionFromGroup">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="getAddedQuestionsForSelectedGroup" class="com.codesvila.action.GroupUpdateAction" method="getAddedQuestionsForSelectedGroup">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="getAvailableQuestionsForSelectedGroup" class="com.codesvila.action.GroupUpdateAction" method="getAvailableQuestionsForSelectedGroup">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="updateGroupPage" class="com.codesvila.action.GroupUpdateAction" method="showUpdateGroupPage">
+            <result name="success">/WEB-INF/jsp/adminDashboard/updateGroupPage.jsp</result>  
+        </action>
+        <action name="updateGroupInfo" class="com.codesvila.action.GroupUpdateAction" method="updateGroupInfo">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+         <action name="testsPage" class="com.codesvila.action.TestsPageAction" method="show">
+            <result name="success" >/WEB-INF/jsp/adminDashboard/tests.jsp</result>  
+        </action>
+        <action name="createTest" class="com.codesvila.action.TestsPageAction" method="createTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="getAllTests" class="com.codesvila.action.TestsPageAction" method="getAllTests">
+            <result name="success" type="json">/WEB-INF/jsp/adminDashboard/tests.jsp</result>  
+        </action>
+         <action name="deleteTest" class="com.codesvila.action.TestsPageAction" method="deleteTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="updateTestPage" class="com.codesvila.action.UpdateTestAction" method="showUpdateTestPage">
+            <result name="success">/WEB-INF/jsp/adminDashboard/updateTestPage.jsp</result>  
+        </action>
+        <action name="getTestInfoForSelectedID" class="com.codesvila.action.UpdateTestAction" method="getTestInfoForSelectedID">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="updateTest" class="com.codesvila.action.UpdateTestAction" method="updateTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>
+        </action>
+        <action name="getAddedGroupsForSelectedTest" class="com.codesvila.action.UpdateTestAction" method="getAddedGroupsForSelectedTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="getAvailableGroupsForSelectedTest" class="com.codesvila.action.UpdateTestAction" method="getAvailableGroupsForSelectedTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="removeSelectedGroupFromSelectedTest" class="com.codesvila.action.UpdateTestAction" method="removeSelectedGroupFromSelectedTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="addSelectedGroupsToTest" class="com.codesvila.action.UpdateTestAction" method="addSelectedGroupsToTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        
+       
+		
+    </package>
+    
+    <package name="candidate" namespace="/" extends="struts-default,json-default" >
+    	    <interceptors>
+        <interceptor name="Authorizeuser" class="com.codesvila.interceptor.AuthorizationInterceptor"></interceptor>
+
+        <interceptor-stack name="myStack">
+            <interceptor-ref name="defaultStack" />
+            <interceptor-ref name="Authorizeuser" />
+        </interceptor-stack>
+    </interceptors>
+
+    <default-interceptor-ref name="myStack" />
+    <global-results>
+          <result name="login">/WEB-INF/jsp/index.jsp</result>
+     </global-results>
+    	 <action name="authenticateTest" class="com.codesvila.action.TestAutheniticationAction" method="execute">
+			<result name="success">/WEB-INF/jsp/candidate/testInstructions.jsp</result>
+			<result name="failure">/WEB-INF/jsp/candidate/testAuth.jsp</result>
+		</action>
+		<action name="getCandidateProfile" class="com.codesvila.action.TestAutheniticationAction" method="getCandidateProfile">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+         <action name="updateCandidateProfile" class="com.codesvila.action.TestAutheniticationAction" method="updateProfile">
+			<result name="success" type="json">/WEB-INF/jsp/candidate/testAuth.jsp</result>
+		</action>
+		<action name="getTestInstructions" class="com.codesvila.action.TestAutheniticationAction" method="getTestInstructions">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="auth-page" class="com.codesvila.action.TestAutheniticationAction" method="display">
+			<result name="success">/WEB-INF/jsp/candidate/testAuth.jsp</result>
+		</action>
+		<action name="startTest" class="com.codesvila.action.StartTestAction" method="display">
+			<result name="success">/WEB-INF/jsp/candidate/startTest.jsp</result>
+			<result name="failure">/WEB-INF/jsp/candidate/testInstructions.jsp</result>
+		</action>
+		<action name="getGroupsInfoAndNumberOfQuestionCount" class="com.codesvila.action.StartTestAction" method="getGroupsInfoAndNumberOfQuestionCount">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="getTestNameAndTime" class="com.codesvila.action.StartTestAction" method="getTestNameAndTime">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="questions" class="com.codesvila.action.AttendQuestionsAction" method="showQuestions">
+			<result name="success">/WEB-INF/jsp/candidate/attendQuestionsPage.jsp</result>
+		</action>
+		 <action name="saveAttendedTestDetails" class="com.codesvila.action.StartTestAction" method="saveAttendedTestDetails">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+    </package>
+ </struts>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
