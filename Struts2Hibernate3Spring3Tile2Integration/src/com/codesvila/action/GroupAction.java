@@ -3,6 +3,7 @@ package com.codesvila.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.codesvila.bean.ErrorMessages;
@@ -145,6 +146,12 @@ public class GroupAction extends BaseAction {
 	@SuppressWarnings({ "unchecked" })
 	public String execute() throws Exception {
 		boolean isAlreadyExists = false;
+		if(groupbean.getGroup_name() == null || !StringUtils.isNotBlank(groupbean.getGroup_name())) {
+			ErrorMessages er = new ErrorMessages();
+			er.setErrorMsg("Please enter group name");
+			errorMessagesList.add(er);
+			return "success";
+		}
 		List<GroupBO> groups = (List<GroupBO>) sessionMap.get("groupList");
 		if (groups != null) {
 			for (GroupBO gp : groups) {

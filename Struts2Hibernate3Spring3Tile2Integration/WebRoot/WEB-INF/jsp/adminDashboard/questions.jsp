@@ -80,10 +80,8 @@
 						alert("Question added successfully");
 						getAllQuestions();
 					}else{
-						if(itr.errorMessagesList != null && itr.errorMessagesList.length > 0){
-							alert("Question already exists!");
-						}else{
-							alert("Error while processing the request");	
+						if(itr.errorMsg != null && itr.errorMsg != ''){
+							alert(itr.errorMsg);
 						}
 					}
 				}
@@ -429,7 +427,7 @@
 										<div class="col-md-8 pr-1">
 											<div class="form-group">
 												<label>Question</label> 
-												<textarea class="form-control" name="question" rows="4" id="question"></textarea>
+												<textarea class="form-control" required name="question" rows="4" id="question"></textarea>
 											</div>
 										</div>
 									</div>

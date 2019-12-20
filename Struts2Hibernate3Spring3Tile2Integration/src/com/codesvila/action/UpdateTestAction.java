@@ -310,6 +310,9 @@ public class UpdateTestAction extends BaseAction {
 		}else if(!StringUtils.isNotBlank(startOn) || startOn == null) {
 			errorMsg = "Please select test start date and time";
 			return false;
+		}else if(!StringUtils.isNotBlank(endOn) || endOn == null) {
+			errorMsg = "Please select test end date and time";
+			return false;
 		}else if(passingCriteria > 100) {
 			errorMsg = "Passing criteria must be 0 to 100";
 			return false;

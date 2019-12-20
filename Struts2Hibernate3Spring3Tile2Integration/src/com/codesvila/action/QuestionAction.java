@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.codesvila.bean.ErrorMessages;
@@ -59,6 +60,8 @@ public class QuestionAction extends BaseAction{
 	
 	private String questionValue;
 
+	private String loginId;
+	private String errorMsg = null;
 	public String getCorrectOption() {
 		return correctOption;
 	}
@@ -191,11 +194,44 @@ public class QuestionAction extends BaseAction{
 		this.questionValue = questionValue;
 	}
 
+	/**
+	 * @return the loginId
+	 */
+	public String getLoginId() {
+		return loginId;
+	}
+
+	/**
+	 * @param loginId the loginId to set
+	 */
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
+
+	/**
+	 * @return the errorMsg
+	 */
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	/**
+	 * @param errorMsg the errorMsg to set
+	 */
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+
 	public String show() {
+		loginId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
 		return "success";
 	}
 	
 	public String addQuestion() throws Exception {
+		if(!validateInput()) {
+			errorMsg = "Question is mandatory";
+			return "success";
+		}
 		System.out.println("option 1 : : " + myoptions.get("" + correctOption));
 		boolean isAlreadyExists = false;
 		questionInfo = ApacheCommonsDBCP.DBCPDataSource("GET_ALL_QUESTIONS", null, false, null,null);
@@ -218,15 +254,11 @@ public class QuestionAction extends BaseAction{
 					sm.setSuccessMsg("Question added successfully!!");
 					successMessageList.add(sm);
 				} else {
-					ErrorMessages er = new ErrorMessages();
-					er.setErrorMsg("Error while adding the question");
-					errorMessagesList.add(er);
+					errorMsg = "Error while adding the question";
 				}
 			}
 		} else {
-			ErrorMessages er = new ErrorMessages();
-			er.setErrorMsg("Question already exists!");
-			errorMessagesList.add(er);
+			errorMsg = "Question already exists!";
 		}
 
 		return "success";
@@ -318,4 +350,10 @@ public class QuestionAction extends BaseAction{
 		return "success";
 	}
 	
+	public boolean validateInput() {
+		if(question == null || !StringUtils.isNotBlank(question)) {
+			return false;
+		}
+		return true;
+	}
 }

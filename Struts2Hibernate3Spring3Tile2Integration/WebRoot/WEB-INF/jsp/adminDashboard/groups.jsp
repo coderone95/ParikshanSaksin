@@ -387,7 +387,7 @@
 															<div class="col-md-8 pr-1">
 																<div class="form-group">
 																	<!-- <label>Group Name</label>  -->
-																	<input type="text" class="form-control" name="groupbean.group_name" id="groupName"/>
+																	<input type="text" class="form-control" required name="groupbean.group_name" id="groupName"/>
 																</div>
 															</div>
 														<div class="col-md-4 pr-1">

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.codesvila.bean.ErrorMessages;
@@ -44,7 +45,7 @@ public class TestsPageAction extends BaseAction {
 	private Integer hrs;
 	private Integer mins;
 	private Integer secs;
-	
+	private String errorMsg = null;
 	public String getTestName() {
 		return testName;
 	}
@@ -206,6 +207,20 @@ public class TestsPageAction extends BaseAction {
 		this.secs = secs;
 	}
 
+	/**
+	 * @return the errorMsg
+	 */
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	/**
+	 * @param errorMsg the errorMsg to set
+	 */
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+
 	public String show() throws Exception{
 		loginId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
 		System.out.println("contextSession"+contextSession.get("username"));
@@ -220,54 +235,55 @@ public class TestsPageAction extends BaseAction {
 	}
 	
 	public String createTest() throws Exception{
-		boolean isAlreadyExists = false;
-		String failedFor = null;
-		int result = 0;
-		if(groupIDs.isEmpty() || groupIDs.size() < 1 || groupIDs == null) {
-			res.setStatus(403);
-			res.setMessage("Test cannot be empty. Please at least one group!!");
-			return "success";
-		}
-		List<TestBO> testList = testService.getAllTests();
-		if(testList.size() > 0 && !testList.isEmpty()) {
-			for(TestBO tb : testList) {
-				if(tb.getTest_name().equalsIgnoreCase(testName)) {
-					failedFor = "Test";
-					isAlreadyExists = true;
-					break;
-				}else if(tb.getTest_key().equalsIgnoreCase(testkey)) {
-					failedFor = "Test Key";
-					isAlreadyExists = true;
-					break;
+		if(validateInputs()) {
+			boolean isAlreadyExists = false;
+			String failedFor = null;
+			int result = 0;
+			if(groupIDs.isEmpty() || groupIDs.size() < 1 || groupIDs == null) {
+				res.setStatus(403);
+				res.setMessage("Test cannot be empty. Please at least one group!!");
+				return "success";
+			}
+			List<TestBO> testList = testService.getAllTests();
+			if(testList.size() > 0 && !testList.isEmpty()) {
+				for(TestBO tb : testList) {
+					if(tb.getTest_name().equalsIgnoreCase(testName)) {
+						failedFor = "Test";
+						isAlreadyExists = true;
+						break;
+					}else if(tb.getTest_key().equalsIgnoreCase(testkey)) {
+						failedFor = "Test Key";
+						isAlreadyExists = true;
+						break;
+					}
 				}
 			}
-		}
-		if(! isAlreadyExists) {
-			String loginID = null;
-			if((String) sessionMap.get(GlobalConstants.LOGIN_ID) == null) {
-				loginID = loginId;
+			if(! isAlreadyExists) {
+				String loginID = null;
+				if((String) sessionMap.get(GlobalConstants.LOGIN_ID) == null) {
+					loginID = loginId;
+				}else {
+					loginID = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
+				}
+				if(passingCriteria == 0) {
+					passingCriteria = 40;
+				}
+				Integer examTime = CommonUtility.returnsTestTimeInSecs(hrs, mins, secs);
+				//result = testService.createTest(loginID,testName,testkey,accessKey,groupIDs,testInstructionsHtmlCode,DateUtils.getFormattedDate(expiresOn),testTime);
+				result = testService.createTest(loginID,testName,testkey,accessKey,groupIDs,testInstructionsHtmlCode,
+						DateUtils.getFormattedDate(startOn),DateUtils.getFormattedDate(endOn), examTime, passingCriteria);
+				if(result < 1 ) {
+					res.setStatus(403);
+					res.setMessage("Unable to create Test!!");
+				}else {
+					res.setStatus(200);
+					res.setMessage("Test created successfully!!");
+				}
 			}else {
-				loginID = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
-			}
-			if(passingCriteria == 0) {
-				passingCriteria = 40;
-			}
-			Integer examTime = CommonUtility.returnsTestTimeInSecs(hrs, mins, secs);
-			//result = testService.createTest(loginID,testName,testkey,accessKey,groupIDs,testInstructionsHtmlCode,DateUtils.getFormattedDate(expiresOn),testTime);
-			result = testService.createTest(loginID,testName,testkey,accessKey,groupIDs,testInstructionsHtmlCode,
-					DateUtils.getFormattedDate(startOn),DateUtils.getFormattedDate(endOn), examTime, passingCriteria);
-			if(result < 1 ) {
 				res.setStatus(403);
-				res.setMessage("Unable to create Test!!");
-			}else {
-				res.setStatus(200);
-				res.setMessage("Test created successfully!!");
+				res.setMessage(""+failedFor+" is already existed!!");
 			}
-		}else {
-			res.setStatus(403);
-			res.setMessage(""+failedFor+" is already existed!!");
 		}
-		
 		return "success";
 	}
 	
@@ -289,5 +305,36 @@ public class TestsPageAction extends BaseAction {
 		
 		return "success";
 	}
-
+	
+	public boolean validateInputs() {
+		if(! StringUtils.isNotBlank(testName) || testName == null) {
+			setErrorMsg("Please enter test name");
+			return false;
+		}else if(! StringUtils.isNotBlank(testkey) || testkey == null) {
+			setErrorMsg("Please enter test key");
+			return false;
+		}else if((StringUtils.isNotBlank(testkey) && testkey != null) &&  (!StringUtils.isNotBlank(accessKey) || accessKey == null)) {
+			setErrorMsg("Please enter access key");
+			return false;
+		}else if(!StringUtils.isNotBlank(startOn) || startOn == null) {
+			setErrorMsg("Please select test start date and time");
+			return false;
+		}else if(!StringUtils.isNotBlank(endOn) || endOn == null) {
+			setErrorMsg("Please select test end date and time");
+			return false;
+		}else if(passingCriteria > 100) {
+			setErrorMsg("Passing criteria must be 0 to 100");
+			return false;
+		}else if(hrs == 0 && mins == 0) {
+			setErrorMsg("Mention either hour or minutes.");
+			return false;
+		}else if(mins > 60) {
+			setErrorMsg("Mintues must be 0 to 60");
+			return false;
+		}else if(secs > 60) {
+			setErrorMsg("Seconds must be 0 to 60");
+			return false;
+		}
+		return true;
+	}
 }

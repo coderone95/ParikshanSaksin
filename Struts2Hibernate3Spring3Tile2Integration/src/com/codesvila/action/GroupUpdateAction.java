@@ -1,7 +1,9 @@
 package com.codesvila.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bo.QuestionInfoBO;
-import com.codesvila.datasource.ApacheCommonsDBCP;
 import com.codesvila.service.TestService;
 import com.codesvila.utils.GlobalConstants;
 
@@ -35,6 +36,7 @@ public class GroupUpdateAction extends BaseAction{
 	private String groupName;
 	private List<GroupsTestInfoBO> addedQuestionsList;
 	private List<GroupsTestInfoBO> availableQuestionsList;
+	private Map<Integer,String> questionMap = new HashMap<Integer,String>();
 
 	public GroupBO getGroupbean() {
 		return groupbean;
@@ -141,6 +143,20 @@ public class GroupUpdateAction extends BaseAction{
 		this.groupName = groupName;
 	}
 	
+	/**
+	 * @return the questionMap
+	 */
+	public Map<Integer,String> getQuestionMap() {
+		return questionMap;
+	}
+
+	/**
+	 * @param questionMap the questionMap to set
+	 */
+	public void setQuestionMap(Map<Integer,String> questionMap) {
+		this.questionMap = questionMap;
+	}
+
 	public String removeSelectedQuestionFromGroup() throws Exception{
 		testService.removeSelectedQuestionFromGroup(selectedGroupID,questionId);
 		return "success";
@@ -166,13 +182,13 @@ public class GroupUpdateAction extends BaseAction{
 		this.availableQuestionsList = availableQuestionsList;
 	}
 	
-	public String updateGroupInfo() {
+	public String updateGroupInfo() throws Exception{
 		if(selectedGroupID !=null && groupName != null && StringUtils.isNotBlank(groupName)) {
 			testService.updateGroup(selectedGroupID,(String) sessionMap.get(GlobalConstants.LOGIN_ID),groupName);
 		}else {
 			errorMessagesList.clear();
 			ErrorMessages er = new ErrorMessages();
-			er.setErrorMsg("Error while processing the update request!!");
+			er.setErrorMsg("Please enter group name");
 			errorMessagesList.add(er);
 		}
 		return "success";

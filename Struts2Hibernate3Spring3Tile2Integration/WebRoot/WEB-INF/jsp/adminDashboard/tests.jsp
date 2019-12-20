@@ -198,8 +198,14 @@ function createTest(){
 	var hrs = $('#hrs').val();
 	var mins = $('#mins').val();
 	var secs = $('#secs').val();
-	var startOn = $('#startOn').val()+':00';
-	var endOn = $('#endOn').val()+':00';
+	var startOn = '';
+	if($('#startOn').val() != ''){
+		startOn = $('#startOn').val()+':00';
+	}
+	var endOn = '';
+	if($('#endOn').val() != ''){
+		endOn = $('#endOn').val()+':00';
+	}
 	var passingCriteria = $('#passingCriteria').val();
 	if(hrs == ''){
 		$('#hrs').val('0');
@@ -215,9 +221,9 @@ function createTest(){
 	});
 	var data = {
 			testName: testName,
-			testkey:testkey,
-			accessKey:accessKey,
-			groupIDs:groupIDs,
+			testkey: testkey,
+			accessKey: accessKey,
+			groupIDs: $('#availableGroups').val(),
 			startOn: startOn,
 			endOn : endOn,
 			hrs : hrs,
@@ -233,7 +239,7 @@ function createTest(){
 		data: JSON.stringify(data),
 		contentType:"application/json;charset=utf-8",
 		success : function(itr) {
-			if(itr.res != null){
+			if(itr.res != null && (itr.errorMsg == null || itr.errorMsg == '')){
 				var status = itr.res.status;
 				if(status == 200){
 					alert(itr.res.message);
@@ -243,6 +249,8 @@ function createTest(){
 				}else if(status == 403){
 					alert(itr.res.message);
 				}
+			}else{
+				alert(itr.errorMsg);
 			}
 		},
 		error : function(itrr) {
@@ -433,6 +441,13 @@ function toggleShow(ths, testID){
 .datetimepicker{
 	 border: 1px solid #000000;
 }
+ul.multiselect-container.dropdown-menu.show {
+    background: #000 !important;
+}
+
+button.multiselect.dropdown-toggle.btn.btn-default {
+    background: #000 !important;
+}
 </style>
 <style>
 /* Latest compiled and minified CSS included as External Resource*/
@@ -507,6 +522,9 @@ function toggleShow(ths, testID){
 }
 .table td, .table th {
 	padding: 0 !important;
+}
+button.btn.btn-default.multiselect-clear-filter {
+    display: none !important;
 }
 </style>
 </head>
@@ -670,7 +688,7 @@ function toggleShow(ths, testID){
 								            </div>
 								            <div class="panel-body">
 								            	<s:select list="testMap" name="group-selected" id="availableGroups" multiple="true" />
-												 <div class="table-responsive" style="max-height:300px;">
+												 <!-- <div class="table-responsive" style="max-height:300px;">
 					                  				<table class="table">
 					                    				<thead class=" text-primary">
 					                    						<th><input type="checkbox" id="selectAll" /></th>
@@ -680,7 +698,7 @@ function toggleShow(ths, testID){
 								                    <tbody id="groups-table-body">
 								                    </tbody>
 								                  </table>
-								                </div>
+								                </div> -->
 								                <button class="btn btn-primary nextBtn pull-right">Next</button>
 								                <button class="btn btn-warning prevBtn pull-right">Prev</button>
 								            </div>
