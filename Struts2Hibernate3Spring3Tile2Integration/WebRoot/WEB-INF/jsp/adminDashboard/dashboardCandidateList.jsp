@@ -53,6 +53,12 @@
 .padding-0-6-rem{
 	padding: 0.6rem;
 }
+.table-responsive {
+	overflow: auto !important;
+}
+.card-no-box-shadow {
+	box-shadow: unset !important;
+}
 </style>
 <script>
 	$(document).ready(function() {
@@ -218,7 +224,7 @@
 			              <div class="card-header"><a href="adminDashboardPage.action"><i class="fa fa-arrow-left"></i> Back </a></div>
 			              <div class="card-body" id="users-card-body">
 			              	<div class="table-responsive">
-                  				<table class="table">
+                  				<table class="table table-bordered"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
                       						<th>User ID</th>
 											<th>Name</th>

@@ -515,16 +515,19 @@ button.multiselect.dropdown-toggle.btn.btn-default {
 	padding: 1.5rem;
     cursor: pointer;
 }
-
+/* 
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
 	padding: 0 !important;
 	vertical-align: unset !important;
 }
 .table td, .table th {
 	padding: 0 !important;
-}
+} */
 button.btn.btn-default.multiselect-clear-filter {
     display: none !important;
+}
+.table-responsive {
+	overflow: auto !important;
 }
 </style>
 </head>
@@ -728,7 +731,7 @@ button.btn.btn-default.multiselect-clear-filter {
 						  </div>
 			              <div class="card-body" id="tests-card-body">
 			              	<div class="table-responsive" style="max-height:500px;">
-                  				<table class="table ">
+                  				<table class="table table-bordered"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
                       						<th> ID </th>
 											<th>Name</th>

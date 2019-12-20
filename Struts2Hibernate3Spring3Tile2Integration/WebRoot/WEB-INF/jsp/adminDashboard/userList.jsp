@@ -57,16 +57,22 @@
 .padding-0-6-rem{
 	padding: 0.6rem;
 }
-.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+/* .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
 	padding: 0 !important;
 	vertical-align: unset !important;
 }
 .table td, .table th {
 	padding: 0 !important;
-}
+} */
 .delete , .edit, .action-icon{
 	padding: 0.5rem;
     cursor: pointer;
+}
+.table-responsive {
+	overflow: auto !important;
+}
+.card-no-box-shadow {
+	box-shadow: unset !important;
 }
 </style>
 <script>
@@ -447,7 +453,7 @@
 			              <div class="card-header"></div>
 			              <div class="card-body" id="users-card-body">
 			              	<div class="table-responsive">
-                  				<table class="table">
+                  				<table class="table table-bordered"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
                       						<th>User ID</th>
 											<th>Name</th>
@@ -484,7 +490,7 @@
         <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card demo-icons">
+						<div class="card demo-icons card-no-box-shadow">
 							<div class="card-header">
 <!-- 								<h4 id="user-form-card-heading">Update User</h4> -->
 <!-- 								<div class="error-div" style="display: none;"> -->

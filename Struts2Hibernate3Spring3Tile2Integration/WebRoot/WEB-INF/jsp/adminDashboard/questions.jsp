@@ -37,6 +37,9 @@
 <!-- CSS Just for demo purpose, don't include it in your project -->
 <link href="./assets/demo/demo.css" rel="stylesheet" />
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
+<!-- <link href="./assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" /> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" /> 
+
  <sx:head />
 <script
 	src="./assets/js/core/jquery.min.js"></script>
@@ -48,315 +51,7 @@
 	}
 	</style>
 
-<script>
-	$(document).ready(function(){
-		addOption('option-area','y');
-		getAllQuestions();
-		
-		$('#addQueBtn').on('click',function(){
-			var optionList = [];
-			var question = $('#question').val();
-			var correctOption = $('#correctOption').val();
-			var myoptions = {};
-			var cnt = 0;
-			$('.option').each(function(){
-				optionList.push($(this).val());
-				myoptions[cnt++] = $(this).val();
-			});
-			var data = {
-					question : question,
-					optionList : optionList,
-					correctOption : correctOption,
-					myoptions : myoptions
-			};
-			$.ajax({
-				type : "POST",
-				url : "addQuestion",
-				data: JSON.stringify(data),
-				dataType: 'json',
-				contentType:"application/json;charset=utf-8",
-				success : function(itr) {
-					if(itr.successMessageList != null && itr.successMessageList.length > 0){
-						alert("Question added successfully");
-						getAllQuestions();
-					}else{
-						if(itr.errorMsg != null && itr.errorMsg != ''){
-							alert(itr.errorMsg);
-						}
-					}
-				}
-				/* error : function(itr) {
-					alert("Error....!!");
-				} */
-			});
-		});
-		$('.option').on('keyup blur', function(){
-			selectCorrectOption();
-		});
-		$('#searchQuestion').on('keyup keydown', function(){
-			var searchKey = $(this).val();
-			var data = {
-					searchKey : searchKey	
-			};
-			$.ajax({
-				type : "POST",
-				url : "getSearchedQuestion",
-				data: JSON.stringify(data),
-				dataType: 'json',
-				contentType:"application/json;charset=utf-8",
-				success : function(itr) {
-					
-				}
-				/* error : function(itr) {
-					alert("Error....!!");
-				} */
-			});
-		});
-		$('.custom-switch').on('click',function(){
-			if($(this).hasClass('fa-toggle-on')){
-				$(this).removeClass('fa-toggle-on');
-				$(this).addClass('fa-toggle-off');
-				toggleSwitch('on');
-			}else if($(this).hasClass('fa-toggle-off')){
-				$(this).removeClass('fa-toggle-off');
-				$(this).addClass('fa-toggle-on');
-				toggleSwitch('off');
-			}
-		});
-	});
-	
-	function toggleSwitch(flag){
-		var fields = $('.update-question-field');
-		if(flag == 'off'){
-			$(fields).each(function(index){
-				$(this).removeAttr('disabled');
-			});	
-		}else{
-			$(fields).each(function(index){
-				$(this).attr('disabled','true');
-			});
-		}
-	}
-	var count = 1;
-	function getAllQuestions(){
-		$('#questions-table-body').html('');
-		$.ajax({
-			type : "POST",
-			url : "getAllQuestions",
-			success : function(itr) {
-				var str = '';
-				if (itr.questionInfo != null && itr.questionInfo.length > 0) {
-					for (var i = 0; i < itr.questionInfo.length; i++) {
-						var queID = itr.questionInfo[i].question_id;
-						var question = itr.questionInfo[i].question;
-						var ans = itr.questionInfo[i].answer;
-						var createdBy = itr.questionInfo[i].question_createdBy;
-						var updatedBy = itr.questionInfo[i].question_updatedBy;
-						
-						str += '<tr><th scope="row"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></th>'
-							+'<td>'+question+'</td>'
-							+'<td>'+ans+'</td>'
-							+'<td>'+createdBy+'</td>'
-							+'<td>'+updatedBy+'</td>'
-							+'<td><button class="btn btn-outline-danger" onclick="deleteThis('+queID+');"><i class="fa fa-trash"></i></button>|<button class="btn btn-outline-primary" onclick="updateQuestion('+queID+');"><i class="fa fa-pencil"></i></button></td>'
-							+'</tr>';
-					}
-					$('#questions-table-body').append(str);
-
-				}else{
-					str += '<div class="text-center"> No record found </div>';
-					$('#questions-table-body').append(str);
-				}
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting all questions...!!");
-			}
-		});
-	}
-	function updateQuestion(queID){
-		localStorage.removeItem("selelctedQuestionID");
-		localStorage.setItem("selelctedQuestionID",queID);
-		updateQestionDetails(queID);
-		$('#updateQuestionModal').modal('show');
-	}
-	function updateQestionDetails(quesID){
-		$('#updateOptions').html('');
-		//$('#updateOptions').text('');
-		$('#updateCorrectOption').html('');
-		var data = {
-				quesID : quesID
-		};
-		$.ajax({
-			type : "POST",
-			url : "getQuestionDetails",
-			dataType: 'json',
-			data: JSON.stringify(data),
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				if(itr.questionDetail != null){
-					$('#updateQuestion_name').val(itr.questionDetail.question);
-					var str = '';
-					var correctOptionSelection = '';
-					var cnt = 65;
-					for(var optionID in itr.questionDetail.optionsMap){
-						if (itr.questionDetail.optionsMap.hasOwnProperty(optionID)){
-							var selectedOption ='';
-							var option = itr.questionDetail.optionsMap[optionID];
-							str += '<li value="'+optionID+'"><input type="text" style="padding:0.4rem; " class="option-item update-question-field" value="'+option+'" disabled /></li><br>';
-							if(itr.questionDetail.answer == option){
-								selectedOption = 'selected';
-								correctOptionSelection += '<option value="'+optionID+'" '+selectedOption+'> &#'+cnt+';</option>';
-							}else{
-								correctOptionSelection += '<option value="'+optionID+'"> &#'+cnt+';</option>';
-							} 
-						}
-						cnt++;
-					}
-					$('#updateOptions').append(str);
-					$('#updateCorrectOption').append(correctOptionSelection);
-					//$('#answer').append('Answer: &#'+ans+';');
-				}
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting question details..!!");
-			}
-		});
-	}
-	function updateQue(){
-		var questionID = localStorage.getItem("selelctedQuestionID");
-		var questionValue = $('#updateQuestion_name').val();
-		var optionItems = $('.option-item');
-		var optionMap = {};
-		
-		var selectedCorrectOption = $('#updateCorrectOption').val();
-		$(optionItems).each(function(){
-			//optionMap.put($(this).parent().attr('value'),$(this).val())
-			optionMap[$(this).parent().attr('value')] = $(this).val();
-		});
-		console.log(optionMap);
-		
-		var data = {
-				selelctedQuestionID : questionID,
-				selectedCorrectOption : selectedCorrectOption,
-				optionMap : optionMap,
-				questionValue : questionValue
-		};
-		$.ajax({
-			type : "POST",
-			url : "updateQuestionDetails",
-			dataType: 'json',
-			data: JSON.stringify(data),
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				alert("Question Updated successfully!!");
-				$('#updateQuestionModal').modal('hide');
-				getAllQuestions();
-				/* toggleSwitch('on'); */
-				
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting question details..!!");
-			}
-		});
-		
-	}
-	function showQuestionDetails(queID){
-		getQuestionDetails(queID);
-		$('#showQuestionDetailsModal').modal('show');
-	}
-	function getQuestionDetails(queID){
-		$('#optionList').html('');
-		$('#answer').html('');
-		$('#questionName').text('');
-		var data = {
-				quesID : queID
-		};
-		$.ajax({
-			type : "POST",
-			url : "getQuestionDetails",
-			dataType: 'json',
-			data: JSON.stringify(data),
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				if(itr.re.status == 403 && itr.re != null ){
-					alert("Unable to fetch question details");
-				}else{
-					if(itr.questionDetail != null){
-						$('#questionName').text(itr.questionDetail.question);
-						var str = '';
-						var cnt = 65;
-						for( var i = 0 ; i < itr.questionDetail.options.length; i++){
-							if(itr.questionDetail.answer == itr.questionDetail.options[i]){
-								ans = cnt;
-							}
-							str += '<li>'+itr.questionDetail.options[i]+'</li>';
-							cnt++;
-						}
-						$('#optionList').append(str);
-						$('#answer').append('Answer: &#'+ans+';');
-					}					
-				}
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting question details..!!");
-			}
-		});
-	}
-	function deleteThis(queID){
-		$('#deleteModal').modal('show');
-		$('#deleteBtn').removeAttr('onclick');
-		$('#deleteBtn').attr('onclick','deleteQuestion('+queID+');');
-	}
-	function deleteQuestion(queID){
-		
-		var data = {
-				queID : queID
-		};
-		$.ajax({
-			type : "POST",
-			url : "deleteQuestion",
-			data: JSON.stringify(data),
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				alert("Question deleted");
-				$('#deleteModal').modal('hide');
-				getAllQuestions();
-			},
-			error : function(itr) {
-				alert("Error while processing the request....!!");
-			}
-		});
-	}
-	function addOption(id, flag){
-		var optionArea = $('#'+id);
-		var idCount = count++;
-		str = '<div id="option-div-'+ idCount +'"><label>Option</label>'
-			+'<div class="row"><div class="col-md-8"><textarea class="form-control option"  rows="1" ></textarea>'
-			+'</div><div class="col-md-4"><a href="#" onclick="deleteOption(\''+idCount+'\');" style="color:red"><i class="fa fa-trash-o fa-lg"></i></a></div></div></div>';
-		$(optionArea).append(str);
-		if(flag == 'y'){
-			selectCorrectOption();
-		}
-	}
-	
-	function deleteOption(cnt){
-		$('#option-div-'+cnt).remove();
-		count--;
-		selectCorrectOption();
-	} 
-	function selectCorrectOption(){
-		$('#correctOption').html('');
-		var str = '';
-		var cnt = 0;
-		$('.option').each(function(){
-			var option = cnt+1;
-			str += '<option value="'+cnt+'">Option '+ option +'</option>';
-			cnt++;
-		});
-		$('#correctOption').append(str);
-	}
-</script>
+<script src="./assets/js/admin/questions.js"></script>
 <style type="text/css">
 .errorDiv {
 	color: red;
@@ -390,6 +85,30 @@
 }
 #updateOptions li{
 	 list-style: none;
+}
+.filter-icon {
+border-radius: 5px;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 23px;
+    background: #0b1961;
+    color: #fff;
+}
+.table-responsive {
+    overflow: auto !important;
+}
+.card-no-box-shadow {
+	box-shadow: unset;
+}
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+.delete , .edit{
+	padding: 0.5rem;
+    cursor: pointer;
+}
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
+    padding: 1rem;
 }
 </style>
 
@@ -464,8 +183,10 @@
 			           <div class="card">
 			              <div class="card-header"></div>
 			              <div class="card-body" id="questions-card-body">
+			              	<!-- <div class="text-right"></div>  onclick="$('#questionFilterModal').show();" -->
+			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#questionFilterModal"></i></div>
 			              	<div class="table-responsive">
-                  				<table class="table">
+                  				<table class="table table-bordered"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
                       						<th>Question ID</th>
 											<th>Question</th>
@@ -500,7 +221,7 @@
         <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card demo-icons">
+						<div class="card demo-icons card-no-box-shadow ">
 							<div class="card-header">
 								
 							</div>
@@ -534,7 +255,7 @@
   </div>
 	
 	<div class="modal fade" id="updateQuestionModal" role="dialog">
-    <div class="modal-dialog" style="min-width: 900px;max-width: 900px;">
+    <div class="modal-dialog" >
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -545,7 +266,7 @@
         <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card demo-icons">
+						<div class="card card-no-box-shadow  demo-icons">
 							<div class="card-header">
 								<div class="card-options">
 									<i class="fa fa-toggle-off custom-switch"></i>
@@ -583,6 +304,7 @@
 										</div>
 									</div>
 								</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -613,11 +335,71 @@
 		        </div>
 		      </div>
 		    </div>
+		  </div>  
+	<!-- Question Filter Modal -->
+		  <div class="modal fade" id="questionFilterModal" role="dialog">
+		    <div class="modal-dialog">
+		      <div class="modal-content">
+		      
+		        <!-- Modal Header -->
+		        <div class="modal-header">
+		          <h5 class="modal-title">Question Filters</h5>
+		           <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        </div>
+		        <!-- Modal body -->
+		        <div class="modal-body">
+		          	<div class="row">
+					<div class="col-md-12">
+						<div class="card demo-icons card-no-box-shadow">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>From Date</label> 
+											<input type="text" id="startDate" class="form-control datepicker">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>To Date</label> 
+											<input type="text" id="endDate" class="form-control datepicker">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Question ID</label> 
+											<input type="number" id="byQuestionId" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Created By</label> 
+											<input type="text" id="createdBy" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+										<div class="update ml-auto mr-auto">
+											<input type="button" class="btn btn-primary btn-round" value="Apply Filters">
+											<input type="button" data-dismiss="modal" class="btn btn-primary btn-round close" value="Cancel">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		        </div>
+		      </div>
+		    </div>
 		  </div>        
 	<!--   Core JS Files   -->
 	<script src="./assets/js/core/jquery.min.js"></script>
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
+	<%-- <script src="./assets/js/bootstrap-datetimepicker.js"></script> --%>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 	<!--  Google Maps Plugin    -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>

@@ -79,12 +79,12 @@
 	 list-style: none;
 }
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-	padding: 0 !important;
+	/* padding: 0 !important; */
 	vertical-align: unset !important;
 }
-.table td, .table th {
+/* .table td, .table th {
 	padding: 0 !important;
-}
+} */
 .delete , .edit{
 	padding: 0.7rem;
     cursor: pointer;
@@ -384,13 +384,13 @@
 												<div class="row">
 													<div class="col-md-12 pr-1">
 														<div class="row">
-															<div class="col-md-8 pr-1">
+															<div class="col-md-8">
 																<div class="form-group">
 																	<!-- <label>Group Name</label>  -->
 																	<input type="text" class="form-control" required name="groupbean.group_name" id="groupName"/>
 																</div>
 															</div>
-														<div class="col-md-4 pr-1">
+														<div class="col-md-4">
 															<div class="form-group">
 																<input type="submit" style="margin: 0;" id="addGroupOrSet" class="btn btn-primary  btn-round" value="Add Group">
 															</div>
@@ -409,8 +409,8 @@
 			              <div class="card-header"></div>
 			              <div class="card-body" id="group-card-body">
 			              	
-			              	<div class="table-responsive">
-                  				<table class="table">
+			              	<div class="table-responsive" style="overflow: auto;">
+                  				<table class="table table-bordered" style="border: 2px solid #000;">
                     				<thead class=" text-primary">
                       						<th>Group ID</th>
 											<th>Group Name</th>
