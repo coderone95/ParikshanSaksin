@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<search>
+	<query id="GET_USER_PROFILE_DATA">
+		select * from tbl_users where {email_id in ($[pEmailId])} limit 1
+	</query>
+	<query id="GET_ALL_QUESTIONS">
+		select q.question_id as questionID, q.question as question , o.option_value as answer,
+		q.created_by as createdBy, q.updated_by as updatedBy, q.created_on as createdOn, q.updated_on as updatedOn 
+		from tbl_questions q inner join tbl_que_options o on o.question_id = q.question_id where o.isCorrect = 1
+		and { q.created_by in ($[pList]) } and { q.updated_on in ($[pUpdatedOn]) }
+	</query>
+	<query id="GET_ALL_GROUPS">
+		select * from tbl_groups where 
+		 { q.created_by in ($[pList]) } and { q.updated_on in ($[pUpdatedOn]) }
+	</query>
+</search>

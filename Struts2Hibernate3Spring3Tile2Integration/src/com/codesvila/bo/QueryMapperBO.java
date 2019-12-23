@@ -4,6 +4,8 @@ public class QueryMapperBO {
 	
 	private String query;
 	
+	private String id;
+	
 	private String queryId;
 	
 	private String resultReturnType;
@@ -30,6 +32,20 @@ public class QueryMapperBO {
 
 	public void setResultReturnType(String resultReturnType) {
 		this.resultReturnType = resultReturnType;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

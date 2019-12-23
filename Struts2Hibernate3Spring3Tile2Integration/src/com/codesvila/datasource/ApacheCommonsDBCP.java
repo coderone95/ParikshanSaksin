@@ -24,6 +24,8 @@ import com.codesvila.bean.UserMasterBO;
 import com.codesvila.bo.QueryMapperBO;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.dao.mapper.Mapper;
+import com.codesvila.utils.searches.ParamBO;
+import com.codesvila.utils.searches.SearchReport;
 
 public class ApacheCommonsDBCP {
 
@@ -74,13 +76,21 @@ public class ApacheCommonsDBCP {
 				if (listObj != null) {
 					email = stringParams(listObj);
 				}
-
+				Map<String, ParamBO> myparamBO = new HashMap<String,ParamBO>();
+				ParamBO pEmailId = new ParamBO();
+				pEmailId.setParamName("pEmailId");
+				pEmailId.setParamType("List");
+				pEmailId.setParamreturnType("String");
+				pEmailId.setParamValue(listObj);
+				myparamBO.put("pEmailId", pEmailId);
+				QueryMapperBO qmbo = SearchReport.getQuery("GET_USER_PROFILE_DATA","QueryMapper",myparamBO);
+//				System.out.println("Query from qmbo \t\t\t:::::"+ qmbo.getQuery());
 				System.out.println("emails " + email);
-				String query = "select * from tbl_users where email_id in (" + email.toString() + ") limit 1";
-				System.out.println("Query :::" + query);
+				//String query = "select * from tbl_users where email_id in (" + email.toString() + ") limit 1";
+				//System.out.println("Query :::" + query);
 
-				if (query != null) {
-					data = generic.nativeSQLQueryList(query);
+				if (qmbo.getQuery() != null) {
+					data = generic.nativeSQLQueryList(qmbo.getQuery());
 				}
 				List<UserBean> ub = new ArrayList<UserBean>();
 				if (data != null) {
@@ -115,7 +125,24 @@ public class ApacheCommonsDBCP {
 				String query = "select q.question_id as questionID, q.question as question , o.option_value as answer,"
 						+ "q.created_by as createdBy, q.updated_by as updatedBy, q.created_on as createdOn, q.updated_on as updatedOn "
 						+ " from tbl_questions q inner join tbl_que_options o on o.question_id = q.question_id where o.isCorrect = 1";
-				System.out.println(" Query :::" + query);
+//				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+//				ParamBO pList = new ParamBO();
+//				pList.setParamName("pList");
+//				pList.setParamType("List");
+//				pList.setParamreturnType("String");
+//				List<String> mylist = new ArrayList<String>();
+//				mylist.add("Sagar");
+//				mylist.add("Sakshi");
+//				mymap.put("pList", pList);
+//				ParamBO newParam = new ParamBO();
+//				newParam.setParamName("pName");
+//				newParam.setParamType("SingleParamElement");
+//				newParam.setParamreturnType("String");
+//				newParam.setParamValue("coderone95@gmail.com");
+//				mymap.put("pName", newParam);
+//				QueryMapperBO qmbo = SearchReport.getQuery("GET_ALL_QUESTIONS","QueryMapper",mymap);
+//				query = qmbo.getQuery();
+				System.out.println(" Returned Query :::\n\n\n\n" + query);
 				rs = stmt.executeQuery(query);
 				List<QuestionInfoBO> qi = new ArrayList<QuestionInfoBO>();
 				if (rs != null) {
