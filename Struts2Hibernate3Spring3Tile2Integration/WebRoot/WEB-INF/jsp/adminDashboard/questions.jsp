@@ -37,6 +37,7 @@
 <!-- CSS Just for demo purpose, don't include it in your project -->
 <link href="./assets/demo/demo.css" rel="stylesheet" />
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
+<link href="./assets/css/loader.css" rel="stylesheet" />
 <!-- <link href="./assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" /> -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" /> 
 
@@ -110,6 +111,7 @@ border-radius: 5px;
 .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
     padding: 1rem;
 }
+
 </style>
 
 </head>
@@ -183,6 +185,14 @@ border-radius: 5px;
 			           <div class="card">
 			              <div class="card-header"></div>
 			              <div class="card-body" id="questions-card-body">
+			              	<div class="loaddercontainer questions-table-loader">
+								<div class="lds-ring">
+							        <div></div>
+							        <div></div>
+							        <div></div>
+							        <div></div>
+								</div>
+							</div>
 			              	<!-- <div class="text-right"></div>  onclick="$('#questionFilterModal').show();" -->
 			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#questionFilterModal"></i></div>
 			              	<div class="table-responsive">
@@ -190,7 +200,7 @@ border-radius: 5px;
                     				<thead class=" text-primary">
                       						<th>Question ID</th>
 											<th>Question</th>
-											<th>Answer</th>
+											<!-- <th>Answer</th> -->
 											<th>Created By</th>
 											<th>Updated By</th>
 											<th>Action</th>

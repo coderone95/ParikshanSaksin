@@ -1,9 +1,6 @@
 package com.codesvila.utils.searches;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,15 +48,14 @@ public static QueryMapperBO getQuery(String reportQueryId, String reportName, Ma
 				mapperBo.setId(elementQueryId);
 				System.out.println(sqlQuery.trim());
 				Set<String> keys = paramMap.keySet();
-				//int count = 0;
-				for(String key: keys) {
-					mapperBo.setQuery(SearchReportHandler.paramterizedQuery(mapperBo, paramMap.get(key)));
-//					count++;
+				if(paramMap != null) {
+					for(String key: keys) {
+						mapperBo.setQuery(SearchReportHandler.paramterizedQuery(mapperBo, paramMap.get(key)));
+					}
 				}
 				sqlQuery = mapperBo.getQuery().replace("{", "");
 				sqlQuery = sqlQuery.replace("}", "");
 				mapperBo.setQuery(sqlQuery.trim());
-				//System.out.println("Generated Query \n "+sqlQuery.trim());
 			}
 		}
 		
@@ -69,46 +65,46 @@ public static QueryMapperBO getQuery(String reportQueryId, String reportName, Ma
 		return mapperBo;
 	  }
 
-	public static void main(String args[]) {
-
-		Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
-		ParamBO pStartDate = new ParamBO();
-		pStartDate.setParamName("pStartDate");
-		pStartDate.setParamType("SingleParamElement");
-		pStartDate.setParamreturnType("String");
-		pStartDate.setParamValue("24-12-2019 00:00:00");
-		
-		ParamBO pEndDate = new ParamBO();
-		pEndDate.setParamName("pEndDate");
-		pEndDate.setParamType("SingleParamElement");
-		pEndDate.setParamreturnType("String");
-		pEndDate.setParamValue("24-12-2019 23:00:00");
-		
-		ParamBO pCreatedBy = new ParamBO();
-		pCreatedBy.setParamName("pCreatedBy");
-		pCreatedBy.setParamType("SingleParamElement");
-		pCreatedBy.setParamreturnType("String");
-		pCreatedBy.setParamValue("sakshi@gmail.com");
-		
-		
-		ParamBO pQuestionName = new ParamBO();
-		pQuestionName.setParamName("pQuestionName");
-		pQuestionName.setParamType("SingleParamElement");
-		pQuestionName.setParamreturnType("String");
-		pQuestionName.setParamValue("How are you?");
-		
-		ParamBO pQuestionId = new ParamBO();
-		pQuestionId.setParamName("pQuestionId");
-		pQuestionId.setParamType("SingleParamElement");
-		pQuestionId.setParamreturnType("Integer");
-		pQuestionId.setParamValue(12);
-
-		mymap.put("pStartDate", pStartDate);
-		mymap.put("pEndDate", pEndDate);
-		mymap.put("pCreatedBy", pCreatedBy);
-		mymap.put("pQuestionName", pQuestionName);
-		mymap.put("pQuestionId", pQuestionId);
-		QueryMapperBO qmbo = SearchReport.getQuery("GET_QUESTIONS_REPORT", "ReportQuery", mymap);
-		System.out.println("QueryMapperBO qmbo : GET_QUESTIONS_REPORT" + qmbo.getQuery());
-	}
+//	public static void main(String args[]) {
+//
+//		Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+//		ParamBO pStartDate = new ParamBO();
+//		pStartDate.setParamName("pStartDate");
+//		pStartDate.setParamType("SingleParamElement");
+//		pStartDate.setParamreturnType("String");
+//		pStartDate.setParamValue("24-12-2019 00:00:00");
+//		
+//		ParamBO pEndDate = new ParamBO();
+//		pEndDate.setParamName("pEndDate");
+//		pEndDate.setParamType("SingleParamElement");
+//		pEndDate.setParamreturnType("String");
+//		pEndDate.setParamValue("24-12-2019 23:00:00");
+//		
+//		ParamBO pCreatedBy = new ParamBO();
+//		pCreatedBy.setParamName("pCreatedBy");
+//		pCreatedBy.setParamType("SingleParamElement");
+//		pCreatedBy.setParamreturnType("String");
+//		pCreatedBy.setParamValue("sakshi@gmail.com");
+//		
+//		
+//		ParamBO pQuestionName = new ParamBO();
+//		pQuestionName.setParamName("pQuestionName");
+//		pQuestionName.setParamType("SingleParamElement");
+//		pQuestionName.setParamreturnType("String");
+//		pQuestionName.setParamValue("How are you?");
+//		
+//		ParamBO pQuestionId = new ParamBO();
+//		pQuestionId.setParamName("pQuestionId");
+//		pQuestionId.setParamType("SingleParamElement");
+//		pQuestionId.setParamreturnType("Integer");
+//		pQuestionId.setParamValue(12);
+//
+//		mymap.put("pStartDate", pStartDate);
+//		mymap.put("pEndDate", pEndDate);
+//		mymap.put("pCreatedBy", pCreatedBy);
+//		mymap.put("pQuestionName", pQuestionName);
+//		mymap.put("pQuestionId", pQuestionId);
+//		QueryMapperBO qmbo = SearchReport.getQuery("GET_QUESTIONS_REPORT", "ReportQuery", mymap);
+//		System.out.println("QueryMapperBO qmbo : GET_QUESTIONS_REPORT" + qmbo.getQuery());
+//	}
 }

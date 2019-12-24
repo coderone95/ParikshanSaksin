@@ -111,6 +111,7 @@ $(document).ready(function(){
 	}
 	var count = 1;
 	function getAllQuestions(){
+		$('.questions-table-loader').show();
 		$('#questions-table-body').html('');
 		$.ajax({
 			type : "POST",
@@ -127,16 +128,17 @@ $(document).ready(function(){
 						
 						str += '<tr><th scope="row"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></th>'
 							+'<td>'+question+'</td>'
-							+'<td>'+ans+'</td>'
+							//+'<td>'+ans+'</td>'
 							+'<td>'+createdBy+'</td>'
 							+'<td>'+updatedBy+'</td>'
 							+'<td><i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i><i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i></td>'
 							+'</tr>';
 					}
 					$('#questions-table-body').append(str);
+					$('.questions-table-loader').hide();
 
 				}else{
-					str += '<div class="text-center"> No record found </div>';
+					str += '<tr><td colspan="6"><div class="text-center"> No record found </div></td></tr>';
 					$('#questions-table-body').append(str);
 				}
 			},
@@ -336,6 +338,7 @@ $(document).ready(function(){
 		$('#correctOption').append(str);
 	}
 	function applyQuestionsFilter(){
+		$('.questions-table-loader').show();
 		$('#questions-table-body').html('');
 		var questionName = $('#byQuestionName').val();
 		var questionId = $('#byQuestionId').val();
@@ -375,16 +378,17 @@ $(document).ready(function(){
 						
 						str += '<tr><th scope="row"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></th>'
 							+'<td>'+question+'</td>'
-							+'<td>'+ans+'</td>'
+							//+'<td>'+ans+'</td>'
 							+'<td>'+createdBy+'</td>'
 							+'<td>'+updatedBy+'</td>'
 							+'<td><i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i><i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i></td>'
 							+'</tr>';
 					}
 					$('#questions-table-body').append(str);
+					$('.questions-table-loader').hide();
 
 				}else{
-					str += '<div class="text-center"> No record found </div>';
+					str += '<tr><td colspan="6"><div class="text-center"> No record found </div></td></tr>';
 					$('#questions-table-body').append(str);
 				}
 			},
