@@ -381,8 +381,16 @@ border-radius: 5px;
 									</div>
 								</div>
 								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Question Name</label> 
+											<input type="text" id="byQuestionName" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
 										<div class="update ml-auto mr-auto">
-											<input type="button" class="btn btn-primary btn-round" value="Apply Filters">
+											<input type="button" class="btn btn-primary btn-round" onclick="applyQuestionsFilter();" value="Apply Filters">
 											<input type="button" data-dismiss="modal" class="btn btn-primary btn-round close" value="Cancel">
 										</div>
 									</div>

@@ -31,7 +31,7 @@ public class ApacheCommonsDBCP {
 
 	@SuppressWarnings("unused")
 	public static List DBCPDataSource(String queryId, List listObj, boolean isParamsAvailable,
-			Map<String, String> paramMap, Integer singleParam) throws Exception {
+			Map<String, Object> paramMap, Integer singleParam) throws Exception {
 		DataSource ds = DBCPDataSourceFactory.getDataSource();
 		Connection con = null;
 		Statement stmt = null;
@@ -125,23 +125,7 @@ public class ApacheCommonsDBCP {
 				String query = "select q.question_id as questionID, q.question as question , o.option_value as answer,"
 						+ "q.created_by as createdBy, q.updated_by as updatedBy, q.created_on as createdOn, q.updated_on as updatedOn "
 						+ " from tbl_questions q inner join tbl_que_options o on o.question_id = q.question_id where o.isCorrect = 1";
-//				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
-//				ParamBO pList = new ParamBO();
-//				pList.setParamName("pList");
-//				pList.setParamType("List");
-//				pList.setParamreturnType("String");
-//				List<String> mylist = new ArrayList<String>();
-//				mylist.add("Sagar");
-//				mylist.add("Sakshi");
-//				mymap.put("pList", pList);
-//				ParamBO newParam = new ParamBO();
-//				newParam.setParamName("pName");
-//				newParam.setParamType("SingleParamElement");
-//				newParam.setParamreturnType("String");
-//				newParam.setParamValue("coderone95@gmail.com");
-//				mymap.put("pName", newParam);
-//				QueryMapperBO qmbo = SearchReport.getQuery("GET_ALL_QUESTIONS","QueryMapper",mymap);
-//				query = qmbo.getQuery();
+
 				System.out.println(" Returned Query :::\n\n\n\n" + query);
 				rs = stmt.executeQuery(query);
 				List<QuestionInfoBO> qi = new ArrayList<QuestionInfoBO>();
@@ -278,7 +262,8 @@ public class ApacheCommonsDBCP {
 			}
 			else if (queryId.equals("GET_ALL_TESTS")) {
 				String query = null;
-				query = "select test_id, test_name, test_time,org_id, test_key, access_key, test_instructions, startOn, endOn, passingCriteria, is_live, is_disabled, created_on, updated_on, created_by, updated_by from tbl_tests order by 1 desc";
+				query = "select test_id, test_name, test_time,org_id, test_key, access_key, test_instructions, "
+						+ "startOn, endOn, passingCriteria, is_live, is_disabled, created_on, updated_on, created_by, updated_by from tbl_tests order by 1 desc";
 
 				System.out.println("Query :::" + query);
 
@@ -308,7 +293,8 @@ public class ApacheCommonsDBCP {
 				if(listObj != null && isParamsAvailable) {
 					params = intParams(listObj);
 				}
-				query = "select test_id,test_name,org_id,test_key,access_key,startOn, endOn, passingCriteria,test_time,test_instructions,is_live,is_disabled,created_on,updated_on,created_by,updated_by from tbl_tests where test_id in ("+params.toString()+")";
+				query = "select test_id,test_name,org_id,test_key,access_key,startOn, endOn, passingCriteria,test_time,"
+						+ "test_instructions,is_live,is_disabled,created_on,updated_on,created_by,updated_by from tbl_tests where test_id in ("+params.toString()+")";
 				if (query != null) {
 					//data = generic.nativeSQLQueryList(query);
 					rs = stmt.executeQuery(query);
@@ -356,7 +342,8 @@ public class ApacheCommonsDBCP {
 				if (listObj != null) {
 					groupId = intParams(listObj);
 				}
-				query = "select q.question_id, q.question from tbl_questions_group qg inner join tbl_questions q on q.question_id = qg.question_id where qg.group_id in ("+ groupId.toString()+")";
+				query = "select q.question_id, q.question from tbl_questions_group qg inner join tbl_questions q "
+						+ "on q.question_id = qg.question_id where qg.group_id in ("+ groupId.toString()+")";
 				
 				if(query != null) {
 					rs = stmt.executeQuery(query);
@@ -372,7 +359,8 @@ public class ApacheCommonsDBCP {
 				if (listObj != null) {
 					groupId = intParams(listObj);
 				}
-				query = "select q.question_id, q.question from tbl_questions q  where q.question_id not in (select question_id from tbl_questions_group where group_id in ("+ groupId.toString()+"))";
+				query = "select q.question_id, q.question from tbl_questions q  where q.question_id not "
+						+ "in (select question_id from tbl_questions_group where group_id in ("+ groupId.toString()+"))";
 				if(query != null) {
 					rs = stmt.executeQuery(query);
 				}
@@ -394,6 +382,62 @@ public class ApacheCommonsDBCP {
 					res.add(i);
 				}
 				return res;
+			}else if(queryId.equals("GET_QUESTIONS_REPORT")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				String startDate = (String) paramMap.get("startDate");
+				String endDate = (String) paramMap.get("endDate");
+				String createdBy = (String) paramMap.get("createdBy");
+				String questionName = (String) paramMap.get("questionName");
+				Integer questionId = (Integer) paramMap.get("questionId");
+				
+				ParamBO pStartDate = new ParamBO();
+				pStartDate.setParamName("pStartDate");
+				pStartDate.setParamType("SingleParamElement");
+				pStartDate.setParamreturnType("String");
+				pStartDate.setParamValue(startDate);
+				
+				ParamBO pEndDate = new ParamBO();
+				pEndDate.setParamName("pEndDate");
+				pEndDate.setParamType("SingleParamElement");
+				pEndDate.setParamreturnType("String");
+				pEndDate.setParamValue(endDate);
+				
+				ParamBO pCreatedBy = new ParamBO();
+				pCreatedBy.setParamName("pCreatedBy");
+				pCreatedBy.setParamType("SingleParamElement");
+				pCreatedBy.setParamreturnType("String");
+				pCreatedBy.setParamValue(createdBy);
+				
+				
+				ParamBO pQuestionName = new ParamBO();
+				pQuestionName.setParamName("pQuestionName");
+				pQuestionName.setParamType("SingleParamElement");
+				pQuestionName.setParamreturnType("String");
+				pQuestionName.setParamValue(questionName);
+				
+				ParamBO pQuestionId = new ParamBO();
+				pQuestionId.setParamName("pQuestionId");
+				pQuestionId.setParamType("SingleParamElement");
+				pQuestionId.setParamreturnType("Integer");
+				pQuestionId.setParamValue(questionId);
+
+				mymap.put("pStartDate", pStartDate);
+				mymap.put("pEndDate", pEndDate);
+				mymap.put("pCreatedBy", pCreatedBy);
+				mymap.put("pQuestionName", pQuestionName);
+				mymap.put("pQuestionId", pQuestionId);
+				System.out.println("questionId \t\t\t\t \n" + questionId);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
+				System.out.println("QueryMapperBO qmbo : GET_QUESTIONS_REPORT \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<QuestionInfoBO> qi = new ArrayList<QuestionInfoBO>();
+				if (rs != null) {
+					qi = ResultBeans.generateResultQuestionInfoBO(rs);
+				}
+				return qi;
 			}
 			
 		} catch (SQLException e) {

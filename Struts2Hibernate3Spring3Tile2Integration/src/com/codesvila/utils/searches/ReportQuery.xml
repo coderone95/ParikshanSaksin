@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<search>
+	<query id="GET_QUESTIONS_REPORT">
+		select q.question_id as questionID, q.question as question , o.option_value as answer,
+		q.created_by as createdBy, q.updated_by as updatedBy, q.created_on as createdOn, q.updated_on as updatedOn 
+		from tbl_questions q inner join tbl_que_options o on o.question_id = q.question_id where o.isCorrect = 1
+		and { q.created_by in ( $[pCreatedBy] ) } 
+		and { q.created_on between $[pStartDate] and $[pEndDate] } 
+		and { q.question_id in ($[pQuestionId])}
+		and { q.question like concat('%',$[pQuestionName], '%')}
+	</query>
+	
+</search>

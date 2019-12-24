@@ -274,6 +274,13 @@
 	        </interceptor-ref> 
 			<result name="success" type="json"></result>  
         </action>
+        <action name="getQuestionReport" class="com.codesvila.report.action.GetQuestionsExecuteReportAction" method="getQuestionReport">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
         
        
 		

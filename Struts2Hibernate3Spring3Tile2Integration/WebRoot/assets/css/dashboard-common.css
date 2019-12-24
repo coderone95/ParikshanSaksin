@@ -24,3 +24,7 @@
 .navbar .form-group.no-border .form-control, .navbar .input-group.no-border .form-control::placeholder {
     color: #ffffff !important;
 }
+
+.sidebar{
+	overflow: auto !important;
+}
