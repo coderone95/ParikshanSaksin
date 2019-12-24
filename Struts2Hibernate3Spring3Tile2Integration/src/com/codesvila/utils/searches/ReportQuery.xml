@@ -9,5 +9,11 @@
 		and { q.question_id in ($[pQuestionId])}
 		and { q.question like concat('%',$[pQuestionName], '%')}
 	</query>
-	
+	<query id="GET_GROUPS_REPORT">
+		select group_id, group_name, created_on, created_by, updated_by, updated_on from tbl_groups
+		where { created_by in ( $[pCreatedBy] ) } 
+		and { created_on between $[pStartDate] and $[pEndDate] } 
+		and { group_id in ($[pGroupId])}
+		and { group_name like concat('%',$[pGroupName], '%')}
+	</query>
 </search>

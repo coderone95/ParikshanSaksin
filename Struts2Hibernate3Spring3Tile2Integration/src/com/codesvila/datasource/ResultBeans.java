@@ -163,7 +163,23 @@ public class ResultBeans {
 
 		return groupInfo;
 	}
-
+	
+	public static List<GroupBO> generateResultForGroupBO(ResultSet rs) throws SQLException {
+		List<GroupBO> groupInfo = new ArrayList<GroupBO>();
+		while (rs.next()) {
+			GroupBO gp = new GroupBO();
+			gp.setGroup_id(rs.getInt("group_id"));
+			gp.setGroup_name(rs.getString("group_name"));
+			gp.setCreated_by(rs.getString("created_by"));
+			gp.setCreated_on(rs.getString("created_on"));
+			gp.setUpdated_by(rs.getString("updated_by"));
+			gp.setUpdated_on(rs.getString("updated_on"));
+			groupInfo.add(gp);
+		}
+		return groupInfo;
+	}
+	
+	
 	public static List<QuestionsGroupBO> generateResultForQuestionsOfGroupBO(List data) {
 		List<QuestionsGroupBO> QuestionGroupInfo = new ArrayList<QuestionsGroupBO>();
 		for (Object object : data) {

@@ -108,15 +108,6 @@
 		<action name="getAllQuestions" class="com.codesvila.action.QuestionAction" method="getAllQuestions">
             <result name="success" type="json">/WEB-INF/jsp/adminDashboard/tests.jsp</result>
         </action>
-<!--         <action name="getquestionsMapJson" class="com.codesvila.action.QuestionAction"> -->
-<!-- 			<result type="json" > -->
-<!--        	 		<param name="root">questionsMap</param> -->
-<!--        	 	</result> -->
-<!-- 		</action> -->
-<!-- 		 <action name="resultAction"  -->
-<!-- 	        class="com.codesvila.action.AutoCompleterAction" > -->
-<!-- 		<result name="success">/WEB-INF/jsp/adminDashboard/tests.jsp</result> -->
-<!-- 	    </action> -->
 
 		<action name="populateAdminUsersCount" class="com.codesvila.action.AdminDashboardPageAction" method="populateAdminUsersCount">
 			<result name="success" type="json"></result>
@@ -281,7 +272,13 @@
 	        </interceptor-ref> 
 			<result name="success" type="json"></result>  
         </action>
-        
+         <action name="getGroupReport" class="com.codesvila.report.action.GetGroupsExecuteReportAction" method="getGroupReport">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
        
 		
     </package>

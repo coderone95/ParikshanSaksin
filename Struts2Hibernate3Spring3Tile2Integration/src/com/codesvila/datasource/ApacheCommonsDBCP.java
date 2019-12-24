@@ -438,6 +438,61 @@ public class ApacheCommonsDBCP {
 					qi = ResultBeans.generateResultQuestionInfoBO(rs);
 				}
 				return qi;
+			}else if(queryId.equals("GET_GROUPS_REPORT")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				String startDate = (String) paramMap.get("startDate");
+				String endDate = (String) paramMap.get("endDate");
+				String createdBy = (String) paramMap.get("createdBy");
+				String groupName = (String) paramMap.get("groupName");
+				Integer groupId = (Integer) paramMap.get("groupId");
+				
+				ParamBO pStartDate = new ParamBO();
+				pStartDate.setParamName("pStartDate");
+				pStartDate.setParamType("SingleParamElement");
+				pStartDate.setParamreturnType("String");
+				pStartDate.setParamValue(startDate);
+				
+				ParamBO pEndDate = new ParamBO();
+				pEndDate.setParamName("pEndDate");
+				pEndDate.setParamType("SingleParamElement");
+				pEndDate.setParamreturnType("String");
+				pEndDate.setParamValue(endDate);
+				
+				ParamBO pCreatedBy = new ParamBO();
+				pCreatedBy.setParamName("pCreatedBy");
+				pCreatedBy.setParamType("SingleParamElement");
+				pCreatedBy.setParamreturnType("String");
+				pCreatedBy.setParamValue(createdBy);
+				
+				
+				ParamBO pGroupName = new ParamBO();
+				pGroupName.setParamName("pGroupName");
+				pGroupName.setParamType("SingleParamElement");
+				pGroupName.setParamreturnType("String");
+				pGroupName.setParamValue(groupName);
+				
+				ParamBO pGroupId = new ParamBO();
+				pGroupId.setParamName("pGroupId");
+				pGroupId.setParamType("SingleParamElement");
+				pGroupId.setParamreturnType("Integer");
+				pGroupId.setParamValue(groupId);
+
+				mymap.put("pStartDate", pStartDate);
+				mymap.put("pEndDate", pEndDate);
+				mymap.put("pCreatedBy", pCreatedBy);
+				mymap.put("pGroupName", pGroupName);
+				mymap.put("pGroupId", pGroupId);
+				System.out.println("questionId \t\t\t\t \n" + groupId);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
+				System.out.println("QueryMapperBO qmbo : GET_GROUPS_REPORT \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<GroupBO> gp = new ArrayList<GroupBO>();
+				if(rs != null)
+					gp = ResultBeans.generateResultForGroupBO(rs);
+				return gp;
 			}
 			
 		} catch (SQLException e) {

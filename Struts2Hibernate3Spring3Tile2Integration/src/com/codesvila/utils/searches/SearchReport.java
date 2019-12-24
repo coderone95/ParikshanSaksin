@@ -48,10 +48,8 @@ public static QueryMapperBO getQuery(String reportQueryId, String reportName, Ma
 				mapperBo.setId(elementQueryId);
 				System.out.println(sqlQuery.trim());
 				Set<String> keys = paramMap.keySet();
-				if(paramMap != null) {
-					for(String key: keys) {
-						mapperBo.setQuery(SearchReportHandler.paramterizedQuery(mapperBo, paramMap.get(key)));
-					}
+				for(String key: keys) {
+					mapperBo.setQuery(SearchReportHandler.paramterizedQuery(mapperBo, paramMap.get(key)));
 				}
 				sqlQuery = mapperBo.getQuery().replace("{", "");
 				sqlQuery = sqlQuery.replace("}", "");

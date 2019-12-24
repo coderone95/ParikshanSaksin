@@ -2,13 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
- 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="utf-8" />
 <link rel="apple-touch-icon" sizes="76x76"
@@ -21,346 +16,25 @@
 	name='viewport' />
 	
 <!-- jQuery library -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!--     Fonts and icons     -->
-<link
-	href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200"
-	rel="stylesheet" />
-<link
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"
-	rel="stylesheet">
-	
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
 <!-- CSS Files -->
 <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
 <link href="./assets/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
 <!-- CSS Just for demo purpose, don't include it in your project -->
 <link href="./assets/demo/demo.css" rel="stylesheet" />
- <sx:head />
+<sx:head />
 <script src="./assets/js/core/jquery.min.js"></script>
 <script src="./assets/js/bootstrap-select.min.js"></script>
 <script src="./assets/js/common.js"></script>
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
-<style>
-	.padding-0-6-rem{
-		padding: 0.6rem;
-	}
-.errorDiv {
-	color: red;
-}
-.error-msg {
-	color:red
-}
-.success-msg{
-	color: #008000;
-}
-.error-msg b{
-	margin-bottom: 1rem;
-    padding: 0.1rem;
-    border: 1px solid red;
-}
-.success-msg b{
-	margin-bottom: 1rem;
-    padding: 0.1rem;
-    border: 1px solid #008000;
-}
-.padding-0-6-rem{
-	padding: 0.6rem;
-}
-.custom-switch{
-	cursor:pointer;
-	float:right;
-	font-size: 2rem;
-}
-.fa-toggle-on, .fa-toggle-off{
-	color:#51cbce;
-}
-#updateOptions li{
-	 list-style: none;
-}
-.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-	/* padding: 0 !important; */
-	vertical-align: unset !important;
-}
-/* .table td, .table th {
-	padding: 0 !important;
-} */
-.delete , .edit{
-	padding: 0.7rem;
-    cursor: pointer;
-}
-
-</style>
-<script>
-	var isAlreadyChecked = false;
-	var isSelectedAllCheckBox = false;
-	$(document).ready(function(){
-		getAllGroupsInfo();
-		$('#selectAll').on('click',function(){
-			if(!isAlreadyChecked){
-				$('.selectQuestionCheckBox').each(function(){
-					$(this).prop( "checked", true );
-				});
-				isAlreadyChecked = true;
-				isSelectedAllCheckBox = true;
-			}else{
-				$('.selectQuestionCheckBox').each(function(){
-					$(this).prop( "checked", false );
-				});
-				isAlreadyChecked = false;
-			}
-				
-		});
-		$('#createGroupForm').on('submit', function(){
-			var formInput=$(this).serialize();    
-			$.getJSON('createGroup.action', formInput,function(data) {
-				if(data.errorMessagesList != null && data.errorMessagesList.length > 0){
-					alert(data.errorMessagesList[0].errorMsg);
-				}else{
-					$('#groupID').val(data.groupID);
-					getAllGroupsInfo();
-					alert('Group create successfully');
-					getAllQuestions();
-					$('#addQuestionToGroupModal').modal('show');
-				}
-			});  
-			return false; 	
-		});
-	});
-
-	function getAllGroupsInfo(){
-		$('#groups-table-body').html('');
-		$.ajax({
-			type : "POST",
-			url : "getAllGroupsInfo",
-			success : function(itr) {
-				var str = '';
-				if (itr.groupList != null && itr.groupList.length > 0) {
-					for (var i = 0; i < itr.groupList.length; i++) {
-						var groupID = itr.groupList[i].group_id;
-						var groupName = itr.groupList[i].group_name;
-						var createdBy = itr.groupList[i].created_by;
-						var createdOn = formatDate(new Date(itr.groupList[i].created_on));
-						var updatedBy = itr.groupList[i].updated_by;
-						var updatedOn = formatDate(new Date(itr.groupList[i].updated_on));
-						if(createdBy == null || createdBy == ''){
-							createdBy = '';
-						}
-						if(updatedBy == null || updatedBy == ''){
-							updatedBy = '';
-						}
-						str += '<tr id="group-'+groupID+'"><th scope="row"><a href="#" onclick="viewGroupDetails('+groupID+',\''+groupName+'\');">' + groupID + '</a></th><td>'
-								+ groupName + '</td><td>' + createdBy + '</td><td>'
-								+ updatedBy + '</td><td>' + createdOn + '</td><td>'
-								+ updatedOn + '</td>'
-								+'<td><i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>'
-								+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i></td></tr>';
- 
-					}
-					/* <button class="btn btn-outline-primary" onclick="updateGroupDetails('+groupID+',\''+groupName+'\');"> */
-					$('#groups-table-body').append(str);
-
-				}else{
-					str += '<div class="text-center"> No record found </div>';
-					$('#groups-table-body').append(str);
-				}
-
-			},
-			error : function(itr) {
-				alert("No values found..!!");
-			}
-		});
-	}
-	
-	function updateGroup(groupID, groupName){
-		localStorage.removeItem("selectedGroupName");
-		localStorage.setItem("selectedGroupName",groupName);
-		window.location.href = "updateGroupPage.action?selectedGId="+groupID;
-	}
-	function viewGroupDetails(selectedGroupID,groupName){
-		$('#group-questions-table-body').html('');
-		var data = {
-				selectedGId : selectedGroupID,
-		};
-		$('#viewGroupDetailsModal').modal('show');
-		$.ajax({
-			type : "POST",
-			url : "allAddedQuestionsOfSelectedGroup",
-			data: JSON.stringify(data),
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(data) {
-				var str ='';
-				$('#group-name').text(groupName);
-				$('#total-que').text(data.totalQuestionsAddedForSelectGroup);
-				if(data.groupQuestionInfo != null && data.groupQuestionInfo.length > 0){
-					for(var i = 0 ; i < data.groupQuestionInfo.length;i++){
-						var questionID = data.groupQuestionInfo[i].question_id;
-						var question = data.groupQuestionInfo[i].question;
-						str += '<tr><td><a href="#" onclick="showQuestionDetails('+questionID+');">'+questionID+'</a></td><td>'+question+'</td></tr>';
-					}
-					$('#group-questions-table-body').append(str);
-				}else{
-					str = '<div class="text-center"> No Questions are added!!</div>';
-					$('#group-questions-table-body').append(str);
-				}
-			},
-			error : function(itr) {
-				alert("Error while processing the request....!!");
-			}
-		});
-	}
-	function deleteGroup(groupID){
-		$('#deleteModal').modal('show');
-		$('#deleteBtn').removeAttr('onclick');
-		$('#deleteBtn').attr('onclick','deleteSelectedGroup('+groupID+');');
-	}
-	function deleteSelectedGroup(selectedGroupID){
-		var data = {
-				selectedGroupID : selectedGroupID
-		};
-		$.ajax({
-			type : "POST",
-			url : "deleteSelectedGroup",
-			dataType: 'json',
-			data: JSON.stringify(data),
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				alert("Group deleted!!");
-				$('#deleteModal').modal('hide');
-				$('#group-'+selectedGroupID).fadeTo("slow",0.7, function(){
-		            $(this).remove();
-		        })
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting question details..!!");
-			}
-		});
-	}
-	
-	function addQuestions(groupID){
-		$('#groupID').val(groupID);
-		getAllQuestions();
-		$('#addQuestionToGroupModal').modal('show');
-		
-	}
-	
-	function getAllQuestions(){
-		$('#questions-table-body').html('');
-		$.ajax({
-			type : "POST",
-			url : "getAllQuestions",
-			success : function(itr) {
-				var str = '';
-				if (itr.questionInfo != null && itr.questionInfo.length > 0) {
-					for (var i = 0; i < itr.questionInfo.length; i++) {
-						var queID = itr.questionInfo[i].question_id;
-						var question = itr.questionInfo[i].question;
-						
-						str += '<tr><td><input type="checkbox" onclick="addThis('+queID+')" class="selectQuestionCheckBox" value ="'+queID+'" /></td>'
-							+'<td>'+queID+'</td>'
-							+'<td>'+question+'</td>'
-							+'</tr>';
-					}
-					$('#questions-table-body').append(str);
-
-				}else{
-					str += '<div class="text-center"> No record found </div>';
-					$('#questions-table-body').append(str);
-				}
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting all questions...!!");
-			}
-		});
-	}
-	function addThis(queID){
-		$('#singleQuestionID').val(queID);
-	}
-	function addSelectedQuestionsToGroup(){
-		var selectedGroupID = $('#groupID').val();
-		var selectedQuestionIDs = [];
-		
-		/* if(isSelectedAllCheckBox){
-			$('.selectQuestionCheckBox').each(function(){
-				selectedQuestionIDs.push($(this).val());
-			});	
-		} */
-		$('.selectQuestionCheckBox').each(function(){
-			if($(this).prop('checked') == true){
-				selectedQuestionIDs.push($(this).val());	
-			}
-		});	
-		
-		var data = {
-				selectedGroupID : selectedGroupID,
-				selectedQuestionIDs : selectedQuestionIDs
-		};
-		$.ajax({
-			type : "POST",
-			url : "addSelectedQuestionsToGroup",
-			data: JSON.stringify(data),
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(data) {
-				if(data.errorMessagesList != null && data.errorMessagesList.length > 0){
-					alert(data.errorMessagesList[0].errorMsg);
-				}else{
-					alert("Questions added Successfully");
-					$('#addQuestionToGroupModal').modal('hide');	
-				}
-			},
-			error : function(itr) {
-				alert("Error while processing the request....!!");
-			}
-		});
-	}
-	
-	function showQuestionDetails(queID){
-		getQuestionDetails(queID);
-		$('#showQuestionDetailsModal').modal('show');
-	}
-	function getQuestionDetails(queID){
-		$('#optionList').html('');
-		$('#answer').html('');
-		$('#questionName').text('');
-		var data = {
-				quesID : queID
-		};
-		$.ajax({
-			type : "POST",
-			url : "getQuestionDetails",
-			dataType: 'json',
-			data: JSON.stringify(data),
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				if(itr.re.status == 403 && itr.re != null ){
-					alert("Unable to fetch question details");
-				}else{
-					if(itr.questionDetail != null){
-						$('#questionName').text(itr.questionDetail.question);
-						var str = '';
-						var cnt = 65;
-						for( var i = 0 ; i < itr.questionDetail.options.length; i++){
-							if(itr.questionDetail.answer == itr.questionDetail.options[i]){
-								ans = cnt;
-							}
-							str += '<li>'+itr.questionDetail.options[i]+'</li>';
-							cnt++;
-						}
-						$('#optionList').append(str);
-						$('#answer').append('Answer: &#'+ans+';');
-					}					
-				}
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting question details..!!");
-			}
-		});
-	}
-	
-</script>
-
+<link href="./assets/css/admin/groups.css" rel="stylesheet" />
+<script src="./assets/js/admin/groups.js"></script>
+<link href="./assets/css/loader.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" /> 
 </head>
 
 <body class="">
@@ -405,10 +79,18 @@
 			       		</div>
 			       	</div>
 					<div class="col-md-12">
-			           <div class="card">
+			           <div class="card card-no-box-shadow">
 			              <div class="card-header"></div>
 			              <div class="card-body" id="group-card-body">
-			              	
+			              	<div class="loaddercontainer groups-table-loader">
+								<div class="lds-ring">
+							        <div></div>
+							        <div></div>
+							        <div></div>
+							        <div></div>
+								</div>
+							</div>
+			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#groupFilterModal"></i></div>
 			              	<div class="table-responsive" style="overflow: auto;">
                   				<table class="table table-bordered" style="border: 2px solid #000;">
                     				<thead class=" text-primary">
@@ -671,11 +353,79 @@
       
     </div>
   </div>
+  <!-- Group Filter Modal -->
+		  <div class="modal fade" id="groupFilterModal" role="dialog">
+		    <div class="modal-dialog">
+		      <div class="modal-content">
+		      
+		        <!-- Modal Header -->
+		        <div class="modal-header">
+		          <h5 class="modal-title">Group Filters</h5>
+		           <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        </div>
+		        <!-- Modal body -->
+		        <div class="modal-body">
+		          	<div class="row">
+					<div class="col-md-12">
+						<div class="card demo-icons card-no-box-shadow">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>From Date</label> 
+											<input type="text" id="startDate" class="form-control datepicker">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>To Date</label> 
+											<input type="text" id="endDate" class="form-control datepicker">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Group ID</label> 
+											<input type="number" id="byGroupId" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Created By</label> 
+											<input type="text" id="createdBy" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Group Name</label> 
+											<input type="text" id="byGroupName" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+										<div class="update ml-auto mr-auto">
+											<input type="button" class="btn btn-primary btn-round" onclick="applyGroupsFilter();" value="Apply Filters">
+											<input type="button" data-dismiss="modal" class="btn btn-primary btn-round close" value="Cancel">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
 	<!--   Core JS Files   -->
 	<script src="./assets/js/core/jquery.min.js"></script>
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+	
 	<!--  Google Maps Plugin    -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 	<!-- Chart JS -->

@@ -193,7 +193,6 @@ border-radius: 5px;
 							        <div></div>
 								</div>
 							</div>
-			              	<!-- <div class="text-right"></div>  onclick="$('#questionFilterModal').show();" -->
 			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#questionFilterModal"></i></div>
 			              	<div class="table-responsive">
                   				<table class="table table-bordered"  style="border: 2px solid #000;">

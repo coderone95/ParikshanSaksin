@@ -390,6 +390,7 @@ $(document).ready(function(){
 				}else{
 					str += '<tr><td colspan="6"><div class="text-center"> No record found </div></td></tr>';
 					$('#questions-table-body').append(str);
+					$('.questions-table-loader').hide();
 				}
 			},
 			error : function(itr) {

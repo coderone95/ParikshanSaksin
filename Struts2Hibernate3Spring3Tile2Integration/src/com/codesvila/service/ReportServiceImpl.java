@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codesvila.bean.GroupBO;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.dao.ReportDAO;
 
@@ -22,6 +23,13 @@ public class ReportServiceImpl implements ReportService{
 			Integer questionId) throws Exception {
 		// TODO Auto-generated method stub
 		return reportDao.getQuestionReport(startDate,endDate,createdBy,questionName,questionId);
+	}
+
+	@Override
+	public List<GroupBO> getGroupReport(String startDate, String endDate, String createdBy, String groupName,
+			Integer groupId) throws Exception {
+		// TODO Auto-generated method stub
+		return reportDao.getGroupReport(startDate,endDate,createdBy,groupName,groupId);
 	}
 	
 }
