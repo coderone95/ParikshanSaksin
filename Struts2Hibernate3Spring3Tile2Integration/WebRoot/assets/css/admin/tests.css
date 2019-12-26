@@ -1,0 +1,186 @@
+.padding-0-6-rem {
+	padding: 0.6rem;
+}
+.dropdown-menu li .checkbox {
+    font-size: 14px;
+}
+.multiselect-container li.multiselect-filter .input-group .input-group-addon{
+	display:none;
+}
+</style>
+
+
+<style type="text/css">
+.errorDiv {
+	color: red;
+}
+
+.error-msg {
+	color: red
+}
+
+.success-msg {
+	color: #008000;
+}
+
+.error-msg b {
+	margin-bottom: 1rem;
+	padding: 0.1rem;
+	border: 1px solid red;
+}
+
+.success-msg b {
+	margin-bottom: 1rem;
+	padding: 0.1rem;
+	border: 1px solid #008000;
+}
+
+.padding-0-6-rem {
+	padding: 0.6rem;
+}
+
+.custom-switch {
+	cursor: pointer;
+	float: right;
+	font-size: 2rem;
+}
+
+.fa-toggle-on, .fa-toggle-off {
+	color: #51cbce;
+}
+
+#updateOptions li {
+	list-style: none;
+}
+.form-group input[type=file]{
+	opacity: 1 !important;
+}
+.fa-eye, .fa-eye-slash{
+	margin-left: 0.2rem;
+}
+.access-key-value{
+	background-color: #ece5e5;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    color: #0c0c0b;
+    padding: 0.2rem;
+    font-size: 12px;
+} 
+.datetimepicker{
+	 border: 1px solid #000000;
+}
+ul.multiselect-container.dropdown-menu.show {
+    background: #000 !important;
+}
+
+button.multiselect.dropdown-toggle.btn.btn-default {
+    background: #000 !important;
+}
+</style>
+<style>
+/* Latest compiled and minified CSS included as External Resource*/
+
+/* Optional theme */
+
+/*@import url('//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css');*/
+
+.stepwizard-step p {
+    margin-top: 0px;
+    color:#666;
+}
+.stepwizard-row {
+    display: table-row;
+}
+.stepwizard {
+    display: table;
+    width: 100%;
+    position: relative;
+}
+.stepwizard-step button[disabled] {
+    /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+}
+.stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+    opacity:1 !important;
+    color:#bbb;
+}
+.stepwizard-row:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content:" ";
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    z-index: 0;
+}
+.stepwizard-step {
+    display: table-cell;
+    text-align: center;
+    position: relative;
+}
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+.note-editor .note-toolbar .btn-group > .btn{
+	background-color:#FBFBFB !important;
+	color:#0F0E0E !important;
+}
+.note-btn-group .dropdown-menu > li a {
+	color: #0e0f0f !important;
+}
+.datetimepicker {
+	font-size: 1.5rem !important;
+}
+
+.delete , .edit{
+	padding: 1.5rem;
+    cursor: pointer;
+}
+/* 
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+	padding: 0 !important;
+	vertical-align: unset !important;
+}
+.table td, .table th {
+	padding: 0 !important;
+} */
+button.btn.btn-default.multiselect-clear-filter {
+    display: none !important;
+}
+.table-responsive {
+	overflow: auto !important;
+}
+.display-none{
+	display: none;
+}
+.filter-icon {
+border-radius: 5px;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 23px;
+    background: #0b1961;
+    color: #fff;
+}
+
+.table-responsive {
+    overflow: auto !important;
+}
+.card-no-box-shadow {
+	box-shadow: unset;
+}
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    font-size: unset;
+    padding: 1rem;
+}
+.delete , .edit{
+	padding: 0.5rem;
+    cursor: pointer;
+}
