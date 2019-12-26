@@ -42,494 +42,10 @@
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
-
-<script>
-var isAlreadyChecked = false;
-var isSelectedAllCheckBox = false;
-$(document).ready(function () {
-	 $('#availableGroups').multiselect({
-         includeSelectAllOption: true,
-         buttonWidth: 250,
-         enableFiltering: true     
-     });
-	 
-	$('#selectAll').on('click',function(){
-		if(!isAlreadyChecked){
-			$('.selectQuestionCheckBox').each(function(){
-				$(this).prop( "checked", true );
-			});
-			isAlreadyChecked = true;
-			isSelectedAllCheckBox = true;
-		}else{
-			$('.selectQuestionCheckBox').each(function(){
-				$(this).prop( "checked", false );
-			});
-			isAlreadyChecked = false;
-		}
-			
-	});
-	
-	$('#summernote').summernote({
-		height: 300,
-		popover: {
-	         image: [],
-	         link: [],
-	         air: []
-	       }
-	});
-	
-	getAllTests();
-	getAllGroups();
-	
-	$('#startOn').datetimepicker();
-	$('#endOn').datetimepicker();
-	
-	//$('#summernote').summernote('code')
-	/* $('.note-insert .note-icon-picture').parent().remove(); */
-	$('.note-view .note-icon-arrows-alt').parent().remove();
-
-    var navListItems = $('div.setup-panel div a'),
-        allWells = $('.setup-content'),
-        allNextBtn = $('.nextBtn'),
-        allPrevBtn = $('.prevBtn');
-
-    allWells.hide();
-
-    navListItems.click(function (e) {
-        e.preventDefault();
-        var $target = $($(this).attr('href')),
-            $item = $(this);
-
-        if (!$item.hasClass('disabled')) {
-            navListItems.removeClass('btn-success').addClass('btn-default');
-            $item.addClass('btn-success');
-            allWells.hide();
-            $target.show();
-        }
-    });
-
-    allNextBtn.click(function () {
-        var curStep = $(this).closest(".setup-content"),
-            curStepBtn = curStep.attr("id"),
-            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-            curInputs = curStep.find("input[type='text']")
-            isValid = true;
-
-       /*  $(".form-group").removeClass("has-error");
-        for (var i = 0; i < curInputs.length; i++) {
-            if (!curInputs[i].validity.valid) {
-                isValid = false;
-                $(curInputs[i]).closest(".form-group").addClass("has-error");
-            }
-        }
- */		
- 		
-        if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
-    });
-    
-    allPrevBtn.click(function () {
-        var curStep = $(this).closest(".setup-content"),
-            curStepBtn = curStep.attr("id"),
-            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
-            curInputs = curStep.find("input[type='text']"), 
-            isValid = true;
-
-        //$(".form-group").removeClass("has-error");
-        if (isValid) nextStepWizard.removeAttr('disabled').trigger('click'); 
-    });
-    
-
-    $('div.setup-panel div a.btn-success').trigger('click');
-});
-
-function randomString() {
-	var chars = "";
-	chars = chars + "ABCDEFGHIJKLMNOPQRSTUVWXTZ";
-	chars = chars + "abcdefghiklmnopqrstuvwxyz";	
-	chars = chars + "0123456789";
-	chars = chars + "!#$%&@";
-	
-	var string_length = 10;
-	var randomstring = '';
-	for (var i=0; i<string_length; i++) {
-		var rnum = Math.floor(Math.random() * chars.length);
-		randomstring += chars.substring(rnum,rnum+1);
-	}
-	console.log(randomstring);
-	$('#accessKey').val(randomstring);
-}
-function getAllGroups(){
-	$('#groups-table-body').html('');
-	$.ajax({
-		type : "POST",
-		url : "getAllGroupsInfo",
-		success : function(itr) {
-			var str = '';
-			if (itr.groupList != null && itr.groupList.length > 0) {
-				for (var i = 0; i < itr.groupList.length; i++) {
-					var groupID = itr.groupList[i].group_id;
-					var groupName = itr.groupList[i].group_name;
-					str += '<tr id="group-'+groupID+'">'
-						+'<td><input type="checkbox" class="selectQuestionCheckBox" value ="'+groupID+'" /></td>'
-						+'<td><a href="#" onclick="viewGroupDetails('+groupID+',\''+groupName+'\');">' + groupID + '</a></td>'
-						+'<td>'+ groupName + '</td>'
-						+'</tr>';
-				}
-				$('#groups-table-body').append(str);
-
-			}else{
-				str += '<div class="text-center"> No record found </div>';
-				$('#groups-table-body').append(str);
-			}
-
-		},
-		error : function(itr) {
-			alert("No values found..!!");
-		}
-	});
-}
-
-function createTest(){
-	var testName = $('#testName').val();
-	var testkey = $('#testkey').val();
-	var accessKey = $('#accessKey').val();
-	var testInstructionsHtmlCode = $('#summernote').summernote('code');
-	var groupIDs = [];
-	var hrs = $('#hrs').val();
-	var mins = $('#mins').val();
-	var secs = $('#secs').val();
-	var startOn = '';
-	if($('#startOn').val() != ''){
-		startOn = $('#startOn').val()+':00';
-	}
-	var endOn = '';
-	if($('#endOn').val() != ''){
-		endOn = $('#endOn').val()+':00';
-	}
-	var passingCriteria = $('#passingCriteria').val();
-	if(hrs == ''){
-		$('#hrs').val('0');
-	}else if(mins == ''){
-		$('#mins').val('0');
-	}else if(secs == ''){
-		$('#secs').val('0');
-	}
-	$('.selectQuestionCheckBox').each(function(){
-		if($(this).prop('checked') == true){
-			groupIDs.push($(this).val());
-		}
-	});
-	var data = {
-			testName: testName,
-			testkey: testkey,
-			accessKey: accessKey,
-			groupIDs: $('#availableGroups').val(),
-			startOn: startOn,
-			endOn : endOn,
-			hrs : hrs,
-			mins : mins,
-			secs : secs,
-			passingCriteria : passingCriteria,
-			testInstructionsHtmlCode: testInstructionsHtmlCode
-	};
-	$.ajax({
-		type : "POST",
-		url : "createTest",
-		dataType: 'json',
-		data: JSON.stringify(data),
-		contentType:"application/json;charset=utf-8",
-		success : function(itr) {
-			if(itr.res != null && (itr.errorMsg == null || itr.errorMsg == '')){
-				var status = itr.res.status;
-				if(status == 200){
-					alert(itr.res.message);
-					getAllTests();
-					$('.add-one-more').remove();
-					$('#last-step').append('<a href="testsPage" class="btn btn-primary pull-right add-one-more">Add One More</a>');
-				}else if(status == 403){
-					alert(itr.res.message);
-				}
-			}else{
-				alert(itr.errorMsg);
-			}
-		},
-		error : function(itrr) {
-			alert("Error occurred while creating test..!!");
-		}
-	});
-}
-function formatDateTime(date) {
-	  var day = date.getDate();
-	  var monthIndex = date.getMonth();
-	  var year = date.getFullYear();
-	  var min = date.getMinutes();
-	  var hours = date.getHours();
-	  var sec = date.getSeconds();
-
-	  //return day + ' ' + monthNames[monthIndex] + ' ' + year;
-	  return year+'-'+monthIndex+'-'+day+' '+hours+':'+min+':'+sec;
-	}
-function getAllTests() {
-	$('#tests-table-body').html('');
-	$.ajax({
-		type : "POST",
-		url : "getAllTests",
-		success : function(itr) {
-			var str = '';
-			if (itr.testList != null && itr.testList.length > 0) {
-				for (var i = 0; i < itr.testList.length; i++) {
-					var testID = itr.testList[i].test_id;
-					var testName = itr.testList[i].test_name;
-					var testKey = itr.testList[i].test_key;
-					var accessKey = itr.testList[i].access_key;
-					var isLive  = itr.testList[i].is_live;
-					var liveRes = '';
-					if(isLive == 1){
-						liveRes = '<i class="fa fa-hourglass-start text-success"></i>';
-					}else{
-						liveRes = '<i class="fa fa-hourglass-o text-warning"></i>';
-					}
-					var createdOn = formatDate(new Date(itr.testList[i].created_on));
-					var updatedOn = formatDate(new Date(itr.testList[i].updated_on));
-					var createdBy = itr.testList[i].created_by;
-					var uddatedBy = itr.testList[i].updated_by;
-					str += '<tr id="test-'+testID+'">'
-						+'<td>'+testID+'</td>'
-						+'<td>'+testName+'</td>'
-						+'<td>'+testKey+'</td>'
-						+'<td><input type="password" class="access-key-value" id="access-key-'+testID+'" value="'+accessKey+'" /><i class="fa fa-eye" onclick="toggleShow(this,'+testID+');"></i></td>'
-						+'<td>'+liveRes+'</td>'
-						+'<td>'+createdOn+'</td>'
-						+'<td>'+updatedOn+'</td>'
-						+'<td>'+createdBy+'</td>'
-						+'<td>'+uddatedBy+'</td>'
-						+'<td><i class="fa fa-trash text-danger delete" onclick="deleteThisTest('+testID+');"></i>'
-						+'<i class="fa fa-pencil text-primary edit" onclick="updateTheTest('+testID+',\''+testName+'\');"></i>'
-						+'</td>'
-						+'</tr>';
-					
-				}
-				$('#tests-table-body').append(str);
-
-			}else{
-				str += '<div class="text-center"> No record found </div>';
-				$('#tests-table-body').append(str);
-			}
-
-		},
-		error : function(itr) {
-			alert("No values found..!!");
-		}
-	});
-}
-function deleteThisTest(testID){
-	$('#deleteModal').modal('show');
-	$('#deleteBtn').removeAttr('onclick');
-	$('#deleteBtn').attr('onclick','deleteTheTest('+testID+');');
-}
-function deleteTheTest(testID){
-	
-	var data = {
-		testID: testID
-	};
-	$.ajax({
-		type : "POST",
-		url : "deleteTest",
-		dataType: 'json',
-		data: JSON.stringify(data),
-		contentType:"application/json;charset=utf-8",
-		success : function(itr) {
-			$('#test-'+testID).fadeTo("slow",0.7, function(){
-	            $(this).remove();
-	        })
-	        $('#deleteModal').modal('hide');
-		},
-		error : function(itrr) {
-			alert("Error occurred while creating test..!!");
-		}
-	});
-}
-
-function updateTheTest(testID,testName){
-	localStorage.removeItem("selectedTestName");
-	localStorage.setItem("selectedTestName",testName);
-	window.location.href = "updateTestPage.action?testID="+testID;
-}
-function toggleShow(ths, testID){
-	if($(ths).hasClass('fa-eye')){
-		$('#access-key-'+testID).removeAttr('type');
-		$('#access-key-'+testID).attr('type','text');
-		$(ths).removeClass('fa-eye');
-		$(ths).addClass('fa-eye-slash');
-	}else{
-		$('#access-key-'+testID).removeAttr('type');
-		$('#access-key-'+testID).attr('type','password');
-		$(ths).removeClass('fa-eye-slash');
-		$(ths).addClass('fa-eye');
-	}
-}
-</script>
-<style>
-.padding-0-6-rem {
-	padding: 0.6rem;
-}
-.dropdown-menu li .checkbox {
-    font-size: 14px;
-}
-.multiselect-container li.multiselect-filter .input-group .input-group-addon{
-	display:none;
-}
-</style>
-
-
-<style type="text/css">
-.errorDiv {
-	color: red;
-}
-
-.error-msg {
-	color: red
-}
-
-.success-msg {
-	color: #008000;
-}
-
-.error-msg b {
-	margin-bottom: 1rem;
-	padding: 0.1rem;
-	border: 1px solid red;
-}
-
-.success-msg b {
-	margin-bottom: 1rem;
-	padding: 0.1rem;
-	border: 1px solid #008000;
-}
-
-.padding-0-6-rem {
-	padding: 0.6rem;
-}
-
-.custom-switch {
-	cursor: pointer;
-	float: right;
-	font-size: 2rem;
-}
-
-.fa-toggle-on, .fa-toggle-off {
-	color: #51cbce;
-}
-
-#updateOptions li {
-	list-style: none;
-}
-.form-group input[type=file]{
-	opacity: 1 !important;
-}
-.fa-eye, .fa-eye-slash{
-	margin-left: 0.2rem;
-}
-.access-key-value{
-	background-color: #ece5e5;
-    border: 1px solid #DDDDDD;
-    border-radius: 4px;
-    color: #0c0c0b;
-    padding: 0.2rem;
-    font-size: 12px;
-} 
-.datetimepicker{
-	 border: 1px solid #000000;
-}
-ul.multiselect-container.dropdown-menu.show {
-    background: #000 !important;
-}
-
-button.multiselect.dropdown-toggle.btn.btn-default {
-    background: #000 !important;
-}
-</style>
-<style>
-/* Latest compiled and minified CSS included as External Resource*/
-
-/* Optional theme */
-
-/*@import url('//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css');*/
-
-.stepwizard-step p {
-    margin-top: 0px;
-    color:#666;
-}
-.stepwizard-row {
-    display: table-row;
-}
-.stepwizard {
-    display: table;
-    width: 100%;
-    position: relative;
-}
-.stepwizard-step button[disabled] {
-    /*opacity: 1 !important;
-    filter: alpha(opacity=100) !important;*/
-}
-.stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
-    opacity:1 !important;
-    color:#bbb;
-}
-.stepwizard-row:before {
-    top: 14px;
-    bottom: 0;
-    position: absolute;
-    content:" ";
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
-    z-index: 0;
-}
-.stepwizard-step {
-    display: table-cell;
-    text-align: center;
-    position: relative;
-}
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 12px;
-    line-height: 1.428571429;
-    border-radius: 15px;
-}
-.note-editor .note-toolbar .btn-group > .btn{
-	background-color:#FBFBFB !important;
-	color:#0F0E0E !important;
-}
-.note-btn-group .dropdown-menu > li a {
-	color: #0e0f0f !important;
-}
-.datetimepicker {
-	font-size: 1.5rem !important;
-}
-
-.delete , .edit{
-	padding: 1.5rem;
-    cursor: pointer;
-}
-/* 
-.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-	padding: 0 !important;
-	vertical-align: unset !important;
-}
-.table td, .table th {
-	padding: 0 !important;
-} */
-button.btn.btn-default.multiselect-clear-filter {
-    display: none !important;
-}
-.table-responsive {
-	overflow: auto !important;
-}
-</style>
+<link href="./assets/css/loader.css" rel="stylesheet" />
+<script src="./assets/js/admin/tests.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+<link href="./assets/css/admin/tests.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -547,6 +63,14 @@ button.btn.btn-default.multiselect-clear-filter {
 						<div class="card">
 				              <div class="card-header"></div>
 				              <div class="card-body">
+						              <!-- <div class="loaddercontainer tests-create-loader">
+										<div class="lds-ring">
+									        <div></div>
+									        <div></div>
+									        <div></div>
+									        <div></div>
+										</div>
+										</div> -->
 									 <div class="stepwizard">
 								        <div class="stepwizard-row setup-panel" style="display:none">
 								            <div class="stepwizard-step col-xs-3"> 
@@ -727,9 +251,17 @@ button.btn.btn-default.multiselect-clear-filter {
 					<div class="col-md-12">
 			           <div class="card">
 			              <div class="card-header">
-						  		<h4>All Tests</h4>
+						  		<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#testFilterModal"></i></div>
 						  </div>
 			              <div class="card-body" id="tests-card-body">
+			              	<div class="loaddercontainer tests-table-loader">
+								<div class="lds-ring">
+							        <div></div>
+							        <div></div>
+							        <div></div>
+							        <div></div>
+								</div>
+							</div>
 			              	<div class="table-responsive" style="max-height:500px;">
                   				<table class="table table-bordered"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
@@ -782,11 +314,85 @@ button.btn.btn-default.multiselect-clear-filter {
 		      </div>
 		    </div>
 		  </div> 
+		  
+	<!-- Tests Filter Modal -->
+		  <div class="modal fade" id="testFilterModal" role="dialog">
+		    <div class="modal-dialog">
+		      <div class="modal-content">
+		      
+		        <!-- Modal Header -->
+		        <div class="modal-header">
+		          <h5 class="modal-title">Test Filters</h5>
+		           <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        </div>
+		        <!-- Modal body -->
+		        <div class="modal-body">
+		          	<div class="row">
+					<div class="col-md-12">
+						<div class="card demo-icons card-no-box-shadow">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>From Date</label> 
+											<input type="text" id="startDate" class="form-control datepicker">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>To Date</label> 
+											<input type="text" id="endDate" class="form-control datepicker">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Test ID</label> 
+											<input type="number" id="byTestId" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Created By</label> 
+											<input type="text" id="createdBy" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Test Name</label> 
+											<input type="text" id="byTestName" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Test Key</label> 
+											<input type="text" id="byTestKey" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+										<div class="update ml-auto mr-auto">
+											<input type="button" class="btn btn-primary btn-round" onclick="applyTestsFilter('on_filter');" value="Apply Filters">
+											<input type="button" data-dismiss="modal" class="btn btn-primary btn-round close" value="Cancel">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
 	<!--   Core JS Files   -->
 	<%-- <script src="./assets/js/core/jquery.min.js"></script> --%>
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
 	<script src="./assets/js/bootstrap-datetimepicker.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	
 	<!-- Chart JS -->
 	<script src="./assets/js/plugins/chartjs.min.js"></script>

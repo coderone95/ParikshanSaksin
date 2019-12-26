@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codesvila.bean.GroupBO;
+import com.codesvila.bean.TestBO;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.dao.ReportDAO;
 
@@ -30,6 +31,13 @@ public class ReportServiceImpl implements ReportService{
 			Integer groupId) throws Exception {
 		// TODO Auto-generated method stub
 		return reportDao.getGroupReport(startDate,endDate,createdBy,groupName,groupId);
+	}
+
+	@Override
+	public List<TestBO> getTestReport(String startDate, String endDate, String createdBy, String testName,
+			Integer testId, String testKey) throws Exception {
+		// TODO Auto-generated method stub
+		return reportDao.getTestReport(startDate,endDate,createdBy,testName,testId,testKey);
 	}
 	
 }

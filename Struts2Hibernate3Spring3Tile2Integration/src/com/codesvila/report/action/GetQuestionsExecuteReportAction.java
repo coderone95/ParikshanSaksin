@@ -96,12 +96,12 @@ public class GetQuestionsExecuteReportAction {
 		this.questionInfo = questionInfo;
 	}
 	public String getQuestionReport() throws Exception{
-		if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
-			startDate = startDate+".000";
-		}
-		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
-			endDate = endDate+".000";
-		}
+//		if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
+//			startDate = startDate+".000";
+//		}
+//		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
+//			endDate = endDate+".000";
+//		}
 		questionInfo = reportService.getQuestionReport(startDate,
 				endDate,createdBy,questionName,questionId);
 		

@@ -1,7 +1,8 @@
 var isAlreadyChecked = false;
 	var isSelectedAllCheckBox = false;
 	$(document).ready(function(){
-		getAllGroupsInfo();
+		//getAllGroupsInfo();
+		applyGroupsFilter('ON_LOAD');
 		$('.datepicker').datepicker({
 	    	format: "yyyy-mm-dd",
 	    	todayHighlight : true,
@@ -34,7 +35,7 @@ var isAlreadyChecked = false;
 					alert(data.errorMessagesList[0].errorMsg);
 				}else{
 					$('#groupID').val(data.groupID);
-					getAllGroupsInfo();
+					applyGroupsFilter('ON_LOAD');
 					alert('Group create successfully');
 					getAllQuestions();
 					$('#addQuestionToGroupModal').modal('show');
@@ -44,52 +45,6 @@ var isAlreadyChecked = false;
 		});
 	});
 
-	function getAllGroupsInfo(){
-		$('.groups-table-loader').show();
-		$('#groups-table-body').html('');
-		$.ajax({
-			type : "POST",
-			url : "getAllGroupsInfo",
-			success : function(itr) {
-				var str = '';
-				if (itr.groupList != null && itr.groupList.length > 0) {
-					for (var i = 0; i < itr.groupList.length; i++) {
-						var groupID = itr.groupList[i].group_id;
-						var groupName = itr.groupList[i].group_name;
-						var createdBy = itr.groupList[i].created_by;
-						var createdOn = formatDate(new Date(itr.groupList[i].created_on));
-						var updatedBy = itr.groupList[i].updated_by;
-						var updatedOn = formatDate(new Date(itr.groupList[i].updated_on));
-						if(createdBy == null || createdBy == ''){
-							createdBy = '';
-						}
-						if(updatedBy == null || updatedBy == ''){
-							updatedBy = '';
-						}
-						str += '<tr id="group-'+groupID+'"><th scope="row"><a href="#" onclick="viewGroupDetails('+groupID+',\''+groupName+'\');">' + groupID + '</a></th><td>'
-								+ groupName + '</td><td>' + createdBy + '</td><td>'
-								+ updatedBy + '</td><td>' + createdOn + '</td><td>'
-								+ updatedOn + '</td>'
-								+'<td><i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>'
-								+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i></td></tr>';
- 
-					}
-					/* <button class="btn btn-outline-primary" onclick="updateGroupDetails('+groupID+',\''+groupName+'\');"> */
-					$('#groups-table-body').append(str);
-					$('.groups-table-loader').hide();
-
-				}else{
-					str += '<div class="text-center"> No record found </div>';
-					$('#groups-table-body').append(str);
-				}
-
-			},
-			error : function(itr) {
-				alert("No values found..!!");
-			}
-		});
-	}
-	
 	function updateGroup(groupID, groupName){
 		localStorage.removeItem("selectedGroupName");
 		localStorage.setItem("selectedGroupName",groupName);
@@ -277,19 +232,25 @@ var isAlreadyChecked = false;
 		});
 	}
 	
-	function applyGroupsFilter(){
+	function applyGroupsFilter(flag){
 		$('.groups-table-loader').show();
 		$('#groups-table-body').html('');
 		var groupName = $('#byGroupName').val();
 		var groupId = $('#byGroupId').val();
 		var startDate = '';
-		if($('#startDate').val() != ''){
-			startDate = $('#startDate').val() + " 00:00:00";
-		}
 		var endDate = ''; 
-		if($('#endDate').val() != ''){
-			endDate = $('#endDate').val() + " 23:59:00";
+		if(flag == 'ON_LOAD'){
+			startDate = '';
+			endDate = ''; 
+		}else{
+			if($('#startDate').val() != ''){
+				startDate = $('#startDate').val() + " 00:00:00";
+			}
+			if($('#endDate').val() != ''){
+				endDate = $('#endDate').val() + " 23:59:00";
+			}
 		}
+		
 		var createdBy = $('#createdBy').val();
 		
 		var data = {

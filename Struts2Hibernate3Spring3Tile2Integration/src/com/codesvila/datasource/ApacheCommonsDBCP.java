@@ -493,6 +493,70 @@ public class ApacheCommonsDBCP {
 				if(rs != null)
 					gp = ResultBeans.generateResultForGroupBO(rs);
 				return gp;
+			}else if(queryId.equals("GET_TESTS_REPORT")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				String startDate = (String) paramMap.get("startDate");
+				String endDate = (String) paramMap.get("endDate");
+				String createdBy = (String) paramMap.get("createdBy");
+				String testName = (String) paramMap.get("testName");
+				Integer testId = (Integer) paramMap.get("testId");
+				String testKey = (String) paramMap.get("testKey");
+				
+				ParamBO pStartDate = new ParamBO();
+				pStartDate.setParamName("pStartDate");
+				pStartDate.setParamType("SingleParamElement");
+				pStartDate.setParamreturnType("String");
+				pStartDate.setParamValue(startDate);
+				
+				ParamBO pEndDate = new ParamBO();
+				pEndDate.setParamName("pEndDate");
+				pEndDate.setParamType("SingleParamElement");
+				pEndDate.setParamreturnType("String");
+				pEndDate.setParamValue(endDate);
+				
+				ParamBO pCreatedBy = new ParamBO();
+				pCreatedBy.setParamName("pCreatedBy");
+				pCreatedBy.setParamType("SingleParamElement");
+				pCreatedBy.setParamreturnType("String");
+				pCreatedBy.setParamValue(createdBy);
+				
+				
+				ParamBO pTestName = new ParamBO();
+				pTestName.setParamName("pTestName");
+				pTestName.setParamType("SingleParamElement");
+				pTestName.setParamreturnType("String");
+				pTestName.setParamValue(testName);
+				
+				ParamBO pTestId = new ParamBO();
+				pTestId.setParamName("pTestId");
+				pTestId.setParamType("SingleParamElement");
+				pTestId.setParamreturnType("Integer");
+				pTestId.setParamValue(testId);
+				
+				ParamBO pTestKey = new ParamBO();
+				pTestKey.setParamName("pTestKey");
+				pTestKey.setParamType("SingleParamElement");
+				pTestKey.setParamreturnType("String");
+				pTestKey.setParamValue(testKey);
+
+				mymap.put("pStartDate", pStartDate);
+				mymap.put("pEndDate", pEndDate);
+				mymap.put("pCreatedBy", pCreatedBy);
+				mymap.put("pTestName", pTestName);
+				mymap.put("pTestId", pTestId);
+				mymap.put("pTestKey", pTestKey);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
+				System.out.println("QueryMapperBO qmbo : GET_TESTS_REPORT \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if (query != null) {
+					rs = stmt.executeQuery(query);
+				}
+				List<TestBO> tb = new ArrayList<TestBO>();
+				if (rs != null) {
+					tb = ResultBeans.generateResultTestBO(rs);
+				}
+				return tb;
 			}
 			
 		} catch (SQLException e) {

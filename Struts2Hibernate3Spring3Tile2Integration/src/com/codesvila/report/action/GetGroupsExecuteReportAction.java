@@ -93,12 +93,12 @@ public class GetGroupsExecuteReportAction {
 	}
 	
 	public String getGroupReport() throws Exception{
-		if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
-			startDate = startDate+".000";
-		}
-		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
-			endDate = endDate+".000";
-		}
+//		if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
+//			startDate = startDate+".000";
+//		}
+//		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
+//			endDate = endDate+".000";
+//		}
 		groupList = reportService.getGroupReport(startDate,
 				endDate,createdBy,groupName,groupId);
 		

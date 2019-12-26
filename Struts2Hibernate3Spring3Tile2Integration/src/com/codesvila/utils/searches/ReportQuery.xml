@@ -16,4 +16,15 @@
 		and { group_id in ($[pGroupId])}
 		and { group_name like concat('%',$[pGroupName], '%')}
 	</query>
+	<query id="GET_TESTS_REPORT">
+		select test_id, test_name, test_time,org_id, test_key, access_key, test_instructions, startOn, 
+		endOn, passingCriteria, is_live, is_disabled,created_on,updated_on,created_by, updated_by from tbl_tests 
+		where { created_by in ( $[pCreatedBy] ) } 
+		and { created_on between $[pStartDate] and $[pEndDate] } 
+		and { test_id in ($[pTestId])}
+		and { test_name like concat('%',$[pTestName], '%')}
+		and { test_key in ($[pTestKey])}
+		order by 1 desc
+	</query>
+	
 </search>

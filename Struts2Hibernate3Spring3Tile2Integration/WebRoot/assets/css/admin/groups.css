@@ -41,10 +41,7 @@
 /* .table td, .table th {
 	padding: 0 !important;
 } */
-.delete , .edit{
-	padding: 0.7rem;
-    cursor: pointer;
-}
+
 
 .filter-icon {
 border-radius: 5px;
@@ -63,11 +60,10 @@ border-radius: 5px;
 }
 .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    font-size: unset;
+    padding: 1rem;
 }
 .delete , .edit{
 	padding: 0.5rem;
     cursor: pointer;
-}
-.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
-    padding: 1rem;
 }

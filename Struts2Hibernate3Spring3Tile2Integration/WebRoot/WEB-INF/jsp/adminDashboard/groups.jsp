@@ -34,6 +34,8 @@
 <link href="./assets/css/admin/groups.css" rel="stylesheet" />
 <script src="./assets/js/admin/groups.js"></script>
 <link href="./assets/css/loader.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" /> 
 </head>
 
@@ -79,7 +81,7 @@
 			       		</div>
 			       	</div>
 					<div class="col-md-12">
-			           <div class="card card-no-box-shadow">
+			           <div class="card">
 			              <div class="card-header"></div>
 			              <div class="card-body" id="group-card-body">
 			              	<div class="loaddercontainer groups-table-loader">
@@ -128,7 +130,7 @@
         <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-			           <div class="card">
+			           <div class="card card-no-box-shadow">
 			              <div class="card-header"></div>
 			              <div class="card-body" id="questions-card-body">
 			              	<input type="hidden" id="groupID" />
@@ -174,7 +176,7 @@
         <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-			           <div class="card">
+			           <div class="card card-no-box-shadow">
 			              <div class="card-header"></div>
 			              <div class="card-body" id="questions-card-body">
 			              	<input type="hidden" id="groupID" />
@@ -228,7 +230,7 @@
         <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card demo-icons">
+						<div class="card demo-icons card-no-box-shadow">
 							<div class="card-header">
 								
 							</div>
@@ -302,7 +304,7 @@
         <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card demo-icons">
+						<div class="card demo-icons card-no-box-shadow">
 							<div class="card-header">
 							</div>
 							<div class="card-body">
@@ -407,7 +409,7 @@
 								</div>
 								<div class="row">
 										<div class="update ml-auto mr-auto">
-											<input type="button" class="btn btn-primary btn-round" onclick="applyGroupsFilter();" value="Apply Filters">
+											<input type="button" class="btn btn-primary btn-round" onclick="applyGroupsFilter('on_filter');" value="Apply Filters">
 											<input type="button" data-dismiss="modal" class="btn btn-primary btn-round close" value="Cancel">
 										</div>
 									</div>

@@ -52,7 +52,8 @@
 	}
 	</style>
 
-<script src="./assets/js/admin/questions.js"></script>
+<%-- <script src="./assets/js/admin/questions.js"></script> --%>
+<script src="./assets/js/admin/questions.min.js"></script>
 <style type="text/css">
 .errorDiv {
 	color: red;
@@ -101,17 +102,15 @@ border-radius: 5px;
 .card-no-box-shadow {
 	box-shadow: unset;
 }
-.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-}
 .delete , .edit{
 	padding: 0.5rem;
     cursor: pointer;
 }
 .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    font-size: unset;
     padding: 1rem;
 }
-
 </style>
 
 </head>
@@ -399,7 +398,7 @@ border-radius: 5px;
 								</div>
 								<div class="row">
 										<div class="update ml-auto mr-auto">
-											<input type="button" class="btn btn-primary btn-round" onclick="applyQuestionsFilter();" value="Apply Filters">
+											<input type="button" class="btn btn-primary btn-round" onclick="applyQuestionsFilter('on_filter');" value="Apply Filters">
 											<input type="button" data-dismiss="modal" class="btn btn-primary btn-round close" value="Cancel">
 										</div>
 									</div>

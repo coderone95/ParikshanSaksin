@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
 		addOption('option-area','y');
-		getAllQuestions();
+		//getAllQuestions();
 		
 		/* $('.selectpicker').datetimepicker({
 	        'showTimepicker': false,
@@ -19,7 +19,7 @@ $(document).ready(function(){
 	    	autoclose : true
 	    });
 	    $('.datepicker').datepicker('setDate', new Date());
-	    //applyQuestionsFilter();
+	    applyQuestionsFilter('ON_LOAD');
 		$('#addQueBtn').on('click',function(){
 			var optionList = [];
 			var question = $('#question').val();
@@ -45,7 +45,7 @@ $(document).ready(function(){
 				success : function(itr) {
 					if(itr.successMessageList != null && itr.successMessageList.length > 0){
 						alert("Question added successfully");
-						getAllQuestions();
+						applyQuestionsFilter('ON_LOAD');
 					}else{
 						if(itr.errorMsg != null && itr.errorMsg != ''){
 							alert(itr.errorMsg);
@@ -110,43 +110,6 @@ $(document).ready(function(){
 		}
 	}
 	var count = 1;
-	function getAllQuestions(){
-		$('.questions-table-loader').show();
-		$('#questions-table-body').html('');
-		$.ajax({
-			type : "POST",
-			url : "getAllQuestions",
-			success : function(itr) {
-				var str = '';
-				if (itr.questionInfo != null && itr.questionInfo.length > 0) {
-					for (var i = 0; i < itr.questionInfo.length; i++) {
-						var queID = itr.questionInfo[i].question_id;
-						var question = itr.questionInfo[i].question;
-						var ans = itr.questionInfo[i].answer;
-						var createdBy = itr.questionInfo[i].question_createdBy;
-						var updatedBy = itr.questionInfo[i].question_updatedBy;
-						
-						str += '<tr><th scope="row"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></th>'
-							+'<td>'+question+'</td>'
-							//+'<td>'+ans+'</td>'
-							+'<td>'+createdBy+'</td>'
-							+'<td>'+updatedBy+'</td>'
-							+'<td><i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i><i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i></td>'
-							+'</tr>';
-					}
-					$('#questions-table-body').append(str);
-					$('.questions-table-loader').hide();
-
-				}else{
-					str += '<tr><td colspan="6"><div class="text-center"> No record found </div></td></tr>';
-					$('#questions-table-body').append(str);
-				}
-			},
-			error : function(itrr) {
-				alert("Error occurred while getting all questions...!!");
-			}
-		});
-	}
 	function updateQuestion(queID){
 		localStorage.removeItem("selelctedQuestionID");
 		localStorage.setItem("selelctedQuestionID",queID);
@@ -225,7 +188,8 @@ $(document).ready(function(){
 				success : function(itr) {
 					alert("Question Updated successfully!!");
 					$('#updateQuestionModal').modal('hide');
-					getAllQuestions();
+					//getAllQuestions();
+					applyQuestionsFilter('ON_LOAD');
 					/* toggleSwitch('on'); */
 					
 				},
@@ -298,7 +262,8 @@ $(document).ready(function(){
 			success : function(itr) {
 				alert("Question deleted");
 				$('#deleteModal').modal('hide');
-				getAllQuestions();
+				applyQuestionsFilter('ON_LOAD');
+				//getAllQuestions();
 			},
 			error : function(itr) {
 				alert("Error while processing the request....!!");
@@ -337,19 +302,27 @@ $(document).ready(function(){
 		});
 		$('#correctOption').append(str);
 	}
-	function applyQuestionsFilter(){
+	function applyQuestionsFilter(flag){
+		var startDate = '';
+		var endDate = ''; 
+		if(flag == 'ON_LOAD'){
+			startDate = '';
+			endDate = '';
+		}else{
+			if($('#startDate').val() != ''){
+				startDate = $('#startDate').val() + " 00:00:00";
+			}
+			
+			if($('#endDate').val() != ''){
+				endDate = $('#endDate').val() + " 23:59:00";
+			}
+		}
 		$('.questions-table-loader').show();
 		$('#questions-table-body').html('');
 		var questionName = $('#byQuestionName').val();
 		var questionId = $('#byQuestionId').val();
-		var startDate = '';
-		if($('#startDate').val() != ''){
-			startDate = $('#startDate').val() + " 00:00:00";
-		}
-		var endDate = ''; 
-		if($('#endDate').val() != ''){
-			endDate = $('#endDate').val() + " 23:59:00";
-		}
+		
+
 		var createdBy = $('#createdBy').val();
 		
 		var data = {
