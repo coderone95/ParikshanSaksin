@@ -1,5 +1,7 @@
 .register{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    /* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */
+    background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c) !important;
+    
     margin-top: 3%;
     padding: 3%;
 }
@@ -55,7 +57,7 @@
     border: none;
     border-radius: 1.5rem;
     padding: 2%;
-    background: #0062cc;
+    background: #0062cc; 
     color: #fff;
     font-weight: 600;
     width: 50%;

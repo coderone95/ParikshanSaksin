@@ -103,6 +103,12 @@
     padding: 0.1rem;
     border: 1px solid #008000;
 }
+.credits {
+	padding: 2rem;
+    margin-left: 46%;
+    font-size: 0.8571em;
+    line-height: 1.8;
+}
 </style>
 </head>
 <body>
@@ -196,4 +202,18 @@
 
             </div>
 </body>
+      <footer class="footer footer-black ">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="credits">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script> CodesVila
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
 </html>

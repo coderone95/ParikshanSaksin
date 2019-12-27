@@ -1,6 +1,7 @@
 .main-panel {
-	background: -webkit-linear-gradient(left, #3931af, #00c6ff) !important;
-	color: #fff; 
+/* 	background: -webkit-linear-gradient(left, #0a2a5ab0, #0a2a5ab0) !important;
+ */	color: #fff;
+ background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c) !important; 
 }
 
 .navbar.navbar-transparent a:not(.dropdown-item):not(.btn) {
@@ -28,3 +29,7 @@
 .sidebar{
 	overflow: auto !important;
 }
+/* background-color: #0a2a5ab0; 
+background: -webkit-linear-gradient(left, #3931af, #00c6ff) !important;
+	background: -webkit-linear-gradient(left, #0a2a5ab0, #0a2a5ab0) !important;
+*/
