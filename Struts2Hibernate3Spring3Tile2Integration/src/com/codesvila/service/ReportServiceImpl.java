@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.TestBO;
+import com.codesvila.bean.UserBean;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.dao.ReportDAO;
 
@@ -38,6 +39,13 @@ public class ReportServiceImpl implements ReportService{
 			Integer testId, String testKey) throws Exception {
 		// TODO Auto-generated method stub
 		return reportDao.getTestReport(startDate,endDate,createdBy,testName,testId,testKey);
+	}
+
+	@Override
+	public List<UserBean> getUserReport(String startDate, String endDate, String userName, String phoneNumber,
+			String emailId, String userType, Integer userId) throws Exception {
+		// TODO Auto-generated method stub
+		return reportDao.getUserReport(startDate,endDate,userName,phoneNumber,emailId,userType,userId);
 	}
 	
 }

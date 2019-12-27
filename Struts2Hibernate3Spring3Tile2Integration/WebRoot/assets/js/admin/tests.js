@@ -358,7 +358,7 @@ function applyTestsFilter(flag){
 	var data = {
 			startDate : startDate,
 			endDate : endDate,
-			testName : testName,
+			testName : testName.trim(),
 			testId : +testId,
 			createdBy : createdBy,
 			testKey : testKey

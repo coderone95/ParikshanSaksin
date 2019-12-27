@@ -26,5 +26,15 @@
 		and { test_key in ($[pTestKey])}
 		order by 1 desc
 	</query>
+	<query id="GET_USERS_REPORT">
+		select user_id, name, email_id, password, user_type, phone_number, is_deleted, is_disabled, created_on, updated_on from tbl_users
+		where { user_id in ($[pUserId]) }
+		and { created_on between $[pStartDate] and $[pEndDate] } 
+		and { name like concat('%',$[pUserName],'%') }
+		and { email_id in($[pEmailId]) }
+		and { user_type in($[pUserType]) }
+		and { phone_number in($[pPhoneNumber]) }
+		order by created_on desc
+	</query>
 	
 </search>

@@ -1,0 +1,52 @@
+.errorDiv {
+	color: red;
+}
+.error-msg {
+	color:red
+}
+.success-msg{
+	color: #008000;
+}
+.error-msg b{
+	margin-bottom: 1rem;
+    padding: 0.1rem;
+    border: 1px solid red;
+}
+.success-msg b{
+	margin-bottom: 1rem;
+    padding: 0.1rem;
+    border: 1px solid #008000;
+}
+.padding-0-6-rem{
+	padding: 0.6rem;
+}
+/* .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+	padding: 0 !important;
+	vertical-align: unset !important;
+}
+.table td, .table th {
+	padding: 0 !important;
+} */
+.delete , .edit, .action-icon{
+	padding: 0.5rem;
+    cursor: pointer;
+}
+.table-responsive {
+	overflow: auto !important;
+}
+.card-no-box-shadow {
+	box-shadow: unset !important;
+}
+.filter-icon {
+border-radius: 5px;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 23px;
+    background: #0b1961;
+    color: #fff;
+}
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    font-size: unset;
+    padding: 1rem;
+}

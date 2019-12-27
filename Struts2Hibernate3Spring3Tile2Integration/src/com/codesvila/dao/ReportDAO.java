@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.TestBO;
+import com.codesvila.bean.UserBean;
 import com.codesvila.bo.QuestionInfoBO;
 
 public interface ReportDAO {
@@ -14,5 +15,8 @@ public interface ReportDAO {
 	List<GroupBO> getGroupReport(String startDate, String endDate, String createdBy, String groupName, Integer groupId)throws Exception;
 
 	List<TestBO> getTestReport(String startDate, String endDate, String createdBy, String testName, Integer testId, String testKey) throws Exception;
+
+	List<UserBean> getUserReport(String startDate, String endDate, String userName, String phoneNumber, String emailId,
+			String userType, Integer userId) throws Exception;
 	
 }

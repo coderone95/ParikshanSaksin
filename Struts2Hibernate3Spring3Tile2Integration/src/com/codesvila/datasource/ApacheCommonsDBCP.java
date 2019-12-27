@@ -557,6 +557,78 @@ public class ApacheCommonsDBCP {
 					tb = ResultBeans.generateResultTestBO(rs);
 				}
 				return tb;
+			}else if(queryId.equals("GET_USERS_REPORT")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				String startDate = (String) paramMap.get("startDate");
+				String endDate = (String) paramMap.get("endDate");
+				String userName = (String) paramMap.get("userName");
+				String phoneNumber = (String) paramMap.get("phoneNumber");
+				Integer userId = (Integer) paramMap.get("userId");
+				String emailId = (String) paramMap.get("emailId");
+				String userType = (String) paramMap.get("userType");
+				
+				ParamBO pStartDate = new ParamBO();
+				pStartDate.setParamName("pStartDate");
+				pStartDate.setParamType("SingleParamElement");
+				pStartDate.setParamreturnType("String");
+				pStartDate.setParamValue(startDate);
+				
+				ParamBO pEndDate = new ParamBO();
+				pEndDate.setParamName("pEndDate");
+				pEndDate.setParamType("SingleParamElement");
+				pEndDate.setParamreturnType("String");
+				pEndDate.setParamValue(endDate);
+				
+				ParamBO pUserName = new ParamBO();
+				pUserName.setParamName("pUserName");
+				pUserName.setParamType("SingleParamElement");
+				pUserName.setParamreturnType("String");
+				pUserName.setParamValue(userName);
+				
+				
+				ParamBO pPhoneNumber = new ParamBO();
+				pPhoneNumber.setParamName("pPhoneNumber");
+				pPhoneNumber.setParamType("SingleParamElement");
+				pPhoneNumber.setParamreturnType("String");
+				pPhoneNumber.setParamValue(phoneNumber);
+				
+				ParamBO pUserId = new ParamBO();
+				pUserId.setParamName("pUserId");
+				pUserId.setParamType("SingleParamElement");
+				pUserId.setParamreturnType("Integer");
+				pUserId.setParamValue(userId);
+				
+				ParamBO pEmailId = new ParamBO();
+				pEmailId.setParamName("pEmailId");
+				pEmailId.setParamType("SingleParamElement");
+				pEmailId.setParamreturnType("String");
+				pEmailId.setParamValue(emailId);
+				
+				ParamBO pUserType = new ParamBO();
+				pUserType.setParamName("pUserType");
+				pUserType.setParamType("SingleParamElement");
+				pUserType.setParamreturnType("String");
+				pUserType.setParamValue(userType);
+
+				mymap.put("pStartDate", pStartDate);
+				mymap.put("pEndDate", pEndDate);
+				mymap.put("pUserName", pUserName);
+				mymap.put("pPhoneNumber", pPhoneNumber);
+				mymap.put("pUserId", pUserId);
+				mymap.put("pEmailId", pEmailId);
+				mymap.put("pUserType", pUserType);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
+				System.out.println("QueryMapperBO qmbo : GET_USERS_REPORT \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if (query != null) {
+					rs = stmt.executeQuery(query);
+				}
+				List<UserBean> ub = new ArrayList<UserBean>();
+				if (rs != null) {
+					ub = ResultBeans.generateResultUserBean(rs);
+				}
+				return ub;
 			}
 			
 		} catch (SQLException e) {

@@ -31,338 +31,12 @@
 <!-- CSS Just for demo purpose, don't include it in your project -->
 <link href="./assets/demo/demo.css" rel="stylesheet" />
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
-<script
-	src="./assets/js/core/jquery.min.js"></script>
+<script src="./assets/js/core/jquery.min.js"></script>
+<link href="./assets/css/admin/userList.css" rel="stylesheet" />
+<script src="./assets/js/admin/userList.js"></script>
+<link href="./assets/css/loader.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
 
-<style type="text/css">
-.errorDiv {
-	color: red;
-}
-.error-msg {
-	color:red
-}
-.success-msg{
-	color: #008000;
-}
-.error-msg b{
-	margin-bottom: 1rem;
-    padding: 0.1rem;
-    border: 1px solid red;
-}
-.success-msg b{
-	margin-bottom: 1rem;
-    padding: 0.1rem;
-    border: 1px solid #008000;
-}
-.padding-0-6-rem{
-	padding: 0.6rem;
-}
-/* .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-	padding: 0 !important;
-	vertical-align: unset !important;
-}
-.table td, .table th {
-	padding: 0 !important;
-} */
-.delete , .edit, .action-icon{
-	padding: 0.5rem;
-    cursor: pointer;
-}
-.table-responsive {
-	overflow: auto !important;
-}
-.card-no-box-shadow {
-	box-shadow: unset !important;
-}
-</style>
-<script>
-	$(document).ready(function() {
-		getUsers();
-		$('#userForm').on('submit', function(){
-				var formInput=$(this).serialize();    
-				$.getJSON('addUserByManagementUsers.action', formInput,function(data) {
-					alert('User added successfully');
-					getUsers();
-				});  
-				return false; 	
-		});
-		$('#userUpdateForm').on('submit', function(){
-  			var formInput=$(this).serialize();    
-			$.getJSON('updateProfile', formInput,function(data) {
-				var str = '';
-				if(data.successMessageList != null){
-					for(var i in data.successMessageList){
-						alert(data.successMessageList[i].successMsg);
-					}
-				}
-				$('#updateModal').modal('hide');
-				clearFormFields($('#userUpdateForm'));
-				getUsers();
-			});  
-			return false; 
-  		});
-	});
-	function clearFormFields(ths){
-		$(ths).closest('form').find("input[type=text], input[type=password], input[type=email]").val("");
-	}
-	function getUsers() {
-		$('#users-table-body').html('');
-		$.ajax({
-			type : "POST",
-			url : "getUsers",
-			success : function(itr) {
-				var str = '';
-				if (itr.userList != null && itr.userList.length > 0) {
-					for (var i = 0; i < itr.userList.length; i++) {
-						var userID = itr.userList[i].user_id;
-						var name = itr.userList[i].name;
-						var email = itr.userList[i].email_id;
-						var phone = itr.userList[i].phone_number;
-						var userType = itr.userList[i].user_type;
-						var createdOn = itr.userList[i].created_on;
-						var created_on = formatDate(new Date(itr.userList[i].created_on));
-						//var btnClassforDisableEnable = 'btn-outline-warning';
-						var btnClassforDisableEnable = 'text-warning';
-						var disabledEnableOperationFunction = 'disableUser';
-						var disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-lock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true"></i>';
-						if(itr.userList[i].is_disabled == 1){
-							//btnClassforDisableEnable = 'btn-outline-success';
-							btnClassforDisableEnable = 'text-success';
-							disabledEnableOperationFunction = 'enableUser';
-							disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-unlock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true"></i>';
-						}
-						str += '<tr><th scope="row">' + userID + '</th><td>'
-								+ name + '</td><td>' + email + '</td><td>'
-								+ phone + '</td><td>' + userType + '</td><td>'
-								+ created_on + '</td><td><i class="fa fa-trash text-danger delete" onclick="deleteThisUser('+userID+');"></i>'
-								+disabledEnableOperationText
-								+'<i class="fa fa-pencil action-icon" onclick="updateUser('+userID+',\''+email+'\');"></i></td></tr>';
-					}
-					$('#users-table-body').append(str);
-
-				}else{
-					str += '<div class="text-center"> No record found </div>';
-					$('#users-table-body').append(str);
-				}
-
-			},
-			error : function(itr) {
-				alert("No values found..!!");
-			}
-		});
-	}
-	function deleteThisUser(userID){
-		$('#deleteModal').modal('show');
-		$('#deleteBtn').removeAttr('onclick');
-		$('#deleteBtn').attr('onclick','deleteUser('+userID+');');
-	}
-	function deleteUser(userID){
-		var data = {
-				userId : userID
-		};
-		$.ajax({
-			type : "POST",
-			url : "deleteUser",
-			data: JSON.stringify(data),
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				alert("User deleted");
-				$('#deleteModal').modal('hide');
-				getUsers();
-			},
-			error : function(itr) {
-				alert("Error....!!");
-			}
-		});
-	}
-	
-	function disableUser(userID,ths){
-		var data = {
-				userId : userID
-		};
-		var thisEle = ths; 
-		$.ajax({
-			type : "POST",
-			url : "disableUser",
-			data: JSON.stringify(data),
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				alert('User is disabled');
-				getUsers();
-			},
-			error : function(itr) {
-				alert("Error....!!");
-			}
-		});
-	}
-	function enableUser(userID, ths){
-		var data = {
-				userId : userID
-		};
-		var thisEle = ths; 
-		$.ajax({
-			type : "POST",
-			url : "enableUser",
-			data: JSON.stringify(data),
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				alert('User is enabled');
-				getUsers();
-			},
-			error : function(itr) {
-				alert("Error....!!");
-			}
-		});
-	}
-	function updateUser(userID,email){
-		$('#userID').val(userID);
-		$('#emailID').val(email);
-		getUserProfile(userID,email);
-		$('#updateModal').modal('show');
-	}
-	function getUserProfile(userID, emailId){
-		var data = {
-				userID : userID,
-				emailId : emailId
-		};
-		 $.ajax({
-	  			type : "POST",
-	  			url : "getUserInfo",
-	  			data: JSON.stringify(data),
-				dataType: 'json',
-				contentType:"application/json;charset=utf-8",
-	  			success : function(res) {
-	  				//$('#userName').val(res.map.email);
-	  				$('#userName').val(res.map.name);
-	  				$('#phoneNumber').val(res.map.phone);
-	  			},
-	  			error : function(res) {
-	  				alert('Error while processing the request');
-	  			}
-	  		});
-	}
-	function callMyAction() {
-		$.ajax({
-			type : "POST",
-			url : "getmydata",
-			success : function(itr) {
-				var x = "<ol>";
-				$.each(itr.dataList, function() {
-					x += "<li>" + this + "</li>";
-				});
-				x += "</ol>";
-				$("#websparrow").html(x);
-			},
-			error : function(itr) {
-				alert("No values found..!!");
-			}
-		});
-	}
-	function formatDate(date) {
-		  var monthNames = [
-		    "January", "February", "March",
-		    "April", "May", "June", "July",
-		    "August", "September", "October",
-		    "November", "December"
-		  ];
-
-		  var day = date.getDate();
-		  var monthIndex = date.getMonth();
-		  var year = date.getFullYear();
-
-		  return day + ' ' + monthNames[monthIndex] + ' ' + year;
-		}
-	function validateForm(){
-		var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
-		var numbers = /^[-+]?[0-9]+$/;
-		if($('#name').val() == '' || $('#name').val() == null){
-			alert('Please enter name');
-			return false;
-		}else if($('#email').val() == '' || $('#email').val() == null){
-			alert('Please enter an email');
-			return false;
-		}else if( $('#email').val() != null && !re.test($('#email').val())){
-			alert('Please enter valid email address');
-			return false;
-		}else if($('#phone').val() == '' || $('#phone').val() == null){
-			alert('Please enter phone');
-			return false;
-		}else if($('#phone').val() != null && $('#phone').val() != ''){
-			if(! $('#phone').val().match(numbers)){
-				alert('Please enter numbers only');
-				return false;
-			}else if($('#phone').val().length < 10 && $('#phone').val().length > 12 ){
-				alert('Number should be between 10 and 12');
-				return false;
-			}			
-		}else if($('#pwd').val() == '' || $('#pwd').val() == null ){
-			alert('Please enter password');
-			return false;
-		}else if($('#cpwd').val() == '' || $('#cpwd').val() == null ){
-			alert('Please confirm password');
-			return false;
-		}else if($('#pwd').val() != null && $('#pwd').val() != '' ){ 
-			if($('#pwd').val() !=  $('#cpwd').val() ){
-				alert('Password is not matched');
-				return false;
-			}
-		}else if($('#pwd').val() != '' || $('#cpwd').val() != ''){
-			if($('#pwd').val().length < 5 ||  $('#cpwd').val().length < 5 ){
-				alert('Password must be of min 5 length');
-				return false;
-			}
-		}
-		return true;
-		
-	}
-	function validateForm(){
-		var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
-		var numbers = /^[-+]?[0-9]+$/;
-		if($('#userName').val() == '' || $('#userName').val() == null){
-			alert('Please enter name');
-			return false;
-		}else if($('#emailID').val() == '' || $('#emailID').val() == null){
-			alert('Please enter an email');
-			return false;
-		}else if( $('#emailID').val() != null && !re.test($('#emailID').val())){
-			alert('Please enter valid email address');
-			return false;
-		}else if($('#phoneNumber').val() == '' || $('#phoneNumber').val() == null){
-			alert('Please enter phone');
-			return false;
-		}else if($('#phoneNumber').val() != null && $('#phoneNumber').val() != ''){
-			if(! $('#phoneNumber').val().match(numbers)){
-				alert('Please enter numbers only');
-				return false;
-			}else if($('#phoneNumber').val().length < 10 && $('#phoneNumber').val().length > 12 ){
-				alert('Number should be between 10 and 12');
-				return false;
-			}			
-		}else if($('#password').val() == '' || $('#password').val() == null ){
-			alert('Please enter password');
-			return false;
-		}else if($('#cpassword').val() == '' || $('#cpassword').val() == null ){
-			alert('Please confirm password');
-			return false;
-		}else if($('#password').val() != null && $('#password').val() != '' ){ 
-			if($('#password').val() !=  $('#cpassword').val() ){
-				alert('Password is not matched');
-				return false;
-			}
-		}else if($('#password').val() != '' || $('#cpassword').val() != ''){
-			if($('#password').val().length < 5 ||  $('#cpassword').val().length < 5 ){
-				alert('Password must be of min 5 length');
-				return false;
-			}
-		}
-		return true;
-		
-	}
-	
-</script>
 </head>
 
 <body class="">
@@ -450,8 +124,18 @@
 					</div>
 					<div class="col-md-12">
 			           <div class="card">
-			              <div class="card-header"></div>
+			              <div class="card-header">
+			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#userFilterModal"></i></div>
+			              </div>
 			              <div class="card-body" id="users-card-body">
+			              	<div class="loaddercontainer users-table-loader">
+								<div class="lds-ring">
+							        <div></div>
+							        <div></div>
+							        <div></div>
+							        <div></div>
+								</div>
+							</div>
 			              	<div class="table-responsive">
                   				<table class="table table-bordered"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
@@ -587,11 +271,97 @@
 		        
 		      </div>
 		    </div>
-		  </div>        
+		  </div>  
+	<!-- Users Filter Modal -->
+		  <div class="modal fade" id="userFilterModal" role="dialog">
+		    <div class="modal-dialog">
+		      <div class="modal-content">
+		      
+		        <!-- Modal Header -->
+		        <div class="modal-header">
+		          <h5 class="modal-title">Users Filters</h5>
+		           <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        </div>
+		        <!-- Modal body -->
+		        <div class="modal-body">
+		          	<div class="row">
+					<div class="col-md-12">
+						<div class="card demo-icons card-no-box-shadow">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>From Date</label> 
+											<input type="text" id="startDate" class="form-control datepicker">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>To Date</label> 
+											<input type="text" id="endDate" class="form-control datepicker">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>User ID</label> 
+											<input type="number" id="byUserId" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Email</label> 
+											<input type="text" id="byEamil" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>User Name</label> 
+											<input type="text" id="byUserName" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>Phone</label> 
+											<input type="text" id="byPhoneNumber" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 pr-1">
+										<div class="form-group">
+											<label>User Type</label> 
+											<select id="byUserType" class="form-control">
+												<option value="" selected> --- None --- </option>
+												<option> Candidate </option>
+												<option> Admin </option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+										<div class="update ml-auto mr-auto">
+											<input type="button" class="btn btn-primary btn-round" onclick="applyUsersFilter('on_filter');" value="Apply Filters">
+											<input type="button" data-dismiss="modal" class="btn btn-primary btn-round close" value="Cancel">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>              
 	<!--   Core JS Files   -->
 	<script src="./assets/js/core/jquery.min.js"></script>
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 	<!--  Google Maps Plugin    -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
