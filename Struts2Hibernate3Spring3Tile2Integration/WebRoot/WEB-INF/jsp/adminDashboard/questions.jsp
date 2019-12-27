@@ -275,6 +275,14 @@ border-radius: 5px;
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card card-no-box-shadow  demo-icons">
+							<div class="loaddercontainer questions-edit-loader" style="display:none;">
+								<div class="lds-ring">
+							        <div></div>
+							        <div></div>
+							        <div></div>
+							        <div></div>
+								</div>
+							</div>
 							<div class="card-header">
 								<div class="card-options">
 									<i class="fa fa-toggle-off custom-switch"></i>

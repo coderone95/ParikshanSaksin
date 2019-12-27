@@ -1,0 +1,36 @@
+	.padding-0-6-rem{
+		padding: 0.6rem;
+	}
+.errorDiv {
+	color: red;
+}
+.error-msg {
+	color:red
+}
+.success-msg{
+	color: #008000;
+}
+.error-msg b{
+	margin-bottom: 1rem;
+    padding: 0.1rem;
+    border: 1px solid red;
+}
+.success-msg b{
+	margin-bottom: 1rem;
+    padding: 0.1rem;
+    border: 1px solid #008000;
+}
+.padding-0-6-rem{
+	padding: 0.6rem;
+}
+.custom-switch{
+	cursor:pointer;
+	float:right;
+	font-size: 2rem;
+}
+.fa-toggle-on, .fa-toggle-off{
+	color:#51cbce;
+}
+#updateOptions li{
+	 list-style: none;
+}

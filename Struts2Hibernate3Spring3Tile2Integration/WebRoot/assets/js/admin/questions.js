@@ -5,7 +5,6 @@
 $(document).ready(function(){
 		addOption('option-area','y');
 		//getAllQuestions();
-		
 		/* $('.selectpicker').datetimepicker({
 	        'showTimepicker': false,
 	        format: 'DD-MM-YYYY'
@@ -161,6 +160,7 @@ $(document).ready(function(){
 	}
 	function updateQue(){
 		if($('.custom-switch').hasClass('fa-toggle-on')){
+			$('.questions-edit-loader').show();
 			var questionID = localStorage.getItem("selelctedQuestionID");
 			var questionValue = $('#updateQuestion_name').val();
 			var optionItems = $('.option-item');
@@ -187,6 +187,7 @@ $(document).ready(function(){
 				contentType:"application/json;charset=utf-8",
 				success : function(itr) {
 					alert("Question Updated successfully!!");
+					$('.questions-edit-loader').hide();
 					$('#updateQuestionModal').modal('hide');
 					//getAllQuestions();
 					applyQuestionsFilter('ON_LOAD');
