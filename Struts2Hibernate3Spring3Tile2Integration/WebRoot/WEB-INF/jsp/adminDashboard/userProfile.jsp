@@ -79,7 +79,7 @@
 </div> -->
       <div class="content">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-10 col-lg-8 col-xs-12">
                         <div class="card card-user">
               <div class="card-header">
                 <h5 class="card-title">Profile</h5>
@@ -98,7 +98,7 @@
                         <input type="text" class="form-control" name="userBean.email_id" placeholder="Username" id="u_username" disabled />
                       </div>
                     </div>
-                    <div class="col-md-3 px-1">
+                    <div class="col-md-3 pr-1">
                       <div class="form-group">
                         <label>Name</label>
                           <input type="text" class="form-control" name = "userBean.name" placeholder="Name" id="u_name" />
@@ -112,7 +112,7 @@
                         <input type="password" class="form-control" name="userBean.password" placeholder="Password" >
                       </div>
                     </div>
-                    <div class="col-md-6 pl-1">
+                    <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Re-type Password</label>
                         <input type="password" class="form-control"  placeholder="Confirm Password" >

@@ -14,9 +14,15 @@ $(document).ready(function() {
 			$('#userForm').on('submit', function(){
 					var formInput=$(this).serialize();    
 					$.getJSON('addUserByManagementUsers.action', formInput,function(data) {
-						alert('User added successfully');
+//						alert('User added successfully');
+						if(data.successMsg != undefined ){
+							alert(data.successMsg);
+							applyUsersFilter('ON_LOAD');
+						}else{
+							alert(data.errorMsg);
+						}
 //						getUsers();
-						applyUsersFilter('ON_LOAD');
+						
 					});  
 					return false; 	
 			});

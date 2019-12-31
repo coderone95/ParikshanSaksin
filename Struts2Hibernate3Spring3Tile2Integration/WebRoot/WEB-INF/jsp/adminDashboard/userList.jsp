@@ -51,7 +51,7 @@
 </div> -->
 			<div class="content">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
 						<div class="card demo-icons">
 							<div class="card-header">
 								<h4 id="user-form-card-heading">Add New User</h4>
@@ -122,7 +122,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-12">
+					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
 			           <div class="card">
 			              <div class="card-header">
 			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#userFilterModal"></i></div>

@@ -52,8 +52,8 @@
 	}
 	</style>
 
-<%-- <script src="./assets/js/admin/questions.js"></script> --%>
-<script src="./assets/js/admin/questions.min.js"></script>
+<script src="./assets/js/admin/questions.js"></script>
+<%-- <script src="./assets/js/admin/questions.min.js"></script> --%>
 <style type="text/css">
 .errorDiv {
 	color: red;
@@ -128,7 +128,7 @@ border-radius: 5px;
 </div> -->
 			<div class="content">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-7 col-lg-6 col-sm-12 col-xs-12">
 						<div class="card demo-icons">
 							<div class="card-header">
 								<h4 id="user-form-card-heading">Add New Question</h4>
@@ -273,7 +273,7 @@ border-radius: 5px;
       </div>
         <div class="modal-body">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-12 ">
 						<div class="card card-no-box-shadow  demo-icons">
 							<div class="loaddercontainer questions-edit-loader" style="display:none;">
 								<div class="lds-ring">
