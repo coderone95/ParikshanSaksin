@@ -37,10 +37,13 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 	
 	private String login_id;
 	private String password;
+	private String name;
+	private String loggedInUserName;
 	
 	public List<ErrorMessages> errorMessagesList = new ArrayList<ErrorMessages>();
 	
 	public List<SuccessMessages> successMessageList = new ArrayList<SuccessMessages>();
+	
 	
 	public String getLogin_id() {
 		return login_id;
@@ -99,6 +102,34 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 		this.successMessageList = successMessageList;
 	}
 
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the loggedInUserName
+	 */
+	public String getLoggedInUserName() {
+		return loggedInUserName;
+	}
+
+	/**
+	 * @param loggedInUserName the loggedInUserName to set
+	 */
+	public void setLoggedInUserName(String loggedInUserName) {
+		this.loggedInUserName = loggedInUserName;
+	}
+
 	@SuppressWarnings("unchecked")
 	public String execute() throws Exception {
 		boolean isUserPresent = false;
@@ -108,6 +139,7 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 		{
 			String encrypted = CryptUtils.encrypt(userBean.getPassword(), GlobalConstants.cipher_Key);
 			login_id = u.getEmail_id();
+			loggedInUserName = u.getName();
 			if(u.getIs_disabled() == 1 && u.getEmail_id().equalsIgnoreCase(userBean.getEmail_id())) {
 				isUserPresent = true;
 				ErrorMessages er = new ErrorMessages();

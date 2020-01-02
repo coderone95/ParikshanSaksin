@@ -1,7 +1,8 @@
 .main-panel {
 /* 	background: -webkit-linear-gradient(left, #0a2a5ab0, #0a2a5ab0) !important;
  */	color: #fff;
- background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c) !important; 
+ /* background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c) !important;  */
+ background: #236890 none repeat scroll 0 0 !important;
 }
 
 .navbar.navbar-transparent a:not(.dropdown-item):not(.btn) {

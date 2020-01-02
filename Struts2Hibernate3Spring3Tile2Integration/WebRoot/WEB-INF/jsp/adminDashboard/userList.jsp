@@ -162,8 +162,8 @@
 	</div>
 	
   <!-- Modal -->
-  <div class="modal fade" id="updateModal" role="dialog">
-    <div class="modal-dialog" style="min-width: 900px;max-width: 900px;">
+  <div class="modal fade" id="updateModal">
+    <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -273,7 +273,7 @@
 		    </div>
 		  </div>  
 	<!-- Users Filter Modal -->
-		  <div class="modal fade" id="userFilterModal" role="dialog">
+		  <div class="modal fade" id="userFilterModal">
 		    <div class="modal-dialog">
 		      <div class="modal-content">
 		      

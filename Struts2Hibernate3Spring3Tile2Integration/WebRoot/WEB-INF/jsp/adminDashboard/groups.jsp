@@ -118,8 +118,8 @@
 			<jsp:include page="adminDashboardFooter.jsp" />
 		</div>
 	 <!-- Add Questions to Group Modal -->
-  <div class="modal fade" id="addQuestionToGroupModal" role="dialog">
-    <div class="modal-dialog" style="min-width: 1000px;max-width: 1000px;">
+  <div class="modal fade" id="addQuestionToGroupModal">
+    <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -164,8 +164,8 @@
     </div>
   </div>
   <!-- View Group Details Modal Popup -->
-  <div class="modal fade" id="viewGroupDetailsModal" role="dialog">
-    <div class="modal-dialog" style="min-width: 900px;max-width: 900px;">
+  <div class="modal fade" id="viewGroupDetailsModal">
+    <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -218,8 +218,8 @@
     </div>
   </div>
   <!-- show question details -->
-  <div class="modal fade" id="showQuestionDetailsModal" role="dialog">
-    <div class="modal-dialog" style="min-width: 900px;max-width: 900px;">
+  <div class="modal fade" id="showQuestionDetailsModal" >
+    <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -262,7 +262,7 @@
     </div>
   </div>
   <!--Delete Modal -->
-		  <div class="modal fade" id="deleteModal" role="dialog" style="z-index:99999999;">
+		  <div class="modal fade" id="deleteModal" style="z-index:99999999;">
 		    <div class="modal-dialog">
 		      <div class="modal-content">
 		      
@@ -292,8 +292,8 @@
 		      </div>
 		    </div>
 		  </div> 
-	<div class="modal fade" id="updateGroupModal" role="dialog">
-    <div class="modal-dialog" style="min-width: 900px;max-width: 900px;">
+	<div class="modal fade" id="updateGroupModal">
+    <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -356,7 +356,7 @@
     </div>
   </div>
   <!-- Group Filter Modal -->
-		  <div class="modal fade" id="groupFilterModal" role="dialog">
+		  <div class="modal fade" id="groupFilterModal">
 		    <div class="modal-dialog">
 		      <div class="modal-content">
 		      

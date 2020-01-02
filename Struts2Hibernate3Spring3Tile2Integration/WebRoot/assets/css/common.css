@@ -1,7 +1,8 @@
 .register{
     /* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */
-    background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c) !important;
-    
+    /* background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c) !important; */
+    /* background: -webkit-linear-gradient(left, #0a2a5a, #127953); */
+    background: #236890 none repeat scroll 0 0 !important;
     margin-top: 3%;
     padding: 3%;
 }

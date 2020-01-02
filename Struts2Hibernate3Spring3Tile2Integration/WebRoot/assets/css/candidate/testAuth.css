@@ -1,0 +1,166 @@
+/* testAuth.css */
+.no-header-bg {
+	background-color: transparent;
+}
+
+.set-question-area-dropdown {
+	max-height: 270px;
+	overflow: auto;
+}
+
+/* New Style for Forms */
+.sign-out {
+	float: right;
+	margin-top: 1rem;
+}
+
+body, html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	/* background: #60a3bc !important; */
+}
+
+.user_card {
+	height: 400px;
+	width: 350px;
+	margin-top: auto;
+	margin-bottom: auto;
+	/* background: #f39c12; */
+	/* background: #091279; */
+	/* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */
+	/* background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c)
+		!important; */
+		background: #236890 none repeat scroll 0 0 !important;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	padding: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	border-radius: 5px;
+}
+
+.brand_logo_container {
+	position: absolute;
+	height: 170px;
+	width: 170px;
+	top: -75px;
+	border-radius: 50%;
+	/* background: #60a3bc; */
+	padding: 10px;
+	text-align: center;
+}
+
+.brand_logo {
+	height: 150px;
+	width: 150px;
+	border-radius: 50%;
+	/* border: 2px solid #1c2c69; */
+	border: 2px solid #d3de32;
+}
+/* .form_container {
+			margin-top: 30px;
+		} */
+.login_btn {
+	width: 100%;
+	/* background: #c0392b !important; */
+	/* background: #374fc7 !important; */
+	/* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */
+	background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c)
+		!important;
+	color: white !important;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+}
+
+.login_btn:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
+}
+
+.login_container {
+	padding: 0 2rem;
+}
+
+.input-group-text {
+	/* background: #c0392b !important; */
+	/* background: #374fc7 !important; */
+	background: -webkit-linear-gradient(left, #0a2a5ab0, #1279535c)
+		!important;
+	color: white !important;
+	border: 0 !important;
+	border-radius: 0.25rem 0 0 0.25rem !important;
+}
+
+.input_user, .input_pass:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
+}
+
+.custom-checkbox .custom-control-input:checked ~.custom-control-label::before
+	{
+	background-color: #c0392b !important;
+}
+
+.input-group {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+}
+
+.err {
+	color: #ff0000;
+	text-align: center;
+	padding: 0.2rem;
+}
+
+.wrimagecard{	
+	margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    position: relative;
+    background: #fff;
+    box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.wrimagecard .fa{
+	position: relative;
+    font-size: 70px;
+}
+.wrimagecard-topimage_header{
+padding: 20px;
+}
+a.wrimagecard:hover, .wrimagecard-topimage:hover {
+    box-shadow: 2px 4px 8px 0px rgba(46,61,73,0.2);
+}
+.wrimagecard-topimage a {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.wrimagecard-topimage_title {
+    padding: 20px 24px;
+    height: 80px;
+    padding-bottom: 0.75rem;
+    position: relative;
+}
+.wrimagecard-topimage a {
+    border-bottom: none;
+    text-decoration: none;
+    color: #525c65;
+    transition: color 0.3s ease;
+}

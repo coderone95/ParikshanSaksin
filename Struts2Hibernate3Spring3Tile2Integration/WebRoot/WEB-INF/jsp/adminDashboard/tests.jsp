@@ -291,7 +291,7 @@
 		<jsp:include page="adminDashboardFooter.jsp" />
 	</div>
 	<!--Delete Modal -->
-		  <div class="modal fade" id="deleteModal" role="dialog" style="z-index:99999999;">
+		  <div class="modal fade" id="deleteModal" style="z-index:99999999;">
 		    <div class="modal-dialog">
 		      <div class="modal-content">
 		        <!-- Modal Header -->
@@ -316,7 +316,7 @@
 		  </div> 
 		  
 	<!-- Tests Filter Modal -->
-		  <div class="modal fade" id="testFilterModal" role="dialog">
+		  <div class="modal fade" id="testFilterModal" >
 		    <div class="modal-dialog">
 		      <div class="modal-content">
 		      

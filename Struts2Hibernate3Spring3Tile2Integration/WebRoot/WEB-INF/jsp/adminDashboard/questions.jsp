@@ -217,8 +217,8 @@ border-radius: 5px;
 			<jsp:include page="adminDashboardFooter.jsp" />
 		</div>
 	
-	<div class="modal fade" id="showQuestionDetailsModal" role="dialog">
-    <div class="modal-dialog" style="min-width: 900px;max-width: 900px;">
+	<div class="modal fade" id="showQuestionDetailsModal">
+    <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -262,7 +262,7 @@ border-radius: 5px;
     </div>
   </div>
 	
-	<div class="modal fade" id="updateQuestionModal" role="dialog">
+	<div class="modal fade" id="updateQuestionModal">
     <div class="modal-dialog" >
     
       <!-- Modal content-->
@@ -329,7 +329,7 @@ border-radius: 5px;
     </div>
   </div>
 <!--Delete Modal -->
-		  <div class="modal" id="deleteModal">
+		  <div class="modal fade" id="deleteModal">
 		    <div class="modal-dialog">
 		      <div class="modal-content">
 		      
@@ -353,7 +353,7 @@ border-radius: 5px;
 		    </div>
 		  </div>  
 	<!-- Question Filter Modal -->
-		  <div class="modal fade" id="questionFilterModal" role="dialog">
+		  <div class="modal fade" id="questionFilterModal">
 		    <div class="modal-dialog">
 		      <div class="modal-content">
 		      
