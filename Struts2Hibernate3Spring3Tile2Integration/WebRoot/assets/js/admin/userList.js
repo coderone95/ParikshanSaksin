@@ -347,8 +347,11 @@ $(document).ready(function() {
 			dataType: 'json',
 			contentType:"application/json;charset=utf-8",
 			success : function(itr) {
-				var str = '';
+				if ($.fn.DataTable.isDataTable("#userListTable")) {
+					  $('#userListTable').DataTable().clear().destroy();
+				}
 				if (itr.userList != null && itr.userList.length > 0) {
+					
 					for (var i = 0; i < itr.userList.length; i++) {
 						var userID = itr.userList[i].user_id;
 						var name = itr.userList[i].name;
@@ -356,7 +359,7 @@ $(document).ready(function() {
 						var phone = itr.userList[i].phone_number;
 						var userType = itr.userList[i].user_type;
 						var createdOn = itr.userList[i].created_on;
-						var created_on = formatDate(new Date(itr.userList[i].created_on));
+						var created_on = formatMyDate(new Date(itr.userList[i].created_on));
 						//var btnClassforDisableEnable = 'btn-outline-warning';
 						var btnClassforDisableEnable = 'text-warning';
 						var disabledEnableOperationFunction = 'disableUser';
@@ -367,14 +370,28 @@ $(document).ready(function() {
 							disabledEnableOperationFunction = 'enableUser';
 							disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-unlock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true"></i>';
 						}
-						str += '<tr><th scope="row">' + userID + '</th><td>'
-								+ name + '</td><td>' + email + '</td><td>'
-								+ phone + '</td><td>' + userType + '</td><td>'
-								+ created_on + '</td><td><i class="fa fa-trash text-danger delete" onclick="deleteThisUser('+userID+');"></i>'
-								+disabledEnableOperationText
-								+'<i class="fa fa-pencil action-icon" onclick="updateUser('+userID+',\''+email+'\');"></i></td></tr>';
+						var str = '<tr>';
+						str=str+'<td class="text-nowrap">'+userID+'</td>';
+						str=str+'<td class="text-nowrap">'+name+'</td>';
+						str=str+'<td class="text-nowrap">'+email+'</td>';
+						str=str+'<td class="text-nowrap">'+userType+'</td>';
+						str=str+'<td class="text-nowrap">'+phone+'</td>';
+						str=str+'<td class="text-nowrap">'+createdOn+'</td>';
+						str=str+'<td class="text-nowrap"><i class="fa fa-trash text-danger delete" onclick="deleteThisUser('+userID+');"></i>'+disabledEnableOperationText
+									+'<i class="fa fa-pencil action-icon" onclick="updateUser('+userID+',\''+email+'\');"></i></td>';
+						str=str+'</tr>';
+						$('#users-table-body').append(str);
 					}
-					$('#users-table-body').append(str);
+					$("#userListTable").DataTable( {
+				        "scrollY":        '90vh',
+				        "scrollCollapse": true,
+				        "paging":         true,
+						"scrollX": false,
+						"ordering": true,
+						"info":     false,
+						"searching": true,
+						"destroy": true
+				    } );
 					$('.users-table-loader').hide();
 
 				}else{
@@ -389,3 +406,11 @@ $(document).ready(function() {
 		});
 		$('#userFilterModal').modal('hide');
 	}
+	
+	function formatMyDate(date) {
+		  var day = date.getDate();
+		  var monthIndex = date.getMonth();
+		  monthIndex = monthIndex +1;
+		  var year = date.getFullYear();
+		  return day+'-'+monthIndex+'-'+year;
+		}

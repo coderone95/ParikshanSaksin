@@ -274,9 +274,9 @@ var isAlreadyChecked = false;
 						var groupID = itr.groupList[i].group_id;
 						var groupName = itr.groupList[i].group_name;
 						var createdBy = itr.groupList[i].created_by;
-						var createdOn = formatDate(new Date(itr.groupList[i].created_on));
+						var createdOn = formatMyDate(new Date(itr.groupList[i].created_on));
 						var updatedBy = itr.groupList[i].updated_by;
-						var updatedOn = formatDate(new Date(itr.groupList[i].updated_on));
+						var updatedOn = formatMyDate(new Date(itr.groupList[i].updated_on));
 						if(createdBy == null || createdBy == ''){
 							createdBy = '';
 						}
@@ -307,3 +307,11 @@ var isAlreadyChecked = false;
 		$('#groupFilterModal').modal('hide');
 	}
 	
+
+	function formatMyDate(date) {
+		  var day = date.getDate();
+		  var monthIndex = date.getMonth();
+		  monthIndex = monthIndex +1;
+		  var year = date.getFullYear();
+		  return day+'-'+monthIndex+'-'+year;
+		}

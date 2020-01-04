@@ -233,6 +233,14 @@ function formatDateTime(date) {
 	  //return day + ' ' + monthNames[monthIndex] + ' ' + year;
 	  return year+'-'+monthIndex+'-'+day+' '+hours+':'+min+':'+sec;
 	}
+function formatMyDate(date) {
+	  var day = date.getDate();
+	  var monthIndex = date.getMonth();
+	  monthIndex = monthIndex +1;
+	  var year = date.getFullYear();
+	  return day+'-'+monthIndex+'-'+year;
+	}
+
 function getAllTests() {
 	$('#tests-table-body').html('');
 	$.ajax({
@@ -373,7 +381,10 @@ function applyTestsFilter(flag){
 		success : function(itr) {
 			var str = '';
 			if (itr.testList != null && itr.testList.length > 0) {
-				for (var i = 0; i < itr.testList.length; i++) {
+				if ($.fn.DataTable.isDataTable("#dtable")) {
+					  $('#dtable').DataTable().clear().destroy();
+				}
+				for(var i = 0; i < itr.testList.length; i++){
 					var testID = itr.testList[i].test_id;
 					var testName = itr.testList[i].test_name;
 					var testKey = itr.testList[i].test_key;
@@ -385,29 +396,37 @@ function applyTestsFilter(flag){
 					}else{
 						liveRes = '<i class="fa fa-hourglass-o text-warning"></i>';
 					}
-					var createdOn = formatDate(new Date(itr.testList[i].created_on));
-					var updatedOn = formatDate(new Date(itr.testList[i].updated_on));
+					var createdOn = formatMyDate(new Date(itr.testList[i].created_on));
+					var updatedOn = formatMyDate(new Date(itr.testList[i].updated_on));
 					var createdBy = itr.testList[i].created_by;
 					var uddatedBy = itr.testList[i].updated_by;
-					str += '<tr id="test-'+testID+'">'
-						+'<td>'+testID+'</td>'
-						+'<td>'+testName+'</td>'
-						+'<td>'+testKey+'</td>'
-						+'<td><input type="password" class="access-key-value" id="access-key-'+testID+'" value="'+accessKey+'" /><i class="fa fa-eye" onclick="toggleShow(this,'+testID+');"></i></td>'
-						+'<td>'+liveRes+'</td>'
-						+'<td>'+createdOn+'</td>'
-						+'<td>'+updatedOn+'</td>'
-						+'<td>'+createdBy+'</td>'
-						+'<td>'+uddatedBy+'</td>'
-						+'<td><i class="fa fa-trash text-danger delete" onclick="deleteThisTest('+testID+');"></i>'
-						+'<i class="fa fa-pencil text-primary edit" onclick="updateTheTest('+testID+',\''+testName+'\');"></i>'
-						+'</td>'
-						+'</tr>';
-					
+					var str = '<tr>';
+						str=str+'<td class="text-nowrap">'+testID+'</td>';
+						str=str+'<td class="text-nowrap">'+testName+'</td>';
+						str=str+'<td class="text-nowrap">'+testKey+'</td>';
+						str=str+'<td class="text-nowrap"><input type="password" class="access-key-value" id="access-key-'+testID+'" value="'+accessKey+'" /><i class="fa fa-eye" onclick="toggleShow(this,'+testID+');"></i></td>';
+						str=str+'<td class="text-nowrap">'+liveRes+'</td>';
+						str=str+'<td class="text-nowrap">'+createdOn+'</td>';
+						str=str+'<td class="text-nowrap">'+updatedOn+'</td>';
+						str=str+'<td class="text-nowrap">'+createdBy+'</td>';
+						str=str+'<td class="text-nowrap">'+uddatedBy+'</td>';
+						str=str+'<td class="text-nowrap"><i class="fa fa-trash text-danger delete" onclick="deleteThisTest('+testID+');"></i>'
+						+'<i class="fa fa-pencil text-primary edit" onclick="updateTheTest('+testID+',\''+testName+'\');"></i></td>';
+						str=str+'</tr>';
+						$("#tests-table-body").append(str);
 				}
-				$('#tests-table-body').append(str);
 				$('.tests-table-loader').hide();
-
+				
+				$("#dtable").DataTable( {
+			        "scrollY":        '90vh',
+			        "scrollCollapse": true,
+			        "paging":         true,
+					"scrollX": false,
+					"ordering": true,
+					"info":     false,
+					"searching": true,
+					"destroy": true
+			    } );
 			}else{
 				str += '<tr><td colspan="10"><div class="text-center"> No record found </div></td></tr>';
 				$('#tests-table-body').append(str);
@@ -420,3 +439,4 @@ function applyTestsFilter(flag){
 	});
 	$('#testFilterModal').modal('hide');
 }
+

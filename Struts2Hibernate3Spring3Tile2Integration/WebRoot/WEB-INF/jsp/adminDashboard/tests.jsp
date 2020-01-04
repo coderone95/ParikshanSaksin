@@ -46,6 +46,9 @@
 <script src="./assets/js/admin/tests.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
 <link href="./assets/css/admin/tests.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
 </head>
 
 <body class="">
@@ -262,19 +265,19 @@
 							        <div></div>
 								</div>
 							</div>
-			              	<div class="table-responsive" style="max-height:500px;">
-                  				<table class="table table-bordered"  style="border: 2px solid #000;">
+			              	<div class="table-responsive">
+                  				<table class="table table-bordered table-vcenter table-hover table-stripped"  style="border: 2px solid #000;" id="dtable">
                     				<thead class=" text-primary">
-                      						<th> ID </th>
-											<th>Name</th>
-											<th>Test Key</th>
-											<th>Access Key</th>
-											<th>Live</th>
-											<th>Created On</th>
-											<th>Updated On</th>
-											<th>Created By</th>
-											<th>Updated By</th>
-											<th>Action</th>
+                      						<th class="text-nowrap" style='text-transform: initial;'> ID </th>
+											<th class="text-nowrap" style='text-transform: initial;'>Name</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Test Key</th>
+											<th class="text-nowrap"style='text-transform: initial;'>Access Key</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Live</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Created On</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Updated On</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Created By</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Updated By</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Action</th>
                     				</thead>
 			                    <tbody id="tests-table-body">
 			                    

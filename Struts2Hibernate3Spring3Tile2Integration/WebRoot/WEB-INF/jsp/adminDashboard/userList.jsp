@@ -32,11 +32,11 @@
 <link href="./assets/demo/demo.css" rel="stylesheet" />
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
 <script src="./assets/js/core/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
 <link href="./assets/css/admin/userList.css" rel="stylesheet" />
 <script src="./assets/js/admin/userList.js"></script>
 <link href="./assets/css/loader.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
-
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -137,15 +137,15 @@
 								</div>
 							</div>
 			              	<div class="table-responsive">
-                  				<table class="table table-bordered"  style="border: 2px solid #000;">
+                  				<table class="table table-bordered table-vcenter table-hover table-stripped" id="userListTable"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
-                      						<th>User ID</th>
-											<th>Name</th>
-											<th>Email</th>
-											<th>Phone</th>
-											<th>User Type</th>
-											<th>Created On</th>
-											<th>Action</th>
+                      						<th class="text-nowrap" style='text-transform: initial;'>User ID</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Name</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Email</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Phone</th>
+											<th class="text-nowrap" style='text-transform: initial;'>User Type</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Created On</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Action</th>
                     				</thead>
 			                    <tbody id="users-table-body">
 			                    
@@ -362,6 +362,8 @@
 	<script src="./assets/js/core/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 	<!--  Google Maps Plugin    -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>

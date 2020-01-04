@@ -373,3 +373,10 @@ $(document).ready(function(){
 		});
 		$('#questionFilterModal').modal('hide');
 	}
+	function formatMyDate(date) {
+		  var day = date.getDate();
+		  var monthIndex = date.getMonth();
+		  monthIndex = monthIndex +1;
+		  var year = date.getFullYear();
+		  return day+'-'+monthIndex+'-'+year;
+		}
