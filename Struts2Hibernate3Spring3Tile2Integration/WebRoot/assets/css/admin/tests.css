@@ -184,3 +184,7 @@ border-radius: 5px;
 	padding: 0.5rem;
     cursor: pointer;
 }
+
+#dtable thead > th {
+	overflow: auto !important;
+}

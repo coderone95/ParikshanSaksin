@@ -406,7 +406,8 @@ body {
 /*-----------------------------chiller-theme-------------------------------------------------*/
 
 .chiller-theme .sidebar-wrapper {
-    background: #31353D;
+    /* background: #31353D; */
+    background: #236890 none repeat scroll 0 0 !important;
 }
 
 .chiller-theme .sidebar-wrapper .sidebar-header,
@@ -430,7 +431,8 @@ body {
 .chiller-theme .sidebar-wrapper .sidebar-brand>a,
 .chiller-theme .sidebar-wrapper .sidebar-menu ul li a,
 .chiller-theme .sidebar-footer>a {
-    color: #818896;
+    /* color: #818896; */
+    color:#ffffff;
 }
 
 .chiller-theme .sidebar-wrapper .sidebar-menu ul li:hover>a,
@@ -487,6 +489,10 @@ body {
     border-right: none;
 }
 
+.chiller-theme a.btn-dark {
+	background: #236890 none repeat scroll 0 0 !important;
+    border-color: #236890 none repeat scroll 0 0 !important;
+}
 
 /* ----------------- User Info --------------*/
 .user-login-id{
