@@ -104,6 +104,7 @@ var isAlreadyChecked = false;
 				$('#group-'+selectedGroupID).fadeTo("slow",0.7, function(){
 		            $(this).remove();
 		        })
+		        applyGroupsFilter('ON_LOAD');
 			},
 			error : function(itrr) {
 				alert("Error occurred while getting question details..!!");

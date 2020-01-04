@@ -315,6 +315,7 @@ function deleteTheTest(testID){
 	            $(this).remove();
 	        })
 	        $('#deleteModal').modal('hide');
+			applyTestsFilter('ON_LOAD');
 		},
 		error : function(itrr) {
 			alert("Error occurred while creating test..!!");
