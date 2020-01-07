@@ -42,6 +42,13 @@ $(document).ready(function() {
 			});  
 			return false; 
   		});
+		$('#exportBtn').on('click', function(){
+			 var table = document.getElementById("userListTable");
+			  var html = table.outerHTML;
+			  var url = 'data:application/vnd.ms-excel,' + escape(html); 
+			  $(this).attr("href", url);
+			  $(this).attr("download", "users_report.xls"); 
+		});
 	});
 	function clearFormFields(ths){
 		$(ths).closest('form').find("input[type=text], input[type=password], input[type=email]").val("");
@@ -374,9 +381,9 @@ $(document).ready(function() {
 						str=str+'<td class="text-nowrap">'+userID+'</td>';
 						str=str+'<td class="text-nowrap">'+name+'</td>';
 						str=str+'<td class="text-nowrap">'+email+'</td>';
-						str=str+'<td class="text-nowrap">'+userType+'</td>';
 						str=str+'<td class="text-nowrap">'+phone+'</td>';
-						str=str+'<td class="text-nowrap">'+createdOn+'</td>';
+						str=str+'<td class="text-nowrap">'+userType+'</td>';
+						str=str+'<td class="text-nowrap">'+created_on+'</td>';
 						str=str+'<td class="text-nowrap"><i class="fa fa-trash text-danger delete" onclick="deleteThisUser('+userID+');"></i>'+disabledEnableOperationText
 									+'<i class="fa fa-pencil action-icon" onclick="updateUser('+userID+',\''+email+'\');"></i></td>';
 						str=str+'</tr>';
@@ -388,7 +395,7 @@ $(document).ready(function() {
 				        "paging":         true,
 						"scrollX": false,
 						"ordering": true,
-						"info":     false,
+						"info":     true,
 						"searching": true,
 						"destroy": true
 				    } );

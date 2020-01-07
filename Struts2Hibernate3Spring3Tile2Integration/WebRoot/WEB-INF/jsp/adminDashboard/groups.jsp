@@ -37,6 +37,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" /> 
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -84,6 +85,7 @@
 			           <div class="card">
 			              <div class="card-header"></div>
 			              <div class="card-body" id="group-card-body">
+			              <div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#groupFilterModal"></i></div>
 			              	<div class="loaddercontainer groups-table-loader">
 								<div class="lds-ring">
 							        <div></div>
@@ -92,17 +94,16 @@
 							        <div></div>
 								</div>
 							</div>
-			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#groupFilterModal"></i></div>
-			              	<div class="table-responsive" style="overflow: auto;">
-                  				<table class="table table-bordered" style="border: 2px solid #000;">
+			              	<div class="table-responsive">
+                  				<table class="table table-bordered table-vcenter table-hover table-stripped" style="border: 2px solid #000;" id="groupsTable">
                     				<thead class=" text-primary">
-                      						<th>Group ID</th>
-											<th>Group Name</th>
-											<th>Created By</th>
-											<th>Updated By</th>
-											<th>Created On</th>
-											<th>Updated On</th>
-											<th>Action</th>
+                      						<th class="text-nowrap" style='text-transform: initial;'>Group ID</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Group Name</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Created By</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Updated By</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Created On</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Updated On</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Action</th>
                     				</thead>
 			                    <tbody id="groups-table-body">
 			                    
@@ -426,6 +427,9 @@
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+	<script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 	
 	<!--  Google Maps Plugin    -->

@@ -40,6 +40,7 @@
 <link href="./assets/css/loader.css" rel="stylesheet" />
 <!-- <link href="./assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" /> -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" /> 
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 
  <sx:head />
 <script
@@ -192,16 +193,19 @@ border-radius: 5px;
 							        <div></div>
 								</div>
 							</div>
-			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#questionFilterModal"></i></div>
+			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;">
+			              		<i class="fa fa-filter filter-icon mr1" data-toggle="modal" data-target="#questionFilterModal"></i>
+			              		<a href="questionAnswerBank"><i class="fa fa-file-text-o filter-icon" ></i></a>
+			              	</div>
 			              	<div class="table-responsive">
-                  				<table class="table table-bordered"  style="border: 2px solid #000;">
+                  				<table class="table table-bordered table-vcenter table-hover table-stripped"  style="border: 2px solid #000;" id="qTable">
                     				<thead class=" text-primary">
-                      						<th>Question ID</th>
-											<th>Question</th>
+                      						<th class="text-nowrap" style='text-transform: initial;'>Question ID</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Question</th>
 											<!-- <th>Answer</th> -->
-											<th>Created By</th>
-											<th>Updated By</th>
-											<th>Action</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Created By</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Updated By</th>
+											<th class="text-nowrap" style='text-transform: initial;'>Action</th>
                     				</thead>
 			                    <tbody id="questions-table-body">
 			                    
@@ -424,6 +428,8 @@ border-radius: 5px;
 	<script src="./assets/js/core/bootstrap.min.js"></script>
 	<%-- <script src="./assets/js/bootstrap-datetimepicker.js"></script> --%>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 	<!--  Google Maps Plugin    -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>

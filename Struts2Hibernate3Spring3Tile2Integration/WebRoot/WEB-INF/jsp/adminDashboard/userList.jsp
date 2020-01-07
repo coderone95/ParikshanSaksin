@@ -125,7 +125,10 @@
 					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
 			           <div class="card">
 			              <div class="card-header">
-			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;"><i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#userFilterModal"></i></div>
+			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;">
+			              		<i class="fa fa-filter filter-icon mr-1" data-toggle="modal" data-target="#userFilterModal"></i>
+			              		<a href="#" id="exportBtn"><i class="fa fa-file-excel-o filter-icon"></i></a>
+			              	</div>
 			              </div>
 			              <div class="card-body" id="users-card-body">
 			              	<div class="loaddercontainer users-table-loader">
@@ -137,7 +140,7 @@
 								</div>
 							</div>
 			              	<div class="table-responsive">
-                  				<table class="table table-bordered table-vcenter table-hover table-stripped" id="userListTable"  style="border: 2px solid #000;">
+                  				<table class="table table-bordered table-vcenter table-hover table-stripped " id="userListTable"  style="border: 2px solid #000;">
                     				<thead class=" text-primary">
                       						<th class="text-nowrap" style='text-transform: initial;'>User ID</th>
 											<th class="text-nowrap" style='text-transform: initial;'>Name</th>
@@ -145,7 +148,7 @@
 											<th class="text-nowrap" style='text-transform: initial;'>Phone</th>
 											<th class="text-nowrap" style='text-transform: initial;'>User Type</th>
 											<th class="text-nowrap" style='text-transform: initial;'>Created On</th>
-											<th class="text-nowrap" style='text-transform: initial;'>Action</th>
+											<th class="text-nowrap " style='text-transform: initial;'>Action</th>
                     				</thead>
 			                    <tbody id="users-table-body">
 			                    
@@ -355,7 +358,7 @@
 		        </div>
 		      </div>
 		    </div>
-		  </div>              
+		  </div>    
 	<!--   Core JS Files   -->
 	<script src="./assets/js/core/jquery.min.js"></script>
 	<script src="./assets/js/core/popper.min.js"></script>
@@ -364,6 +367,7 @@
 	
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
+<%-- <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script> --%>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 	<!--  Google Maps Plugin    -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>

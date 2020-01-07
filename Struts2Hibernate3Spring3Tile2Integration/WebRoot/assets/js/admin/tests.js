@@ -424,7 +424,7 @@ function applyTestsFilter(flag){
 			        "paging":         true,
 					"scrollX": false,
 					"ordering": true,
-					"info":     false,
+					"info":     true,
 					"searching": true,
 					"destroy": true
 			    } );

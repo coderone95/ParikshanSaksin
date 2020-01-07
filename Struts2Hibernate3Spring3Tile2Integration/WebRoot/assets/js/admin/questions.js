@@ -343,6 +343,9 @@ $(document).ready(function(){
 			success : function(itr) {
 				var str = '';
 				if (itr.questionInfo != null && itr.questionInfo.length > 0) {
+					if ($.fn.DataTable.isDataTable("#qTable")) {
+						  $('#qTable').DataTable().clear().destroy();
+					}
 					for (var i = 0; i < itr.questionInfo.length; i++) {
 						var queID = itr.questionInfo[i].question_id;
 						var question = itr.questionInfo[i].question;
@@ -350,15 +353,33 @@ $(document).ready(function(){
 						var createdBy = itr.questionInfo[i].question_createdBy;
 						var updatedBy = itr.questionInfo[i].question_updatedBy;
 						
-						str += '<tr><th scope="row"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></th>'
-							+'<td>'+question+'</td>'
-							//+'<td>'+ans+'</td>'
-							+'<td>'+createdBy+'</td>'
-							+'<td>'+updatedBy+'</td>'
-							+'<td><i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i><i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i></td>'
-							+'</tr>';
+//						str += '<tr><th scope="row"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></th>'
+//							+'<td>'+question+'</td>'
+//							//+'<td>'+ans+'</td>'
+//							+'<td>'+createdBy+'</td>'
+//							+'<td>'+updatedBy+'</td>'
+//							+'<td><i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i><i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i></td>'
+//							+'</tr>';
+						var str = '<tr>';
+						str=str+'<td class="text-nowrap"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></td>';
+						str=str+'<td class="text-nowrap">'+question+'</td>';
+						str=str+'<td class="text-nowrap">'+createdBy+'</td>';
+						str=str+'<td class="text-nowrap">'+updatedBy+'</td>';
+						str=str+'<td class="text-nowrap"><i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i><i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i></td>';
+						str=str+'</tr>';
+						$('#questions-table-body').append(str);
 					}
-					$('#questions-table-body').append(str);
+					$("#qTable").DataTable( {
+				        "scrollY":        '90vh',
+				        "scrollCollapse": true,
+				        "paging":         true,
+						"scrollX": false,
+						"ordering": true,
+						"info":     true,
+						"searching": true,
+						"destroy": true
+				    } );
+					
 					$('.questions-table-loader').hide();
 
 				}else{
@@ -380,3 +401,12 @@ $(document).ready(function(){
 		  var year = date.getFullYear();
 		  return day+'-'+monthIndex+'-'+year;
 		}
+	
+	
+	
+	var doc = new jsPDF();
+	var specialElementHandlers = {
+	    '#editor': function (element, renderer) {
+	        return true;
+	    }
+	};

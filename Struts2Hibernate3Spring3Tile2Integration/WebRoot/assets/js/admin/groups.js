@@ -271,6 +271,9 @@ var isAlreadyChecked = false;
 			success : function(itr) {
 				var str = '';
 				if (itr.groupList != null && itr.groupList.length > 0) {
+					if ($.fn.DataTable.isDataTable("#groupsTable")) {
+						  $('#groupsTable').DataTable().clear().destroy();
+					}
 					for (var i = 0; i < itr.groupList.length; i++) {
 						var groupID = itr.groupList[i].group_id;
 						var groupName = itr.groupList[i].group_name;
@@ -284,15 +287,35 @@ var isAlreadyChecked = false;
 						if(updatedBy == null || updatedBy == ''){
 							updatedBy = '';
 						}
-						str += '<tr id="group-'+groupID+'"><th scope="row"><a href="#" onclick="viewGroupDetails('+groupID+',\''+groupName+'\');">' + groupID + '</a></th><td>'
-								+ groupName + '</td><td>' + createdBy + '</td><td>'
-								+ updatedBy + '</td><td>' + createdOn + '</td><td>'
-								+ updatedOn + '</td>'
-								+'<td><i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>'
-								+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i></td></tr>';
- 
+//						str += '<tr id="group-'+groupID+'"><th scope="row"><a href="#" onclick="viewGroupDetails('+groupID+',\''+groupName+'\');">' + groupID + '</a></th><td>'
+//								+ groupName + '</td><td>' + createdBy + '</td><td>'
+//								+ updatedBy + '</td><td>' + createdOn + '</td><td>'
+//								+ updatedOn + '</td>'
+//								+'<td><i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>'
+//								+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i></td></tr>';
+// 
+						var str = '<tr id="group-'+groupID+'">';
+						str=str+'<td class="text-nowrap"><a href="#" onclick="viewGroupDetails('+groupID+',\''+groupName+'\');">'+groupID+'</td>';
+						str=str+'<td class="text-nowrap">'+groupName+'</td>';
+						str=str+'<td class="text-nowrap">'+createdBy+'</td>';
+						str=str+'<td class="text-nowrap">'+updatedBy+'</td>';
+						str=str+'<td class="text-nowrap">'+createdOn+'</td>';
+						str=str+'<td class="text-nowrap">'+updatedOn+'</td>';
+						str=str+'<td class="text-nowrap"><i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>'
+									+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i></td>';
+						str=str+'</tr>';
+						$('#groups-table-body').append(str);
 					}
-					$('#groups-table-body').append(str);
+					$("#groupsTable").DataTable( {
+				        "scrollY":        '90vh',
+				        "scrollCollapse": true,
+				        "paging":         true,
+						"scrollX": false,
+						"ordering": true,
+						"info":     true,
+						"searching": true,
+						"destroy": true
+				    } );
 					$('.groups-table-loader').hide();
 
 				}else{
