@@ -475,4 +475,16 @@ CREATE EVENT checkExpire
     DO
      CALL checkTestExpire();
 
-SET GLOBAL event_scheduler = ON; 
+SET GLOBAL event_scheduler = ON;
+
+
+
+-------- 
+alter table tbl_functionalities add column user_id int(255) after `functionality_id`
+
+alter table tbl_functionalities add column user_type varchar(255) after `user_id`
+
+
+
+ALTER TABLE tbl_functionalities
+DROP INDEX functionality_code;

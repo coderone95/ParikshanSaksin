@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.codesvila.bean.UserBean;
+import com.codesvila.datasource.ApacheCommonsDBCP;
 import com.codesvila.utils.CommonUtility;
 import com.codesvila.utils.GlobalConstants;
 
@@ -59,10 +60,11 @@ public class AdminUserProfilePageAction extends BaseAction {
 	
 	@SuppressWarnings("unchecked")
 	public String getUserProfile() throws Exception{
-		List list = new ArrayList();
-		list.add((String) sessionMap.get(GlobalConstants.LOGIN_ID));
-		List<UserBean> userList = CommonUtility.getUserProfileData("GET_USER_PROFILE_DATA", list, true);
-				
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("email", (String) sessionMap.get(GlobalConstants.LOGIN_ID));
+		paramMap.put("userId", null);
+		List<UserBean> userList = CommonUtility.getUserProfileData("GET_USER_PROFILE_DATA", null,true,paramMap);
+		
 		if(userList != null) {
 			for(UserBean u : userList) {
 				map.put("userId", u.getUser_id());

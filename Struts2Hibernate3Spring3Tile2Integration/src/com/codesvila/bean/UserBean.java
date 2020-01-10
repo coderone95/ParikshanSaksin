@@ -1,6 +1,5 @@
 package com.codesvila.bean;
 
-//@XmlRootElement (name="user")
 public class UserBean {
 	private int user_id;
 	

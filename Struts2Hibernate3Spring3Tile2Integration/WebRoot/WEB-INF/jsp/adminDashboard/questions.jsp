@@ -130,6 +130,8 @@ border-radius: 5px;
 			<div class="content">
 				<div class="row">
 					<div class="col-md-7 col-lg-6 col-sm-12 col-xs-12">
+					
+						<s:if test="accessMap.get('M_ADD_QUESTION')">
 						<div class="card demo-icons">
 							<div class="card-header">
 								<h4 id="user-form-card-heading">Add New Question</h4>
@@ -180,6 +182,7 @@ border-radius: 5px;
 										</div>
 									</div>
 							</div>
+							</s:if>
 						</div>
 						<div class="col-md-12">
 			           <div class="card">

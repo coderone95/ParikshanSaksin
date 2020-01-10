@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <search>
 	<query id="GET_USER_PROFILE_DATA">
-		select * from tbl_users where {email_id in ($[pEmailId])} limit 1
+		select * from tbl_users where {email_id in ($[pEmailId])}  and { user_id in($[pUserId]) } limit 1
 	</query>
 	<query id="GET_ALL_QUESTIONS">
 		select q.question_id as questionID, q.question as question , o.option_value as answer,
@@ -9,8 +9,10 @@
 		from tbl_questions q inner join tbl_que_options o on o.question_id = q.question_id where o.isCorrect = 1
 		and { q.created_by in ($[pList]) } and { q.updated_on in ($[pUpdatedOn]) }
 	</query>
-	<query id="GET_ALL_GROUPS">
-		select * from tbl_groups where 
-		 { q.created_by in ($[pList]) } and { q.updated_on in ($[pUpdatedOn]) }
+	<query id="GET_ALL_ACCESS_RIGHTS_INFO">
+		select functionality_id,user_id,user_type,functionality_name,functionality_code from tbl_functionalities
+		where { user_id in($[pUserId]) }
+		and { user_type in ($[pUserType]) }
 	</query>
+	
 </search>

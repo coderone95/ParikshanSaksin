@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.codesvila.action.BaseAction;
 import com.codesvila.bean.TestBO;
 import com.codesvila.service.ReportService;
 
-public class GetTestsExecuteReportAction {
+public class GetTestsExecuteReportAction extends BaseAction{
 	
 	@Autowired
 	private ReportService reportService;

@@ -198,7 +198,7 @@ border-radius: 5px;
 					alert("Unable to fetch question details");
 				}else{
 					if(itr.questionDetail != null){
-						str += '<div class="que-bank-row"><div class="row mt-4"><div class="col-md-12 questionArea">'
+						str += '<div class="que-bank-row" style="padding: 1rem;background: yellow;"><div class="row mt-4"><div class="col-md-12 questionArea">'
 								+'<h5 class="questionName">'+itr.questionDetail.question+'</h5></div></div>';
 						str += '<div class="row"><div class="col-md-12 optionsArea">';
 						var cnt = 65;
@@ -214,7 +214,7 @@ border-radius: 5px;
 							cnt++;
 						}
 						str += '</div></div>';
-						str += '<div class="row mb-2"><div class="col-md-12 answerArea"><b class="answer">Answer: &#'+ans+';</b></div></div></div><hr>';
+						str += '<div class="row mb-2 shadow"><div class="col-md-12 answerArea"><b class="answer">Answer: &#'+ans+';</b></div></div></div><hr>';
 						 $('.question-ans-bank-area').append(str);
 					}
 					

@@ -1,6 +1,7 @@
 package com.codesvila.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,10 +132,10 @@ public class TestAutheniticationAction extends BaseAction{
 	
 	@SuppressWarnings("unchecked")
 	public String getCandidateProfile() throws Exception{
-		List list = new ArrayList();
-		System.out.println("LoginID: "+(String) sessionMap.get(GlobalConstants.LOGIN_ID));
-		list.add((String) sessionMap.get(GlobalConstants.LOGIN_ID));
-		userList = CommonUtility.getUserProfileData("GET_USER_PROFILE_DATA", list, true);
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("email", (String) sessionMap.get(GlobalConstants.LOGIN_ID));
+		paramMap.put("userId", null);
+		userList = CommonUtility.getUserProfileData("GET_USER_PROFILE_DATA", null,true,paramMap);
 
 		return "success";
 	}

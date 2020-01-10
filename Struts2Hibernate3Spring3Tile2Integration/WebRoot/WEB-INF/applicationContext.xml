@@ -33,7 +33,7 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	   			<value>com.codesvila.model.Test</value>
 	   			<value>com.codesvila.model.GroupsTest</value>
 	   			<value>com.codesvila.model.AttendedTestDetails</value>
-	   			<value>com.codesvila.model.Library</value>
+	   			<value>com.codesvila.model.Functionality</value>
 	   			
 	 		 </list>
 	

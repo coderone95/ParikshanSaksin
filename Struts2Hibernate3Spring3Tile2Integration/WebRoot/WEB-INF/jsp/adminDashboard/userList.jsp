@@ -51,6 +51,7 @@
 </div> -->
 			<div class="content">
 				<div class="row">
+				<s:if test="accessMap.get('M_ADD_USER')">
 					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
 						<div class="card demo-icons">
 							<div class="card-header">
@@ -104,8 +105,11 @@
 											<div class="form-group">
 												<label>User Type</label> 
 												<select class="form-control" id="userType" name="userBean.user_type">
-													<option>ADMIN</option>
-													<option>CANDIDATE</option>
+													<s:if test="accessMap.get('ADD_ADMIN_USER')"><option>ADMIN</option></s:if>
+													<s:if test="accessMap.get('ADD_EXAMINER_USER')"><option>EXAMINER</option></s:if>
+													<s:if test="accessMap.get('ADD_REVIEWER_USER')"><option>REVIEWER</option></s:if>
+													<s:if test="accessMap.get('ADD_CANDIDATE_USER')"><option>CANDIDATE</option></s:if>
+													<!-- <option>CANDIDATE</option> -->
 <!-- 													<option>EXAMINER</option> -->
 <!-- 													<option>REVIEWER</option> -->
 												</select>
@@ -122,6 +126,7 @@
 							</div>
 						</div>
 					</div>
+					</s:if>
 					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
 			           <div class="card">
 			              <div class="card-header">
@@ -339,8 +344,10 @@
 											<label>User Type</label> 
 											<select id="byUserType" class="form-control">
 												<option value="" selected> --- None --- </option>
-												<option> Candidate </option>
-												<option> Admin </option>
+												<s:if test="accessMap.get('M_SHOW_ADMIN_USERS')"><option> ADMIN </option></s:if>
+												<s:if test="accessMap.get('M_SHOW_EXAMINER_USERS')"><option> EXAMINER </option></s:if>
+												<s:if test="accessMap.get('M_SHOW_REVIEWER_USERS')"><option> REVIEWER </option></s:if>
+												<option> CANDIDATE </option>
 											</select>
 										</div>
 									</div>

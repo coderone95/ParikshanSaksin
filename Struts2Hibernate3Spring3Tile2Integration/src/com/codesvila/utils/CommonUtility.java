@@ -99,8 +99,8 @@ public class CommonUtility {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<UserBean> getUserProfileData(String queryId, List list, boolean isParamsAvailable) throws Exception{
-		return ApacheCommonsDBCP.DBCPDataSource(queryId,list,isParamsAvailable,null,null);
+	public static List<UserBean> getUserProfileData(String queryId, List list, boolean isParamsAvailable, Map<String, Object> paramMap) throws Exception{
+		return ApacheCommonsDBCP.DBCPDataSource(queryId,null,isParamsAvailable,paramMap,null);
 	}
 
 	@SuppressWarnings("unchecked")

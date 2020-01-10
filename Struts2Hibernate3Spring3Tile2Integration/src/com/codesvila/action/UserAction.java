@@ -129,6 +129,7 @@ public class UserAction extends BaseAction  {
 	}
 
 	public String execute() throws Exception{
+		LOG.info("UserAction ----------- execute()-------------- - start");
 		myData = "Test Data";
 		if(validateInputs()) {
 			users = CommonUtility.createUserBeanList(userService.getUserList());
@@ -144,23 +145,37 @@ public class UserAction extends BaseAction  {
 				er.setErrorMsg("User already exists!!");
 				er.setErrorFor("User Registration Failed");
 				errorMessagesList.add(er);
+				setErrorMsg("User already exists!!");
 			}else {
+				LOG.info("UserAction --- execute()-------------- - encrypting the pwd --- ");
 				String encryptedPwd = CryptUtils.encrypt(userBean.getPassword(), GlobalConstants.cipher_Key);
+				LOG.info("UserAction --- execute()-------------- - encrypting the pwd is DONE--- ");
 				userBean.setPassword(encryptedPwd);
-				userService.saveUser(CommonUtility.createUserModel(userBean));
-				userService.sendEmail("USER_REGISTRATION", userBean.getEmail_id(),CryptUtils.decrypt(userBean.getPassword(), GlobalConstants.cipher_Key));
-				SuccessMessages sm = new SuccessMessages();
-				sm.setSuccessMsg("User registered successfully!!!");
-				sm.setSuccessFor("User Registration");
-				successMessageList.add(sm);
-				setSuccessMsg("User added successfully!!");
+				int generatedID = userService.saveUser(CommonUtility.createUserModel(userBean));
+				if(generatedID > 0) {
+					userService.sendEmail("USER_REGISTRATION", userBean.getEmail_id(),CryptUtils.decrypt(userBean.getPassword(), GlobalConstants.cipher_Key));
+					SuccessMessages sm = new SuccessMessages();
+					sm.setSuccessMsg("User registered successfully!!!");
+					LOG.info("UserAction --- execute()-------------- - user registration successfully!, user id is "+ generatedID);
+					sm.setSuccessFor("User Registration");
+					successMessageList.add(sm);
+					setSuccessMsg("User added successfully!!");
+				}else {
+					ErrorMessages er = new ErrorMessages();
+					er.setErrorMsg("Error occured while user registering!!!");
+					er.setErrorFor("User Registration Failed");
+					errorMessagesList.add(er);
+					setErrorMsg("User Registration Failed!!");
+				}
+				
 			}
 		}
-				
+		LOG.info("UserAction ----------- execute()-------------- - end");
 		return "success";
 	}
 
 	public String updateProfile() throws Exception{
+		LOG.info("UserAction ----------- updateProfile()-------------- - start");
 		System.out.println("Password"+userBean.getPassword());
 		if(userBean.getPassword() != null && StringUtils.isNotBlank(userBean.getPassword())) {
 			String encryptedPwd = CryptUtils.encrypt(userBean.getPassword(), GlobalConstants.cipher_Key);
@@ -172,6 +187,7 @@ public class UserAction extends BaseAction  {
 		sm.setSuccessMsg("User updated successfully!!!");
 		sm.setSuccessFor("User Updattion");
 		successMessageList.add(sm);
+		LOG.info("UserAction ----------- updateProfile()-------------- - end");
 		return "success";
 	}
 	
@@ -186,9 +202,11 @@ public class UserAction extends BaseAction  {
 	
 	@SuppressWarnings("unchecked")
 	public String getUserInfo() throws Exception{
-		List list = new ArrayList();
-		list.add(emailId);
-		List<UserBean> userList = CommonUtility.getUserProfileData("GET_USER_PROFILE_DATA", list, true);
+		LOG.info("UserAction ----------- getUserInfo()-------------- - start");
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("email", emailId);
+		paramMap.put("userId", null);
+		List<UserBean> userList = CommonUtility.getUserProfileData("GET_USER_PROFILE_DATA", null,true,paramMap);
 				
 		if(userList != null) {
 			for(UserBean u : userList) {
@@ -199,10 +217,12 @@ public class UserAction extends BaseAction  {
 				break;// limits to 1 user
 			}
 		}
+		LOG.info("UserAction ----------- getUserInfo()-------------- - end");
 		return "success";
 	}
 	
 	public boolean validateInputs() {
+		LOG.info("UserAction ----------- validateInputs()-------------- - start");
 		if(! StringUtils.isNotBlank(userBean.getEmail_id()) || userBean.getEmail_id() == null) {
 			setErrorMsg("Please enter email address");
 			return false;
@@ -224,6 +244,7 @@ public class UserAction extends BaseAction  {
 				return false;
 			}
 		}
+		LOG.info("UserAction ----------- validateInputs()-------------- - end");
 		return true;
 	}
 

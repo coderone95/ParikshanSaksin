@@ -1,14 +1,23 @@
 package com.codesvila.report.action;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.codesvila.action.BaseAction;
 import com.codesvila.bean.UserBean;
 import com.codesvila.service.ReportService;
+import com.codesvila.utils.GlobalConstants;
 
-public class GetUsersExecuteReportAction {
+public class GetUsersExecuteReportAction extends BaseAction{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	private ReportService reportService;
 	
@@ -19,6 +28,7 @@ public class GetUsersExecuteReportAction {
 	private String phoneNumber;
 	private String emailId;
 	private String userType;
+	private String loggedInUserId;
 	private List<UserBean> userList = null;
 	/**
 	 * @return the userId
@@ -117,9 +127,36 @@ public class GetUsersExecuteReportAction {
 		this.userList = userList;
 	}
 	
+	/**
+	 * @return the loggedInUserId
+	 */
+	public String getLoggedInUserId() {
+		loggedInUserId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
+		return loggedInUserId;
+	}
+	/**
+	 * @param loggedInUserId the loggedInUserId to set
+	 */
+	public void setLoggedInUserId(String loggedInUserId) {
+		this.loggedInUserId = loggedInUserId;
+	}
 	public String getUserReport() throws Exception{
-		userList = reportService.getUserReport(startDate,
-				endDate,userName,phoneNumber,emailId,userType,userId);
+		List<String> NotAllowedToSearchList = new ArrayList<String>();
+		Map<String, Boolean> previlegeAccessMap = getAccessMap();
+		boolean hasAccessToShowAdminUsers = previlegeAccessMap.get(GlobalConstants.M_SHOW_ADMIN_USERS);
+		if(!hasAccessToShowAdminUsers)
+			NotAllowedToSearchList.add(GlobalConstants.ADMIN_USER_TYPE);
+		
+		boolean hasAccessToShowExaminerUsers = previlegeAccessMap.get(GlobalConstants.M_SHOW_EXAMINER_USERS);
+		if(!hasAccessToShowExaminerUsers)
+			NotAllowedToSearchList.add(GlobalConstants.EXAMINER_USER_TYPE);
+		
+		boolean hasAccessToShowReviewerUsers = previlegeAccessMap.get(GlobalConstants.M_SHOW_REVIEWER_USERS);
+		if(!hasAccessToShowReviewerUsers) 
+			NotAllowedToSearchList.add(GlobalConstants.REVIEWER_USER_TYPE);
+		
+		userList= reportService.getUserReport(startDate,
+				endDate,userName,phoneNumber,emailId,userType,userId,loggedInUserId,NotAllowedToSearchList);
 		return "success";
 	}
 

@@ -8,6 +8,7 @@
 		and { q.created_on between $[pStartDate] and $[pEndDate] } 
 		and { q.question_id in ($[pQuestionId])}
 		and { q.question like concat('%',$[pQuestionName], '%')}
+		order by q.created_on desc
 	</query>
 	<query id="GET_GROUPS_REPORT">
 		select group_id, group_name, created_on, created_by, updated_by, updated_on from tbl_groups
@@ -15,6 +16,7 @@
 		and { created_on between $[pStartDate] and $[pEndDate] } 
 		and { group_id in ($[pGroupId])}
 		and { group_name like concat('%',$[pGroupName], '%')}
+		order by created_on desc
 	</query>
 	<query id="GET_TESTS_REPORT">
 		select test_id, test_name, test_time,org_id, test_key, access_key, test_instructions, startOn, 
@@ -24,7 +26,7 @@
 		and { test_id in ($[pTestId])}
 		and { test_name like concat('%',$[pTestName], '%')}
 		and { test_key in ($[pTestKey])}
-		order by 1 desc
+		order by created_on desc
 	</query>
 	<query id="GET_USERS_REPORT">
 		select user_id, name, email_id, password, user_type, phone_number, is_deleted, is_disabled, created_on, updated_on from tbl_users
@@ -34,6 +36,8 @@
 		and { email_id in($[pEmailId]) }
 		and { user_type in($[pUserType]) }
 		and { phone_number in($[pPhoneNumber]) }
+		and { email_id NOT IN ($[pLoggedInUserId]) }
+		and { user_type NOT in($[pNotAllowedToSearchList]) }
 		order by created_on desc
 	</query>
 	

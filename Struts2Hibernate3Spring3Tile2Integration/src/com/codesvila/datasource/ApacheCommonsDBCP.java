@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import com.codesvila.action.DashboardManipulationBean;
 import com.codesvila.action.Generic;
 import com.codesvila.bean.AttendedTestDetailsBean;
+import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
 import com.codesvila.bean.QuestionsGroupBO;
@@ -29,6 +30,190 @@ import com.codesvila.utils.searches.SearchReport;
 
 public class ApacheCommonsDBCP {
 
+	public static Map getDataInMap(String queryId, List listObj, boolean isParamsAvailable) throws Exception {
+		DataSource ds = DBCPDataSourceFactory.getDataSource();
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			stmt = con.createStatement();
+			if (queryId.equals("GET_DASHBOARDS_CANDIDATE_COUNT")) {
+				StringBuilder params = new StringBuilder();
+				String query = null;
+				query = "select count(user_id) as totalCandidateCount, 0 as totalAdminCount, 0 as totalQuestionsCount from tbl_users where user_type in('CANDIDATE')";
+				System.out.println("Query :::" + query);
+				Map<String, String> map = new HashMap<String, String>();
+				rs = stmt.executeQuery(query);
+				DashboardManipulationBean counts = new DashboardManipulationBean();
+				if (rs != null) {
+					counts = ResultBeans.getDashboardCounts(rs);
+					if (counts != null) {
+						map.put("totalCandidateCount", counts.getTotalCandidateCount());
+					}
+				}
+				return map;
+			} else if (queryId.equals("GET_DASHBOARDS_ADMIN_COUNT")) {
+				StringBuilder params = new StringBuilder();
+				String query = null;
+				query = "select 0 as totalCandidateCount, count(user_id) as totalAdminCount, 0 as totalQuestionsCount from tbl_users where user_type in('ADMIN')";
+				System.out.println("Query :::" + query);
+				Map<String, String> map = new HashMap<String, String>();
+				rs = stmt.executeQuery(query);
+				DashboardManipulationBean counts = new DashboardManipulationBean();
+				if (rs != null) {
+					counts = ResultBeans.getDashboardCounts(rs);
+					if (counts != null) {
+						map.put("totalAdminCount", counts.getTotalAdminCount());
+					}
+				}
+				return map;
+			} else if (queryId.equals("GET_DASHBOARDS_QUESTIONS_COUNT")) {
+				StringBuilder params = new StringBuilder();
+				String query = null;
+				query = "select 0 as totalCandidateCount, 0 as totalAdminCount, count(1) as totalQuestionsCount from tbl_questions";
+				System.out.println("Query :::" + query);
+				Map<String, String> map = new HashMap<String, String>();
+				rs = stmt.executeQuery(query);
+				DashboardManipulationBean counts = new DashboardManipulationBean();
+				if (rs != null) {
+					counts = ResultBeans.getDashboardCounts(rs);
+					if (counts != null) {
+						map.put("totalQuestionsCount", counts.getTotalQuestionsCount());
+					}
+				}
+				return map;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	public static StringBuilder stringParams(List list) {
+		String commaSeperator = ",";
+		String stringSep = "'";
+		StringBuilder sb = new StringBuilder();
+		for (Object li : list) {
+			String temp = (String) li;
+			sb.append(stringSep);
+			sb.append(temp);
+			sb.append(stringSep);
+			int index = list.indexOf(li);
+			if (index != (list.size() - 1)) {
+				sb.append(commaSeperator);
+			}
+		}
+		return sb;
+	}
+
+	public static StringBuilder intParams(List list) {
+		String commaSeperator = ",";
+		StringBuilder sb = new StringBuilder();
+		for (Object li : list) {
+			Integer temp = (Integer) li;
+			sb.append(temp);
+			int index = list.indexOf(li);
+			if (index != (list.size() - 1)) {
+				sb.append(commaSeperator);
+			}
+		}
+		return sb;
+	}
+	
+	public static List CandidateDBCPDataSource(String queryId,boolean isParamsAvailable,
+			Map<String, Object> paramMap) throws Exception {
+		DataSource ds = DBCPDataSourceFactory.getDataSource();
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			stmt = con.createStatement();
+			if (queryId.equals("GET_ALL_TEST_KEY_ACCESS_INFO")) {
+				StringBuilder params = new StringBuilder();
+				String query = null;
+				query = "select test_id, test_key, access_key, test_instructions from tbl_tests";
+				System.out.println("Query :::" + query);
+				List<TestAuthBean> testKeysAndAccess = new ArrayList<TestAuthBean>();
+				rs = stmt.executeQuery(query);
+				if (rs != null) {
+					testKeysAndAccess = ResultBeans.generateResultForGettingKeysAndAccess(rs); 
+				}
+				return testKeysAndAccess;
+			}else if (queryId.equals("GET_TEST_GROUP_NO_OF_QUESTIONS_COUNT")) {
+				StringBuilder params = new StringBuilder();
+				Integer testID = (Integer) paramMap.get("testID");
+				String query = null;
+				query = "select g.group_id, g.group_name, count(1) as totalQuestions from tbl_questions_group qg inner join tbl_groups g on g.group_id = qg.group_id where qg.group_id in "
+						+ "(select group_id from (select t.test_id, t.test_name, t.test_time, gt.group_id from tbl_tests t inner join tbl_groups_test gt on t.test_id = gt.test_id ) temp12 "
+						+ "where test_id in ("+testID+") ) group by qg.group_id";
+				System.out.println("Query :::" + query);
+				List<GroupBO> GroupsAndNoOfQuestions = new ArrayList<GroupBO>();
+				rs = stmt.executeQuery(query);
+				if (rs != null) {
+					GroupsAndNoOfQuestions = ResultBeans.generateResultForGroupsAndNoOfQuestions(rs); 
+				}
+				return GroupsAndNoOfQuestions;
+				
+			}else if (queryId.equals("GET_TEST_NAME_AND_TIME")) {
+				StringBuilder params = new StringBuilder();
+				Integer testID = (Integer) paramMap.get("testID");
+				String query = null;
+				query = "select test_name, test_time from tbl_tests where test_id in ("+testID+")";
+				System.out.println("Query :::" + query);
+				List<TestBO> testInfo = new ArrayList<TestBO>();
+				rs = stmt.executeQuery(query);
+				if (rs != null) {
+					testInfo = ResultBeans.generateResultForGetTestNameAndTime(rs); 
+				}
+				return testInfo;
+			}else if(queryId.equals("GET_ALL_ATTENDED_TEST_DETAILS")) {
+				String query = null;
+//				query = "select id, test_id, org_id, user_id, test_started_time, test_ended_time,attempted,max_attempt from tbl_attended_test_details";
+				query = "select atd.id, atd.test_id, atd.org_id, t.test_key, atd.user_id, atd.test_started_time, atd.test_ended_time,atd.attempted,atd.max_attempt "
+						+ "from tbl_attended_test_details atd " + 
+						"inner join tbl_tests t on t.test_id = atd.test_id ";
+				System.out.println("Query :::" + query);
+				List<AttendedTestDetailsBean> testInfo = new ArrayList<AttendedTestDetailsBean>();
+				rs = stmt.executeQuery(query);
+				if (rs != null) {
+					testInfo = ResultBeans.generateResultForgetAllAttendedTestDetails(rs); 
+				}
+				return testInfo;
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
 	@SuppressWarnings("unused")
 	public static List DBCPDataSource(String queryId, List listObj, boolean isParamsAvailable,
 			Map<String, Object> paramMap, Integer singleParam) throws Exception {
@@ -72,17 +257,26 @@ public class ApacheCommonsDBCP {
 				}
 				return ub;
 			} else if (queryId.equals("GET_USER_PROFILE_DATA")) {
-				StringBuilder email = new StringBuilder();
-				if (listObj != null) {
-					email = stringParams(listObj);
-				}
+
 				Map<String, ParamBO> myparamBO = new HashMap<String,ParamBO>();
+				
+				String email = (String) paramMap.get("email");
+				Integer userId = (Integer) paramMap.get("userId");
+				
 				ParamBO pEmailId = new ParamBO();
 				pEmailId.setParamName("pEmailId");
-				pEmailId.setParamType("List");
+				pEmailId.setParamType("SingleParamElement");
 				pEmailId.setParamreturnType("String");
-				pEmailId.setParamValue(listObj);
+				pEmailId.setParamValue(email);
+				
+				ParamBO pUserId = new ParamBO();
+				pUserId.setParamName("pUserId");
+				pUserId.setParamType("SingleParamElement");
+				pUserId.setParamreturnType("Integer");
+				pUserId.setParamValue(userId);
+				
 				myparamBO.put("pEmailId", pEmailId);
+				myparamBO.put("pUserId", pUserId);
 				QueryMapperBO qmbo = SearchReport.getQuery("GET_USER_PROFILE_DATA","QueryMapper",myparamBO);
 //				System.out.println("Query from qmbo \t\t\t:::::"+ qmbo.getQuery());
 				System.out.println("emails " + email);
@@ -90,11 +284,12 @@ public class ApacheCommonsDBCP {
 				//System.out.println("Query :::" + query);
 
 				if (qmbo.getQuery() != null) {
-					data = generic.nativeSQLQueryList(qmbo.getQuery());
+//					data = generic.nativeSQLQueryList(qmbo.getQuery());
+					rs = stmt.executeQuery(qmbo.getQuery());
 				}
 				List<UserBean> ub = new ArrayList<UserBean>();
-				if (data != null) {
-					ub = ResultBeans.generateResultUserBean(data);
+				if (rs != null) {
+					ub = ResultBeans.generateResultUserBean(rs);
 				}
 				return ub;
 			} else if (queryId.equals("GET_MASTER_USER_DETAILS")) {
@@ -567,6 +762,8 @@ public class ApacheCommonsDBCP {
 				Integer userId = (Integer) paramMap.get("userId");
 				String emailId = (String) paramMap.get("emailId");
 				String userType = (String) paramMap.get("userType");
+				String loggedInUserId = (String) paramMap.get("loggedInUserId");
+				List<String> notAllowedToSearchList = (List<String>) paramMap.get("notAllowedToSearchList");
 				
 				ParamBO pStartDate = new ParamBO();
 				pStartDate.setParamName("pStartDate");
@@ -610,6 +807,20 @@ public class ApacheCommonsDBCP {
 				pUserType.setParamType("SingleParamElement");
 				pUserType.setParamreturnType("String");
 				pUserType.setParamValue(userType);
+				
+				ParamBO pLoggedInUserId = new ParamBO();
+				pLoggedInUserId.setParamName("pLoggedInUserId");
+				pLoggedInUserId.setParamType("SingleParamElement");
+				pLoggedInUserId.setParamreturnType("String");
+				pLoggedInUserId.setParamValue(loggedInUserId);
+				
+				
+				ParamBO pNotAllowedToSearchList = new ParamBO();
+				pNotAllowedToSearchList.setParamName("pNotAllowedToSearchList");
+				pNotAllowedToSearchList.setParamType("List");
+				pNotAllowedToSearchList.setParamreturnType("String");
+				pNotAllowedToSearchList.setParamValue(notAllowedToSearchList);
+				
 
 				mymap.put("pStartDate", pStartDate);
 				mymap.put("pEndDate", pEndDate);
@@ -618,6 +829,8 @@ public class ApacheCommonsDBCP {
 				mymap.put("pUserId", pUserId);
 				mymap.put("pEmailId", pEmailId);
 				mymap.put("pUserType", pUserType);
+				mymap.put("pLoggedInUserId", pLoggedInUserId);
+				mymap.put("pNotAllowedToSearchList", pNotAllowedToSearchList);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
 				System.out.println("QueryMapperBO qmbo : GET_USERS_REPORT \n\n" + qmbo.getQuery());
 				query = qmbo.getQuery();
@@ -629,191 +842,37 @@ public class ApacheCommonsDBCP {
 					ub = ResultBeans.generateResultUserBean(rs);
 				}
 				return ub;
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-
-	public static Map getDataInMap(String queryId, List listObj, boolean isParamsAvailable) throws Exception {
-		DataSource ds = DBCPDataSourceFactory.getDataSource();
-		Connection con = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = ds.getConnection();
-			stmt = con.createStatement();
-			if (queryId.equals("GET_DASHBOARDS_CANDIDATE_COUNT")) {
-				StringBuilder params = new StringBuilder();
+			}else if(queryId.equals("GET_ALL_ACCESS_RIGHTS_INFO")) {
 				String query = null;
-				query = "select count(user_id) as totalCandidateCount, 0 as totalAdminCount, 0 as totalQuestionsCount from tbl_users where user_type in('CANDIDATE')";
-				System.out.println("Query :::" + query);
-				Map<String, String> map = new HashMap<String, String>();
-				rs = stmt.executeQuery(query);
-				DashboardManipulationBean counts = new DashboardManipulationBean();
-				if (rs != null) {
-					counts = ResultBeans.getDashboardCounts(rs);
-					if (counts != null) {
-						map.put("totalCandidateCount", counts.getTotalCandidateCount());
-					}
-				}
-				return map;
-			} else if (queryId.equals("GET_DASHBOARDS_ADMIN_COUNT")) {
-				StringBuilder params = new StringBuilder();
-				String query = null;
-				query = "select 0 as totalCandidateCount, count(user_id) as totalAdminCount, 0 as totalQuestionsCount from tbl_users where user_type in('ADMIN')";
-				System.out.println("Query :::" + query);
-				Map<String, String> map = new HashMap<String, String>();
-				rs = stmt.executeQuery(query);
-				DashboardManipulationBean counts = new DashboardManipulationBean();
-				if (rs != null) {
-					counts = ResultBeans.getDashboardCounts(rs);
-					if (counts != null) {
-						map.put("totalAdminCount", counts.getTotalAdminCount());
-					}
-				}
-				return map;
-			} else if (queryId.equals("GET_DASHBOARDS_QUESTIONS_COUNT")) {
-				StringBuilder params = new StringBuilder();
-				String query = null;
-				query = "select 0 as totalCandidateCount, 0 as totalAdminCount, count(1) as totalQuestionsCount from tbl_questions";
-				System.out.println("Query :::" + query);
-				Map<String, String> map = new HashMap<String, String>();
-				rs = stmt.executeQuery(query);
-				DashboardManipulationBean counts = new DashboardManipulationBean();
-				if (rs != null) {
-					counts = ResultBeans.getDashboardCounts(rs);
-					if (counts != null) {
-						map.put("totalQuestionsCount", counts.getTotalQuestionsCount());
-					}
-				}
-				return map;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-
-	public static StringBuilder stringParams(List list) {
-		String commaSeperator = ",";
-		String stringSep = "'";
-		StringBuilder sb = new StringBuilder();
-		for (Object li : list) {
-			String temp = (String) li;
-			sb.append(stringSep);
-			sb.append(temp);
-			sb.append(stringSep);
-			int index = list.indexOf(li);
-			if (index != (list.size() - 1)) {
-				sb.append(commaSeperator);
-			}
-		}
-		return sb;
-	}
-
-	public static StringBuilder intParams(List list) {
-		String commaSeperator = ",";
-		StringBuilder sb = new StringBuilder();
-		for (Object li : list) {
-			Integer temp = (Integer) li;
-			sb.append(temp);
-			int index = list.indexOf(li);
-			if (index != (list.size() - 1)) {
-				sb.append(commaSeperator);
-			}
-		}
-		return sb;
-	}
-	
-	public static List CandidateDBCPDataSource(String queryId,boolean isParamsAvailable,
-			Map<String, Object> paramMap) throws Exception {
-		DataSource ds = DBCPDataSourceFactory.getDataSource();
-		Connection con = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = ds.getConnection();
-			stmt = con.createStatement();
-			if (queryId.equals("GET_ALL_TEST_KEY_ACCESS_INFO")) {
-				StringBuilder params = new StringBuilder();
-				String query = null;
-				query = "select test_id, test_key, access_key, test_instructions from tbl_tests";
-				System.out.println("Query :::" + query);
-				List<TestAuthBean> testKeysAndAccess = new ArrayList<TestAuthBean>();
-				rs = stmt.executeQuery(query);
-				if (rs != null) {
-					testKeysAndAccess = ResultBeans.generateResultForGettingKeysAndAccess(rs); 
-				}
-				return testKeysAndAccess;
-			}else if (queryId.equals("GET_TEST_GROUP_NO_OF_QUESTIONS_COUNT")) {
-				StringBuilder params = new StringBuilder();
-				Integer testID = (Integer) paramMap.get("testID");
-				String query = null;
-				query = "select g.group_id, g.group_name, count(1) as totalQuestions from tbl_questions_group qg inner join tbl_groups g on g.group_id = qg.group_id where qg.group_id in "
-						+ "(select group_id from (select t.test_id, t.test_name, t.test_time, gt.group_id from tbl_tests t inner join tbl_groups_test gt on t.test_id = gt.test_id ) temp12 "
-						+ "where test_id in ("+testID+") ) group by qg.group_id";
-				System.out.println("Query :::" + query);
-				List<GroupBO> GroupsAndNoOfQuestions = new ArrayList<GroupBO>();
-				rs = stmt.executeQuery(query);
-				if (rs != null) {
-					GroupsAndNoOfQuestions = ResultBeans.generateResultForGroupsAndNoOfQuestions(rs); 
-				}
-				return GroupsAndNoOfQuestions;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				Integer userId = (Integer) paramMap.get("userId");
+				String userType = (String) paramMap.get("userType");
 				
-			}else if (queryId.equals("GET_TEST_NAME_AND_TIME")) {
-				StringBuilder params = new StringBuilder();
-				Integer testID = (Integer) paramMap.get("testID");
-				String query = null;
-				query = "select test_name, test_time from tbl_tests where test_id in ("+testID+")";
-				System.out.println("Query :::" + query);
-				List<TestBO> testInfo = new ArrayList<TestBO>();
-				rs = stmt.executeQuery(query);
+				ParamBO pUserId = new ParamBO();
+				pUserId.setParamName("pUserId");
+				pUserId.setParamType("SingleParamElement");
+				pUserId.setParamreturnType("Integer");
+				pUserId.setParamValue(userId);
+				
+				ParamBO pUserType = new ParamBO();
+				pUserType.setParamName("pUserType");
+				pUserType.setParamType("SingleParamElement");
+				pUserType.setParamreturnType("String");
+				pUserType.setParamValue(userType);
+
+				mymap.put("pUserId", pUserId);
+				mymap.put("pUserType", pUserType);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
+				System.out.println("QueryMapperBO qmbo : GET_ALL_ACCESS_RIGHTS_INFO \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<FunctionalityBO> qi = new ArrayList<FunctionalityBO>();
 				if (rs != null) {
-					testInfo = ResultBeans.generateResultForGetTestNameAndTime(rs); 
+					qi = ResultBeans.generateResultForGetAllAccessRightsInfo(rs);
 				}
-				return testInfo;
-			}else if(queryId.equals("GET_ALL_ATTENDED_TEST_DETAILS")) {
-				String query = null;
-//				query = "select id, test_id, org_id, user_id, test_started_time, test_ended_time,attempted,max_attempt from tbl_attended_test_details";
-				query = "select atd.id, atd.test_id, atd.org_id, t.test_key, atd.user_id, atd.test_started_time, atd.test_ended_time,atd.attempted,atd.max_attempt "
-						+ "from tbl_attended_test_details atd " + 
-						"inner join tbl_tests t on t.test_id = atd.test_id ";
-				System.out.println("Query :::" + query);
-				List<AttendedTestDetailsBean> testInfo = new ArrayList<AttendedTestDetailsBean>();
-				rs = stmt.executeQuery(query);
-				if (rs != null) {
-					testInfo = ResultBeans.generateResultForgetAllAttendedTestDetails(rs); 
-				}
-				return testInfo;
+				return qi;
 			}
-			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -831,5 +890,4 @@ public class ApacheCommonsDBCP {
 		}
 		return null;
 	}
-
 }

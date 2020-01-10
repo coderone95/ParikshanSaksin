@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.codesvila.bean.UserBean;
 import com.codesvila.datasource.ApacheCommonsDBCP;
 import com.codesvila.service.UserService;
+import com.codesvila.utils.GlobalConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class AdminUserListAction extends ActionSupport {
+public class AdminUserListAction extends BaseAction {
 	
 	/**
 	 * 
@@ -19,6 +20,7 @@ public class AdminUserListAction extends ActionSupport {
 	private List<UserBean> userList = null;
 	
 	private String userId;
+	private String loginId;
 	
 	@Autowired
 	private UserService userService;
@@ -42,6 +44,7 @@ public class AdminUserListAction extends ActionSupport {
 
 
 	public String execute() {
+		loginId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
 		return "success";
 	}
 	
@@ -68,6 +71,20 @@ public class AdminUserListAction extends ActionSupport {
 		ub.setIs_disabled(0);
 		userService.disableEnableUser(userId,ub);
 		return "success";
+	}
+
+	/**
+	 * @return the loginId
+	 */
+	public String getLoginId() {
+		return loginId;
+	}
+
+	/**
+	 * @param loginId the loginId to set
+	 */
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
 
 

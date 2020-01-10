@@ -6,10 +6,11 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.codesvila.action.BaseAction;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.service.ReportService;
 
-public class GetQuestionsExecuteReportAction {
+public class GetQuestionsExecuteReportAction extends BaseAction{
 	
 	@Autowired
 	private ReportService reportService;

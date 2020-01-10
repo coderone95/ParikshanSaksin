@@ -75,7 +75,7 @@ public class ReportDAOImpl implements ReportDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserBean> getUserReport(String startDate, String endDate, String userName, String phoneNumber,
-			String emailId, String userType, Integer userId) throws Exception {
+			String emailId, String userType, Integer userId, String loggedInUserId, List<String> notAllowedToSearchList) throws Exception {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("startDate", startDate);
 		paramMap.put("endDate", endDate);
@@ -83,6 +83,8 @@ public class ReportDAOImpl implements ReportDAO{
 		paramMap.put("phoneNumber", phoneNumber);
 		paramMap.put("emailId", emailId);
 		paramMap.put("userType", userType);
+		paramMap.put("loggedInUserId", loggedInUserId);
+		paramMap.put("notAllowedToSearchList", notAllowedToSearchList);
 		if(userId == 0) {
 			paramMap.put("userId", null);
 		}else {

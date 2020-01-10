@@ -43,9 +43,9 @@ public class ReportServiceImpl implements ReportService{
 
 	@Override
 	public List<UserBean> getUserReport(String startDate, String endDate, String userName, String phoneNumber,
-			String emailId, String userType, Integer userId) throws Exception {
+			String emailId, String userType, Integer userId, String loggedInUserId, List<String> notAllowedToSearchList) throws Exception {
 		// TODO Auto-generated method stub
-		return reportDao.getUserReport(startDate,endDate,userName,phoneNumber,emailId,userType,userId);
+		return reportDao.getUserReport(startDate,endDate,userName,phoneNumber,emailId,userType,userId,loggedInUserId,notAllowedToSearchList);
 	}
 	
 }
