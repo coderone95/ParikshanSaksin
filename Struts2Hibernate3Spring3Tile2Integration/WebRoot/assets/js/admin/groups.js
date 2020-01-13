@@ -301,8 +301,16 @@ var isAlreadyChecked = false;
 						str=str+'<td class="text-nowrap">'+updatedBy+'</td>';
 						str=str+'<td class="text-nowrap">'+createdOn+'</td>';
 						str=str+'<td class="text-nowrap">'+updatedOn+'</td>';
-						str=str+'<td class="text-nowrap"><i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>'
-									+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i></td>';
+						str=str+'<td class="text-nowrap">';
+						if(itr.hasGroupDeleteAccess == false && itr.hasGroupEditAccess == false){
+							str=str+'NO ACCESS';
+						}else{
+							if(itr.hasGroupDeleteAccess == true)
+								str=str+'<i class="fa fa-trash delete text-danger" onclick="deleteGroup('+groupID+');"></i>';
+							if(itr.hasGroupEditAccess == true)
+								str=str+'<i class="fa fa-pencil edit text-primary" onclick="updateGroup('+groupID+',\''+groupName+'\');"></i>';
+						}
+						str=str+'</td>';
 						str=str+'</tr>';
 						$('#groups-table-body').append(str);
 					}

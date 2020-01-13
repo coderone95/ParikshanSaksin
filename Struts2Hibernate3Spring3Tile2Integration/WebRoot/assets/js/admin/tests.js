@@ -406,13 +406,21 @@ function applyTestsFilter(flag){
 						str=str+'<td class="text-nowrap">'+testName+'</td>';
 						str=str+'<td class="text-nowrap">'+testKey+'</td>';
 						str=str+'<td class="text-nowrap"><input type="password" class="access-key-value" id="access-key-'+testID+'" value="'+accessKey+'" /><i class="fa fa-eye" onclick="toggleShow(this,'+testID+');"></i></td>';
-						str=str+'<td class="text-nowrap">'+liveRes+'</td>';
+//						str=str+'<td class="text-nowrap">'+liveRes+'</td>';
 						str=str+'<td class="text-nowrap">'+createdOn+'</td>';
 						str=str+'<td class="text-nowrap">'+updatedOn+'</td>';
 						str=str+'<td class="text-nowrap">'+createdBy+'</td>';
 						str=str+'<td class="text-nowrap">'+uddatedBy+'</td>';
-						str=str+'<td class="text-nowrap"><i class="fa fa-trash text-danger delete" onclick="deleteThisTest('+testID+');"></i>'
-						+'<i class="fa fa-pencil text-primary edit" onclick="updateTheTest('+testID+',\''+testName+'\');"></i></td>';
+						str=str+'<td class="text-nowrap">';
+						if(itr.hasTestEditAccess == false && itr.hasTestDeleteAccess == false){
+							str=str+'NO ACTION';
+						}else{
+							if(itr.hasTestDeleteAccess == true)
+								str=str+'<i class="fa fa-trash text-danger delete" onclick="deleteThisTest('+testID+');"></i>';
+							if(itr.hasTestEditAccess == true)
+								str=str+'<i class="fa fa-pencil text-primary edit" onclick="updateTheTest('+testID+',\''+testName+'\');"></i>';
+						}
+						str=str+'</td>';
 						str=str+'</tr>';
 						$("#tests-table-body").append(str);
 				}

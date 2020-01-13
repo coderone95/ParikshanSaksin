@@ -352,7 +352,6 @@ $(document).ready(function(){
 						var ans = itr.questionInfo[i].answer;
 						var createdBy = itr.questionInfo[i].question_createdBy;
 						var updatedBy = itr.questionInfo[i].question_updatedBy;
-						
 //						str += '<tr><th scope="row"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></th>'
 //							+'<td>'+question+'</td>'
 //							//+'<td>'+ans+'</td>'
@@ -362,10 +361,19 @@ $(document).ready(function(){
 //							+'</tr>';
 						var str = '<tr>';
 						str=str+'<td class="text-nowrap"><a href="#" onclick="showQuestionDetails('+queID+');">'+queID+'</a></td>';
-						str=str+'<td class="text-nowrap">'+question+'</td>';
+						str=str+'<td class="text-nowrap">'+question.substring(0,10)+ '...'+'</td>';
 						str=str+'<td class="text-nowrap">'+createdBy+'</td>';
 						str=str+'<td class="text-nowrap">'+updatedBy+'</td>';
-						str=str+'<td class="text-nowrap"><i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i><i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i></td>';
+						str=str+'<td class="text-nowrap">';
+						if(itr.hasQuestionDeleteAccess == false &&  itr.hasQuestionEditAccess == false){
+							str=str+'No ACTION';
+						}else{
+							if(itr.hasQuestionDeleteAccess == true)
+								str=str+'<i class="fa fa-trash delete text-danger" onclick="deleteThis('+queID+');"></i>';
+							if(itr.hasQuestionEditAccess == true)
+								str=str+'<i class="fa fa-pencil edit text-primary" onclick="updateQuestion('+queID+');"></i>';
+						}
+						str=str+'</td>';
 						str=str+'</tr>';
 						$('#questions-table-body').append(str);
 					}
@@ -377,9 +385,11 @@ $(document).ready(function(){
 						"ordering": true,
 						"info":     true,
 						"searching": true,
-						"destroy": true
+						"destroy": true,
+					    'colReorder': {
+					        'allowReorder': false
+					    }
 				    } );
-					
 					$('.questions-table-loader').hide();
 
 				}else{
@@ -402,11 +412,3 @@ $(document).ready(function(){
 		  return day+'-'+monthIndex+'-'+year;
 		}
 	
-	
-	
-	var doc = new jsPDF();
-	var specialElementHandlers = {
-	    '#editor': function (element, renderer) {
-	        return true;
-	    }
-	};
