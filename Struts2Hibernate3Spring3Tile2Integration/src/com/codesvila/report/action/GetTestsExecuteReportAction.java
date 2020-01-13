@@ -1,12 +1,14 @@
 package com.codesvila.report.action;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.codesvila.action.BaseAction;
 import com.codesvila.bean.TestBO;
 import com.codesvila.service.ReportService;
+import com.codesvila.utils.GlobalConstants;
 
 public class GetTestsExecuteReportAction extends BaseAction{
 	
@@ -21,6 +23,8 @@ public class GetTestsExecuteReportAction extends BaseAction{
 	private String testName;
 	private String testKey;
 	private List<TestBO> testList ;
+	private boolean hasTestEditAccess;
+	private boolean hasTestDeleteAccess;
 	
 	/**
 	 * @return the startDate
@@ -101,7 +105,34 @@ public class GetTestsExecuteReportAction extends BaseAction{
 	public void setTestKey(String testKey) {
 		this.testKey = testKey;
 	}
+	/**
+	 * @return the hasTestEditAccess
+	 */
+	public boolean isHasTestEditAccess() {
+		return hasTestEditAccess;
+	}
+	/**
+	 * @param hasTestEditAccess the hasTestEditAccess to set
+	 */
+	public void setHasTestEditAccess(boolean hasTestEditAccess) {
+		this.hasTestEditAccess = hasTestEditAccess;
+	}
+	/**
+	 * @return the hasTestDeleteAccess
+	 */
+	public boolean isHasTestDeleteAccess() {
+		return hasTestDeleteAccess;
+	}
+	/**
+	 * @param hasTestDeleteAccess the hasTestDeleteAccess to set
+	 */
+	public void setHasTestDeleteAccess(boolean hasTestDeleteAccess) {
+		this.hasTestDeleteAccess = hasTestDeleteAccess;
+	}
 	public String getTestReport() throws Exception{
+		Map<String,Boolean> accessListMap = getAccessMap();
+		hasTestEditAccess = accessListMap.get(GlobalConstants.M_EDIT_TEST);
+		hasTestDeleteAccess = accessListMap.get(GlobalConstants.M_DELETE_TEST);
 		testList = reportService.getTestReport(startDate,
 				endDate,createdBy,testName,testId,testKey);
 		return "success";

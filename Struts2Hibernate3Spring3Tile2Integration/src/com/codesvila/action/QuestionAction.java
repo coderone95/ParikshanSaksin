@@ -232,7 +232,7 @@ public class QuestionAction extends BaseAction{
 			errorMsg = "Question is mandatory";
 			return "success";
 		}
-		System.out.println("option 1 : : " + myoptions.get("" + correctOption));
+		LOG.info("option 1 : : " + myoptions.get("" + correctOption));
 		boolean isAlreadyExists = false;
 		questionInfo = ApacheCommonsDBCP.DBCPDataSource("GET_ALL_QUESTIONS", null, false, null,null);
 		if (questionInfo != null) {
@@ -246,7 +246,7 @@ public class QuestionAction extends BaseAction{
 		if (!isAlreadyExists) {
 			QuestionBO qbo = createTestBO();
 			int generatedID = testService.saveQuestion(CommonUtility.createQuestionModel(qbo));
-			System.out.println("generatedID : " + generatedID);
+			LOG.info("generatedID : " + generatedID);
 			if (generatedID > 0) {
 				boolean isAdded = addOption(generatedID);
 				if (isAdded) {
@@ -273,7 +273,7 @@ public class QuestionAction extends BaseAction{
 	}
 
 	public boolean addOption(int questionID) {
-		// System.out.println("We are in addOptions");
+		// LOG.info("We are in addOptions");
 		boolean isAdded = false;
 		for (String option : optionList) {
 			OptionsBO opBO = new OptionsBO();
@@ -284,11 +284,11 @@ public class QuestionAction extends BaseAction{
 			if (correctOption != null && option.equals(myoptions.get("" + correctOption))) {
 				opBO.setIsCorrect(1);
 			}
-			System.out.println("opBO.setIsCorrect: " + opBO.getIsCorrect());
+			LOG.info("opBO.setIsCorrect: " + opBO.getIsCorrect());
 			int generatedID = testService.saveOption(CommonUtility.createOptionModel(opBO));
-			System.out.println("Options id : " + generatedID);
+			LOG.info("Options id : " + generatedID);
 			if (generatedID > 0) {
-				System.out.println("Option " + option + " inserted");
+				LOG.info("Option " + option + " inserted");
 				isAdded = true;
 			}
 		}

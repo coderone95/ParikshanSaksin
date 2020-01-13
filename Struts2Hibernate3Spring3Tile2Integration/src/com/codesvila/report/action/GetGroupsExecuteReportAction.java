@@ -1,13 +1,14 @@
 package com.codesvila.report.action;
 
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.codesvila.action.BaseAction;
 import com.codesvila.bean.GroupBO;
 import com.codesvila.service.ReportService;
+import com.codesvila.utils.GlobalConstants;
 
 public class GetGroupsExecuteReportAction extends BaseAction{
 	
@@ -20,6 +21,8 @@ public class GetGroupsExecuteReportAction extends BaseAction{
 	private String createdBy;
 	private String groupName;
 	private List<GroupBO> groupList;
+	private boolean hasGroupEditAccess;
+	private boolean hasGroupDeleteAccess;
 	/**
 	 * @return the startDate
 	 */
@@ -93,6 +96,30 @@ public class GetGroupsExecuteReportAction extends BaseAction{
 		this.groupList = groupList;
 	}
 	
+	/**
+	 * @return the hasGroupEditAccess
+	 */
+	public boolean isHasGroupEditAccess() {
+		return hasGroupEditAccess;
+	}
+	/**
+	 * @param hasGroupEditAccess the hasGroupEditAccess to set
+	 */
+	public void setHasGroupEditAccess(boolean hasGroupEditAccess) {
+		this.hasGroupEditAccess = hasGroupEditAccess;
+	}
+	/**
+	 * @return the hasGroupDeleteAccess
+	 */
+	public boolean isHasGroupDeleteAccess() {
+		return hasGroupDeleteAccess;
+	}
+	/**
+	 * @param hasGroupDeleteAccess the hasGroupDeleteAccess to set
+	 */
+	public void setHasGroupDeleteAccess(boolean hasGroupDeleteAccess) {
+		this.hasGroupDeleteAccess = hasGroupDeleteAccess;
+	}
 	public String getGroupReport() throws Exception{
 //		if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
 //			startDate = startDate+".000";
@@ -100,6 +127,9 @@ public class GetGroupsExecuteReportAction extends BaseAction{
 //		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
 //			endDate = endDate+".000";
 //		}
+		Map<String,Boolean> accessListMap = getAccessMap();
+		hasGroupEditAccess = accessListMap.get(GlobalConstants.M_EDIT_GROUP);
+		hasGroupDeleteAccess = accessListMap.get(GlobalConstants.M_DELETE_GROUP);
 		groupList = reportService.getGroupReport(startDate,
 				endDate,createdBy,groupName,groupId);
 		

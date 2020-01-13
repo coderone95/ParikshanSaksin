@@ -132,6 +132,7 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 
 	@SuppressWarnings("unchecked")
 	public String execute() throws Exception {
+		LOG.info("LoginAction----execute():----- User creating --- start");
 		boolean isUserPresent = false;
 		users = CommonUtility.createUserBeanList(userService.getUserList());
 		removeSessionValues();
@@ -142,6 +143,7 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 			loggedInUserName = u.getName();
 			if(u.getIs_disabled() == 1 && u.getEmail_id().equalsIgnoreCase(userBean.getEmail_id())) {
 				isUserPresent = true;
+				LOG.warn("User is BLOCKED!!!");
 				ErrorMessages er = new ErrorMessages();
 				er.setErrorMsg("User is blocked");
 				er.setErrorFor("user blocked");
@@ -161,12 +163,16 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 					}
 				}
 				if(isManagementUser == 1) {
-					System.out.println("Management User");
+//					System.out.println("Management User");
+					LOG.info("LoginAction----execute():Management User");
 					setSessionValues(u);
+					LOG.info("LoginAction----execute():----- User creating --- end");
 					return ADM;	
 				}else {
-					System.out.println("Candidate User");
+//					System.out.println("Candidate User");
+					LOG.info("LoginAction----execute():Candidate User");
 					setSessionValues(u);
+					LOG.info("LoginAction----execute():----- User creating --- end");
 					return STD;
 				}
 			}
@@ -177,8 +183,10 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 			er.setErrorMsg("Invalid username or password");
 			er.setErrorFor("login failed");
 			errorMessagesList.add(er);
+			LOG.info("LoginAction----execute():----- User creating --- end");
 			return "failure";
 		}
+		LOG.info("LoginAction----execute():----- User creating --- end");
 		return "failure";
 	}
 	

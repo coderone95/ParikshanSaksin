@@ -70,6 +70,9 @@ public class GlobalConstants {
 	public static final String M_EDIT_QUESTION = "M_EDIT_QUESTION";
 	public static final String M_DELETE_QUESTION = "M_DELETE_QUESTION";
 	
+	public static final String M_ADD_QUESTIONS_TO_GROUP = "M_ADD_QUESTIONS_TO_GROUP";
+	public static final String M_SHOW_ADDED_QUESTIONS_TO_GROUP = "M_SHOW_ADDED_QUESTIONS_TO_GROUP";
+	public static final String M_DELETE_QUESTIONS_FROM_GROUP = "M_DELETE_QUESTIONS_FROM_GROUP";
 	
 //	
 //	ADMIN_USER
@@ -98,7 +101,14 @@ public class GlobalConstants {
 //	 M_ADD_QUESTION
 //	 M_EDIT_QUESTION
 //	 M_DELETE_QUESTION
+	//_________
+//	M_ADD_QUESTIONS_TO_GROUP
+//	M_SHOW_ADDED_QUESTIONS_TO_GROUP
+//	M_DELETE_QUESTIONS_FROM_GROUP
 //
+	
+	
+	
 //EXAMINER_USER
 //
 //	 M_DASHBOARD_PAGE
@@ -124,6 +134,9 @@ public class GlobalConstants {
 //	 M_EDIT_QUESTION
 //	 M_DELETE_QUESTION
 //
+	//M_ADD_QUESTIONS_TO_GROUP
+//	M_SHOW_ADDED_QUESTIONS_TO_GROUP
+//	M_DELETE_QUESTIONS_FROM_GROUP
 //
 //REVIEWER_USER
 //

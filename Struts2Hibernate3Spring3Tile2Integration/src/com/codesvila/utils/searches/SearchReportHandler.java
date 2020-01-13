@@ -36,7 +36,7 @@ public class SearchReportHandler {
 					for(String  matchedParam: matchedParamList) {
 						//System.out.println("Matched Param String" + matchedParam);
 						if (matchedParam.equals(pmBo.getParamName())) {
-							System.out.println("Matched");
+//							System.out.println("Matched");
 							if (pmBo.getParamValue() != null) {
 								if (pmBo.getParamType().equals("SingleParamElement")) {
 									sb.append("$[");

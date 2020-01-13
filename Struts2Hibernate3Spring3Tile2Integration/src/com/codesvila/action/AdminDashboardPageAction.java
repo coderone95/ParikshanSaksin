@@ -29,7 +29,7 @@ public class AdminDashboardPageAction extends BaseAction{
 	Map<String,String> adminCountMap = new HashMap<String,String>();
 	
 	Map<String,String> questionsCountMap = new HashMap<String,String>();
-	
+	private String name;
 	
 	public Map<String, String> getQuestionsCountMap() {
 		return questionsCountMap;
@@ -65,6 +65,7 @@ public class AdminDashboardPageAction extends BaseAction{
 	}
 
 	public String execute() {
+		
 		return "success";
 	}
 	
@@ -91,6 +92,20 @@ public class AdminDashboardPageAction extends BaseAction{
 	public String populateQuestionsCount() throws Exception{
 		questionsCountMap = CommonUtility.getDashboardQuestionsCount("GET_DASHBOARDS_QUESTIONS_COUNT", null, false);
 		return "success";
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

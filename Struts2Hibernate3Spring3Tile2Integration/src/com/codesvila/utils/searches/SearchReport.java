@@ -13,7 +13,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.codesvila.bo.QueryMapperBO;
-public class SearchReport {
+import com.opensymphony.xwork2.ActionSupport;
+public class SearchReport extends ActionSupport{
 	
 public static QueryMapperBO getQuery(String reportQueryId, String reportName, Map<String, ParamBO> paramMap) {
 		
@@ -46,7 +47,7 @@ public static QueryMapperBO getQuery(String reportQueryId, String reportName, Ma
 				sqlQuery = nodes.item(i).getTextContent();
 				mapperBo.setQuery(sqlQuery.trim());
 				mapperBo.setId(elementQueryId);
-				System.out.println(sqlQuery.trim());
+				LOG.info(sqlQuery.trim());
 				Set<String> keys = paramMap.keySet();
 				for(String key: keys) {
 					mapperBo.setQuery(SearchReportHandler.paramterizedQuery(mapperBo, paramMap.get(key)));

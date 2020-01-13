@@ -2,6 +2,7 @@ package com.codesvila.report.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.codesvila.action.BaseAction;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.service.ReportService;
+import com.codesvila.utils.GlobalConstants;
 
 public class GetQuestionsExecuteReportAction extends BaseAction{
 	
@@ -22,6 +24,8 @@ public class GetQuestionsExecuteReportAction extends BaseAction{
 	private String createdBy;
 	private String questionName;
 	private List<QuestionInfoBO> questionInfo = new ArrayList<QuestionInfoBO>();
+	private boolean hasQuestionEditAccess;
+	private boolean hasQuestionDeleteAccess;
 	
 	/**
 	 * @return the startDate
@@ -96,6 +100,30 @@ public class GetQuestionsExecuteReportAction extends BaseAction{
 	public void setQuestionInfo(List<QuestionInfoBO> questionInfo) {
 		this.questionInfo = questionInfo;
 	}
+	/**
+	 * @return the hasQuestionEditAccess
+	 */
+	public boolean isHasQuestionEditAccess() {
+		return hasQuestionEditAccess;
+	}
+	/**
+	 * @param hasQuestionEditAccess the hasQuestionEditAccess to set
+	 */
+	public void setHasQuestionEditAccess(boolean hasQuestionEditAccess) {
+		this.hasQuestionEditAccess = hasQuestionEditAccess;
+	}
+	/**
+	 * @return the hasQuestionDeleteAccess
+	 */
+	public boolean isHasQuestionDeleteAccess() {
+		return hasQuestionDeleteAccess;
+	}
+	/**
+	 * @param hasQuestionDeleteAccess the hasQuestionDeleteAccess to set
+	 */
+	public void setHasQuestionDeleteAccess(boolean hasQuestionDeleteAccess) {
+		this.hasQuestionDeleteAccess = hasQuestionDeleteAccess;
+	}
 	public String getQuestionReport() throws Exception{
 //		if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
 //			startDate = startDate+".000";
@@ -103,6 +131,9 @@ public class GetQuestionsExecuteReportAction extends BaseAction{
 //		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
 //			endDate = endDate+".000";
 //		}
+		Map<String,Boolean> accessListMap = getAccessMap();
+		hasQuestionEditAccess = accessListMap.get(GlobalConstants.M_EDIT_QUESTION);
+		hasQuestionDeleteAccess = accessListMap.get(GlobalConstants.M_DELETE_QUESTION);
 		questionInfo = reportService.getQuestionReport(startDate,
 				endDate,createdBy,questionName,questionId);
 		

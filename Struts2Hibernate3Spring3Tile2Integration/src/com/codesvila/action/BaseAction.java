@@ -168,6 +168,13 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
 		accessMap.put(GlobalConstants.M_EDIT_QUESTION, hasAccessForM_EDIT_QUESTION);
 		boolean hasAccessForM_DELETE_QUESTION = isAccessRightGiven(accessRightsList,GlobalConstants.M_DELETE_QUESTION);
 		accessMap.put(GlobalConstants.M_DELETE_QUESTION, hasAccessForM_DELETE_QUESTION);
+		boolean hasAccessForM_ADD_QUESTIONS_TO_GROUP = isAccessRightGiven(accessRightsList,GlobalConstants.M_ADD_QUESTIONS_TO_GROUP);
+		accessMap.put(GlobalConstants.M_ADD_QUESTIONS_TO_GROUP, hasAccessForM_ADD_QUESTIONS_TO_GROUP);
+		boolean hasAccessForM_SHOW_ADDED_QUESTIONS_TO_GROUP = isAccessRightGiven(accessRightsList,GlobalConstants.M_SHOW_ADDED_QUESTIONS_TO_GROUP);
+		accessMap.put(GlobalConstants.M_SHOW_ADDED_QUESTIONS_TO_GROUP, hasAccessForM_SHOW_ADDED_QUESTIONS_TO_GROUP);
+		boolean hasAccessForM_DELETE_QUESTIONS_FROM_GROUP = isAccessRightGiven(accessRightsList,GlobalConstants.M_DELETE_QUESTIONS_FROM_GROUP);
+		accessMap.put(GlobalConstants.M_DELETE_QUESTIONS_FROM_GROUP, hasAccessForM_DELETE_QUESTIONS_FROM_GROUP);
+
 		return accessMap;
 	}
 

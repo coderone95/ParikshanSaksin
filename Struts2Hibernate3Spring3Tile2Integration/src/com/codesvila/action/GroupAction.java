@@ -145,6 +145,7 @@ public class GroupAction extends BaseAction {
 
 	@SuppressWarnings({ "unchecked" })
 	public String execute() throws Exception {
+		LOG.info("GroupAction---- execute()-- add group section--- start");
 		boolean isAlreadyExists = false;
 		if(groupbean.getGroup_name() == null || !StringUtils.isNotBlank(groupbean.getGroup_name())) {
 			ErrorMessages er = new ErrorMessages();
@@ -162,17 +163,20 @@ public class GroupAction extends BaseAction {
 			}
 		}
 		if (!isAlreadyExists) {
-			System.out.println("name :" + groupbean.getGroup_name());
+//			System.out.println("name :" + groupbean.getGroup_name());
+			LOG.info("------Name:----- "+groupbean.getGroup_name());
 			groupbean.setCreated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
 			groupbean.setUpdated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
 			int res = testService.createGroup(groupbean);
 			groupID = res;
-			System.out.println("groupID" + res);
+//			System.out.println("groupID" + res);
+			LOG.info("------groupID:----- "+res);
 		} else {
 			ErrorMessages er = new ErrorMessages();
 			er.setErrorMsg("Group already exists!!");
 			errorMessagesList.add(er);
 		}
+		LOG.info("GroupAction---- execute()-- add group section--- end");
 		return "success";
 	}
 
@@ -183,6 +187,7 @@ public class GroupAction extends BaseAction {
 	}
 
 	public String addSelectedQuestionsToGroup() {
+		LOG.info("GroupAction---- addSelectedQuestionsToGroup--- start");
 		try {
 			List<QuestionsGroupBO> quGinfo = testService.getAllAddedQuestionsOfGroup();
 			boolean isAlreadyExists = false;
@@ -206,12 +211,15 @@ public class GroupAction extends BaseAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		LOG.info("GroupAction---- addSelectedQuestionsToGroup--- end");
 		return "success";
 	}
 
 	public String allAddedQuestionsOfSelectedGroup() throws Exception {
+		LOG.info("GroupAction---- allAddedQuestionsOfSelectedGroup--- start");
 		groupQuestionInfo = testService.getDetailsForSelectedGroup(selectedGId);
 		totalQuestionsAddedForSelectGroup = groupQuestionInfo.size(); 
+		LOG.info("GroupAction---- allAddedQuestionsOfSelectedGroup--- end");
 		return "success";
 	}
 	

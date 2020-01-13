@@ -128,6 +128,10 @@ public class UserServiceImpl implements UserService {
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_EDIT_QUESTION,userType));
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_DELETE_QUESTION,userType));
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_EDIT_TEST,userType));
+			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_ADD_QUESTIONS_TO_GROUP,userType));
+			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_SHOW_ADDED_QUESTIONS_TO_GROUP,userType));
+			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_DELETE_QUESTIONS_FROM_GROUP,userType));
+			
 		}else if(userType.equals(GlobalConstants.EXAMINER_USER)) {
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_DASHBOARD_PAGE,userType));
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.ADD_REVIEWER_USER,userType));
@@ -153,8 +157,10 @@ public class UserServiceImpl implements UserService {
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_ADD_QUESTION,userType));
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_EDIT_QUESTION,userType));
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_DELETE_QUESTION,userType));
+			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_ADD_QUESTIONS_TO_GROUP,userType));
+			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_SHOW_ADDED_QUESTIONS_TO_GROUP,userType));
+			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_DELETE_QUESTIONS_FROM_GROUP,userType));
 
-			
 		}else if(userType.equals(GlobalConstants.REVIEWER_USER)) {
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_DASHBOARD_PAGE,userType));
 			accessRightsList.add(setFunctionalityValues(userId,GlobalConstants.M_USERS_PAGE,userType));

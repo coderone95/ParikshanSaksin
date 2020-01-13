@@ -27,15 +27,16 @@ import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.dao.mapper.Mapper;
 import com.codesvila.utils.searches.ParamBO;
 import com.codesvila.utils.searches.SearchReport;
+import com.opensymphony.xwork2.ActionSupport;
 
-public class ApacheCommonsDBCP {
+public class ApacheCommonsDBCP extends ActionSupport{
 
 	public static Map getDataInMap(String queryId, List listObj, boolean isParamsAvailable) throws Exception {
 		DataSource ds = DBCPDataSourceFactory.getDataSource();
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-
+//		LOG.info("Query---- :\n" + query);
 		try {
 			con = ds.getConnection();
 			stmt = con.createStatement();
@@ -43,7 +44,7 @@ public class ApacheCommonsDBCP {
 				StringBuilder params = new StringBuilder();
 				String query = null;
 				query = "select count(user_id) as totalCandidateCount, 0 as totalAdminCount, 0 as totalQuestionsCount from tbl_users where user_type in('CANDIDATE')";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				Map<String, String> map = new HashMap<String, String>();
 				rs = stmt.executeQuery(query);
 				DashboardManipulationBean counts = new DashboardManipulationBean();
@@ -58,7 +59,7 @@ public class ApacheCommonsDBCP {
 				StringBuilder params = new StringBuilder();
 				String query = null;
 				query = "select 0 as totalCandidateCount, count(user_id) as totalAdminCount, 0 as totalQuestionsCount from tbl_users where user_type in('ADMIN')";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				Map<String, String> map = new HashMap<String, String>();
 				rs = stmt.executeQuery(query);
 				DashboardManipulationBean counts = new DashboardManipulationBean();
@@ -73,7 +74,7 @@ public class ApacheCommonsDBCP {
 				StringBuilder params = new StringBuilder();
 				String query = null;
 				query = "select 0 as totalCandidateCount, 0 as totalAdminCount, count(1) as totalQuestionsCount from tbl_questions";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				Map<String, String> map = new HashMap<String, String>();
 				rs = stmt.executeQuery(query);
 				DashboardManipulationBean counts = new DashboardManipulationBean();
@@ -147,7 +148,7 @@ public class ApacheCommonsDBCP {
 				StringBuilder params = new StringBuilder();
 				String query = null;
 				query = "select test_id, test_key, access_key, test_instructions from tbl_tests";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				List<TestAuthBean> testKeysAndAccess = new ArrayList<TestAuthBean>();
 				rs = stmt.executeQuery(query);
 				if (rs != null) {
@@ -161,7 +162,7 @@ public class ApacheCommonsDBCP {
 				query = "select g.group_id, g.group_name, count(1) as totalQuestions from tbl_questions_group qg inner join tbl_groups g on g.group_id = qg.group_id where qg.group_id in "
 						+ "(select group_id from (select t.test_id, t.test_name, t.test_time, gt.group_id from tbl_tests t inner join tbl_groups_test gt on t.test_id = gt.test_id ) temp12 "
 						+ "where test_id in ("+testID+") ) group by qg.group_id";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				List<GroupBO> GroupsAndNoOfQuestions = new ArrayList<GroupBO>();
 				rs = stmt.executeQuery(query);
 				if (rs != null) {
@@ -174,7 +175,7 @@ public class ApacheCommonsDBCP {
 				Integer testID = (Integer) paramMap.get("testID");
 				String query = null;
 				query = "select test_name, test_time from tbl_tests where test_id in ("+testID+")";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				List<TestBO> testInfo = new ArrayList<TestBO>();
 				rs = stmt.executeQuery(query);
 				if (rs != null) {
@@ -187,7 +188,7 @@ public class ApacheCommonsDBCP {
 				query = "select atd.id, atd.test_id, atd.org_id, t.test_key, atd.user_id, atd.test_started_time, atd.test_ended_time,atd.attempted,atd.max_attempt "
 						+ "from tbl_attended_test_details atd " + 
 						"inner join tbl_tests t on t.test_id = atd.test_id ";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				List<AttendedTestDetailsBean> testInfo = new ArrayList<AttendedTestDetailsBean>();
 				rs = stmt.executeQuery(query);
 				if (rs != null) {
@@ -237,7 +238,7 @@ public class ApacheCommonsDBCP {
 						params = stringParams(listObj);
 						// emails = intParams(listObj);
 						query = "select * from tbl_users where user_id in (" + params.toString() + ")";
-						System.out.println("Query :::" + query);
+						LOG.info("Query---- :\n" + query);
 					}
 				} else {
 					// query = "select * from tbl_users order by 1 desc";
@@ -246,7 +247,7 @@ public class ApacheCommonsDBCP {
 						query = mp.getQuery();
 						data = generic.nativeSQLQueryList(query);
 					}
-					System.out.println("Query :::" + query);
+					LOG.info("Query---- :\n" + query);
 				}
 
 				// rs = stmt.executeQuery(query);
@@ -278,10 +279,10 @@ public class ApacheCommonsDBCP {
 				myparamBO.put("pEmailId", pEmailId);
 				myparamBO.put("pUserId", pUserId);
 				QueryMapperBO qmbo = SearchReport.getQuery("GET_USER_PROFILE_DATA","QueryMapper",myparamBO);
-//				System.out.println("Query from qmbo \t\t\t:::::"+ qmbo.getQuery());
-				System.out.println("emails " + email);
+//				LOG.info("Query from qmbo \t\t\t:::::"+ qmbo.getQuery());
+				LOG.info("emails " + email);
 				//String query = "select * from tbl_users where email_id in (" + email.toString() + ") limit 1";
-				//System.out.println("Query :::" + query);
+				//LOG.info("Query---- :\n" + query);
 
 				if (qmbo.getQuery() != null) {
 //					data = generic.nativeSQLQueryList(qmbo.getQuery());
@@ -298,10 +299,10 @@ public class ApacheCommonsDBCP {
 					userType = stringParams(listObj);
 				}
 
-				System.out.println("userType " + userType);
+				LOG.info("userType " + userType);
 				String query = "select * from tbl_mst_user_type where user_type in (" + userType.toString()
 						+ ") limit 1";
-				System.out.println("userType Query :::" + query);
+				LOG.info("userType Query :::" + query);
 				rs = stmt.executeQuery(query);
 				List<UserMasterBO> ub = new ArrayList<UserMasterBO>();
 				if (rs != null) {
@@ -321,7 +322,7 @@ public class ApacheCommonsDBCP {
 						+ "q.created_by as createdBy, q.updated_by as updatedBy, q.created_on as createdOn, q.updated_on as updatedOn "
 						+ " from tbl_questions q inner join tbl_que_options o on o.question_id = q.question_id where o.isCorrect = 1";
 
-				System.out.println(" Returned Query :::\n\n\n\n" + query);
+				LOG.info(" Returned Query :::\n\n\n\n" + query);
 				rs = stmt.executeQuery(query);
 				List<QuestionInfoBO> qi = new ArrayList<QuestionInfoBO>();
 				if (rs != null) {
@@ -352,7 +353,7 @@ public class ApacheCommonsDBCP {
 					}
 				}
 				query = "select option_id, option_value from tbl_que_options where question_id = " + questionId + ";";
-				System.out.println("query for : GET_OPTIONS_FOR_QUESTION " + query);
+				LOG.info("query for : GET_OPTIONS_FOR_QUESTION " + query);
 				if (questionId != null) {
 					rs = stmt.executeQuery(query);
 				}
@@ -375,7 +376,7 @@ public class ApacheCommonsDBCP {
 				query = "select q.question as question , o.option_value as answer from tbl_questions q inner join tbl_que_options o on\n"
 						+ "q.question_id = o.question_id\n" + "where q.question_id =  " + questionId
 						+ " and o.isCorrect = 1";
-				System.out.println("query for : GET_QUESTION_WITH_ANSWER " + query);
+				LOG.info("query for : GET_QUESTION_WITH_ANSWER " + query);
 				if (questionId != null) {
 					rs = stmt.executeQuery(query);
 				}
@@ -387,7 +388,7 @@ public class ApacheCommonsDBCP {
 				return qi;
 			} else if (queryId.equals("GET_GROUPS")) {
 				String query = "select group_id, group_name, created_on, created_by, updated_by, updated_on from tbl_groups";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 
 				if (query != null) {
 					data = generic.nativeSQLQueryList(query);
@@ -401,7 +402,7 @@ public class ApacheCommonsDBCP {
 				String query = null;
 				query = "select id, group_id, question_id from tbl_questions_group";
 
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 
 				if (query != null) {
 					data = generic.nativeSQLQueryList(query);
@@ -460,7 +461,7 @@ public class ApacheCommonsDBCP {
 				query = "select test_id, test_name, test_time,org_id, test_key, access_key, test_instructions, "
 						+ "startOn, endOn, passingCriteria, is_live, is_disabled, created_on, updated_on, created_by, updated_by from tbl_tests order by 1 desc";
 
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 
 				if (query != null) {
 					//data = generic.nativeSQLQueryList(query);
@@ -478,9 +479,9 @@ public class ApacheCommonsDBCP {
 					params = intParams(listObj);
 				}
 				query = "delete from tbl_groups_test where test_id in ("+params.toString()+")";
-				System.out.println("Query :::" + query);
+				LOG.info("Query---- :\n" + query);
 				int i = stmt.executeUpdate(query);
-				System.out.println("Deleting the test:::---"+i);
+				LOG.info("Deleting the test:::---"+i);
 				return null;
 			}else if(queryId.equals("GET_TEST_INFO_FOR_SELECTED_ID")) {
 				String query = null;
@@ -622,9 +623,9 @@ public class ApacheCommonsDBCP {
 				mymap.put("pCreatedBy", pCreatedBy);
 				mymap.put("pQuestionName", pQuestionName);
 				mymap.put("pQuestionId", pQuestionId);
-				System.out.println("questionId \t\t\t\t \n" + questionId);
+				LOG.info("questionId \t\t\t\t \n" + questionId);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
-				System.out.println("QueryMapperBO qmbo : GET_QUESTIONS_REPORT \n\n" + qmbo.getQuery());
+				LOG.info("QueryMapperBO qmbo : GET_QUESTIONS_REPORT \n\n" + qmbo.getQuery());
 				query = qmbo.getQuery();
 				if(query != null)
 					rs = stmt.executeQuery(query);
@@ -678,9 +679,9 @@ public class ApacheCommonsDBCP {
 				mymap.put("pCreatedBy", pCreatedBy);
 				mymap.put("pGroupName", pGroupName);
 				mymap.put("pGroupId", pGroupId);
-				System.out.println("questionId \t\t\t\t \n" + groupId);
+				LOG.info("questionId \t\t\t\t \n" + groupId);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
-				System.out.println("QueryMapperBO qmbo : GET_GROUPS_REPORT \n\n" + qmbo.getQuery());
+				LOG.info("QueryMapperBO qmbo : GET_GROUPS_REPORT \n\n" + qmbo.getQuery());
 				query = qmbo.getQuery();
 				if(query != null)
 					rs = stmt.executeQuery(query);
@@ -742,7 +743,7 @@ public class ApacheCommonsDBCP {
 				mymap.put("pTestId", pTestId);
 				mymap.put("pTestKey", pTestKey);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
-				System.out.println("QueryMapperBO qmbo : GET_TESTS_REPORT \n\n" + qmbo.getQuery());
+				LOG.info("QueryMapperBO qmbo : GET_TESTS_REPORT \n\n" + qmbo.getQuery());
 				query = qmbo.getQuery();
 				if (query != null) {
 					rs = stmt.executeQuery(query);
@@ -832,7 +833,7 @@ public class ApacheCommonsDBCP {
 				mymap.put("pLoggedInUserId", pLoggedInUserId);
 				mymap.put("pNotAllowedToSearchList", pNotAllowedToSearchList);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
-				System.out.println("QueryMapperBO qmbo : GET_USERS_REPORT \n\n" + qmbo.getQuery());
+				LOG.info("QueryMapperBO qmbo : GET_USERS_REPORT \n\n" + qmbo.getQuery());
 				query = qmbo.getQuery();
 				if (query != null) {
 					rs = stmt.executeQuery(query);
@@ -863,7 +864,7 @@ public class ApacheCommonsDBCP {
 				mymap.put("pUserId", pUserId);
 				mymap.put("pUserType", pUserType);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
-				System.out.println("QueryMapperBO qmbo : GET_ALL_ACCESS_RIGHTS_INFO \n\n" + qmbo.getQuery());
+				LOG.info("QueryMapperBO qmbo : GET_ALL_ACCESS_RIGHTS_INFO \n\n" + qmbo.getQuery());
 				query = qmbo.getQuery();
 				if(query != null)
 					rs = stmt.executeQuery(query);

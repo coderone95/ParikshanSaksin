@@ -176,7 +176,7 @@ public class UserAction extends BaseAction  {
 
 	public String updateProfile() throws Exception{
 		LOG.info("UserAction ----------- updateProfile()-------------- - start");
-		System.out.println("Password"+userBean.getPassword());
+		LOG.info("Password"+userBean.getPassword());
 		if(userBean.getPassword() != null && StringUtils.isNotBlank(userBean.getPassword())) {
 			String encryptedPwd = CryptUtils.encrypt(userBean.getPassword(), GlobalConstants.cipher_Key);
 			userBean.setPassword(encryptedPwd);

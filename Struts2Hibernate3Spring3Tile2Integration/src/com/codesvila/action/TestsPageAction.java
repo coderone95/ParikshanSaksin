@@ -223,7 +223,7 @@ public class TestsPageAction extends BaseAction {
 
 	public String show() throws Exception{
 		loginId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
-		System.out.println("contextSession"+contextSession.get("username"));
+		LOG.info("contextSession"+contextSession.get("username"));
 		List<GroupBO> groupList = testService.getAllGroupsInfo();
 		if(! groupList.isEmpty() && groupList.size() > 0) {
 			for(GroupBO g: groupList) {
