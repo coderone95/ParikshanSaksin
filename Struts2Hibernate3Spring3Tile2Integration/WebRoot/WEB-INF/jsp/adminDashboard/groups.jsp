@@ -49,6 +49,7 @@
 			<jsp:include page="adminDashboardTopNav.jsp"></jsp:include>
 			<div class="content">
 				<div class="row">
+					<s:if test="accessMap.get('M_ADD_GROUP')">
 					<div class="col-md-12">
 							<div class="row">
 								<div class="col-md-6">
@@ -81,6 +82,7 @@
 							</div>
 			       		</div>
 			       	</div>
+			       	</s:if>
 					<div class="col-md-12">
 			           <div class="card">
 			              <div class="card-header"></div>
@@ -103,7 +105,7 @@
 											<th class="text-nowrap" style='text-transform: initial;'>Updated By</th>
 											<th class="text-nowrap" style='text-transform: initial;'>Created On</th>
 											<th class="text-nowrap" style='text-transform: initial;'>Updated On</th>
-											<th class="text-nowrap" style='text-transform: initial;'>Action</th>
+											<th class="text-nowrap group-table-action-th" style='text-transform: initial;'>Action</th>
                     				</thead>
 			                    <tbody id="groups-table-body">
 			                    
@@ -118,6 +120,7 @@
 			</div>
 			<jsp:include page="adminDashboardFooter.jsp" />
 		</div>
+	<s:if test="accessMap.get('M_EDIT_GROUP')">	
 	 <!-- Add Questions to Group Modal -->
   <div class="modal fade" id="addQuestionToGroupModal">
     <div class="modal-dialog">
@@ -164,9 +167,10 @@
       </div>
     </div>
   </div>
+  </s:if>
   <!-- View Group Details Modal Popup -->
   <div class="modal fade" id="viewGroupDetailsModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-height:90vh;">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -262,6 +266,7 @@
       </div>
     </div>
   </div>
+  <s:if test="accessMap.get('M_DELETE_GROUP')">
   <!--Delete Modal -->
 		  <div class="modal fade" id="deleteModal" style="z-index:99999999;">
 		    <div class="modal-dialog">
@@ -293,6 +298,8 @@
 		      </div>
 		    </div>
 		  </div> 
+	</s:if>
+	<s:if test="accessMap.get('M_EDIT_GROUP')">
 	<div class="modal fade" id="updateGroupModal">
     <div class="modal-dialog">
     
@@ -356,6 +363,7 @@
       
     </div>
   </div>
+  </s:if>
   <!-- Group Filter Modal -->
 		  <div class="modal fade" id="groupFilterModal">
 		    <div class="modal-dialog">

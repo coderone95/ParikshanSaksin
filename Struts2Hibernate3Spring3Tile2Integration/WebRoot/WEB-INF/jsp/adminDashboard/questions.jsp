@@ -268,7 +268,7 @@ border-radius: 5px;
       
     </div>
   </div>
-	
+	<s:if test="accessMap.get('M_EDIT_QUESTION')">
 	<div class="modal fade" id="updateQuestionModal">
     <div class="modal-dialog" >
     
@@ -334,7 +334,9 @@ border-radius: 5px;
 				</div>
         </div>
     </div>
+    </s:if>
   </div>
+  <s:if test="accessMap.get('M_DELETE_QUESTION')">
 <!--Delete Modal -->
 		  <div class="modal fade" id="deleteModal">
 		    <div class="modal-dialog">
@@ -359,6 +361,7 @@ border-radius: 5px;
 		      </div>
 		    </div>
 		  </div>  
+</s:if>
 	<!-- Question Filter Modal -->
 		  <div class="modal fade" id="questionFilterModal">
 		    <div class="modal-dialog">
@@ -424,7 +427,7 @@ border-radius: 5px;
 		        </div>
 		      </div>
 		    </div>
-		  </div>        
+		  </div>  
 	<!--   Core JS Files   -->
 	<script src="./assets/js/core/jquery.min.js"></script>
 	<script src="./assets/js/core/popper.min.js"></script>

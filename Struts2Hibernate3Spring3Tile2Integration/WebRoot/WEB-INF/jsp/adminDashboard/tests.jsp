@@ -62,6 +62,7 @@
 			<jsp:include page="adminDashboardTopNav.jsp"></jsp:include>
 			<div class="content">
 				<div class="row">
+					<s:if test="accessMap.get('M_ADD_TEST')">
 					<div class="col-md-7 col-xs-12 col-sm-12 col-lg-7">
 						<div class="card">
 				              <div class="card-header"></div>
@@ -251,6 +252,7 @@
 						   		</div>
 				           </div>
 					</div>
+					</s:if>
 					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
 			           <div class="card">
 			              <div class="card-header">
@@ -272,7 +274,7 @@
 											<th class="text-nowrap" style='text-transform: initial;'>Name</th>
 											<th class="text-nowrap" style='text-transform: initial;'>Test Key</th>
 											<th class="text-nowrap"style='text-transform: initial;'>Access Key</th>
-											<th class="text-nowrap" style='text-transform: initial;'>Live</th>
+											<!-- <th class="text-nowrap" style='text-transform: initial;'>Live</th> -->
 											<th class="text-nowrap" style='text-transform: initial;'>Created On</th>
 											<th class="text-nowrap" style='text-transform: initial;'>Updated On</th>
 											<th class="text-nowrap" style='text-transform: initial;'>Created By</th>
@@ -293,6 +295,7 @@
 		
 		<jsp:include page="adminDashboardFooter.jsp" />
 	</div>
+	<s:if test="accessMap.get('M_DELETE_TEST')">
 	<!--Delete Modal -->
 		  <div class="modal fade" id="deleteModal" style="z-index:99999999;">
 		    <div class="modal-dialog">
@@ -317,7 +320,7 @@
 		      </div>
 		    </div>
 		  </div> 
-		  
+	</s:if>	  
 	<!-- Tests Filter Modal -->
 		  <div class="modal fade" id="testFilterModal" >
 		    <div class="modal-dialog">
