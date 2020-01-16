@@ -314,16 +314,17 @@ var isAlreadyChecked = false;
 						str=str+'</tr>';
 						$('#groups-table-body').append(str);
 					}
-					$("#groupsTable").DataTable( {
-				        "scrollY":        '90vh',
-				        "scrollCollapse": true,
-				        "paging":         true,
-						"scrollX": false,
-						"ordering": true,
-						"info":     true,
-						"searching": true,
-						"destroy": true
-				    } );
+//					$("#groupsTable").DataTable( {
+//				        "scrollY":        '90vh',
+//				        "scrollCollapse": true,
+//				        "paging":         true,
+//						"scrollX": false,
+//						"ordering": true,
+//						"info":     true,
+//						"searching": true,
+//						"destroy": true
+//				    } );
+					$("#groupsTable").DataTable();
 					$('.groups-table-loader').hide();
 
 				}else{

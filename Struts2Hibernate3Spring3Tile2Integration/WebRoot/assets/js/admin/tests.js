@@ -100,9 +100,9 @@ $(document).ready(function () {
         //$(".form-group").removeClass("has-error");
         if (isValid) nextStepWizard.removeAttr('disabled').trigger('click'); 
     });
-    
 
     $('div.setup-panel div a.btn-success').trigger('click');
+
 });
 
 function randomString() {
@@ -402,10 +402,10 @@ function applyTestsFilter(flag){
 					var createdBy = itr.testList[i].created_by;
 					var uddatedBy = itr.testList[i].updated_by;
 					var str = '<tr>';
-						str=str+'<td class="text-nowrap">'+testID+'</td>';
+						str=str+'<td class="text-nowrap"><a href="#" class="test-id" onclick="testDetails(this);" value="'+testID+'">'+testID+'</a></td>';
 						str=str+'<td class="text-nowrap">'+testName+'</td>';
 						str=str+'<td class="text-nowrap">'+testKey+'</td>';
-						str=str+'<td class="text-nowrap"><input type="password" class="access-key-value" id="access-key-'+testID+'" value="'+accessKey+'" /><i class="fa fa-eye" onclick="toggleShow(this,'+testID+');"></i></td>';
+						str=str+'<td class="text-nowrap"><input type="password" class="access-key-value form-control" id="access-key-'+testID+'" value="'+accessKey+'" /><i class="fa fa-eye" onclick="toggleShow(this,'+testID+');"></i></td>';
 //						str=str+'<td class="text-nowrap">'+liveRes+'</td>';
 						str=str+'<td class="text-nowrap">'+createdOn+'</td>';
 						str=str+'<td class="text-nowrap">'+updatedOn+'</td>';
@@ -425,17 +425,17 @@ function applyTestsFilter(flag){
 						$("#tests-table-body").append(str);
 				}
 				$('.tests-table-loader').hide();
-				
-				$("#dtable").DataTable( {
-			        "scrollY":        '90vh',
-			        "scrollCollapse": true,
-			        "paging":         true,
-					"scrollX": false,
-					"ordering": true,
-					"info":     true,
-					"searching": true,
-					"destroy": true
-			    } );
+				$("#dtable").DataTable();
+//				$("#dtable").DataTable( {
+//			        "scrollY":        '90vh',
+//			        "scrollCollapse": true,
+//			        "paging":         true,
+//					"scrollX": false,
+//					"ordering": true,
+//					"info":     true,
+//					"searching": true,
+//					"destroy": true
+//			    } );
 			}else{
 				str += '<tr><td colspan="10"><div class="text-center"> No record found </div></td></tr>';
 				$('#tests-table-body').append(str);
@@ -449,3 +449,9 @@ function applyTestsFilter(flag){
 	$('#testFilterModal').modal('hide');
 }
 
+function testDetails(ths){
+
+	console.log($(ths).attr('value'));
+	var testID = $(ths).attr('value');
+	window.location.replace("testDetails?testID="+testID); 
+}

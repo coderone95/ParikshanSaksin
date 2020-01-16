@@ -337,4 +337,9 @@ public class TestsPageAction extends BaseAction {
 		}
 		return true;
 	}
+	
+	public String testDetails() {
+		LOG.info("Test ID \t" + testID);
+		return "success";
+	}
 }

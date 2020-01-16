@@ -389,16 +389,17 @@ $(document).ready(function() {
 						str=str+'</tr>';
 						$('#users-table-body').append(str);
 					}
-					$("#userListTable").DataTable( {
-				        "scrollY":        '90vh',
-				        "scrollCollapse": true,
-				        "paging":         true,
-						"scrollX": false,
-						"ordering": true,
-						"info":     true,
-						"searching": true,
-						"destroy": true
-				    } );
+//					$("#userListTable").DataTable( {
+//				        "scrollY":        '90vh',
+//				        "scrollCollapse": true,
+//				        "paging":         true,
+//						"scrollX": false,
+//						"ordering": true,
+//						"info":     true,
+//						"searching": true,
+//						"destroy": true
+//				    } );
+					$("#userListTable").DataTable();
 					$('.users-table-loader').hide();
 
 				}else{

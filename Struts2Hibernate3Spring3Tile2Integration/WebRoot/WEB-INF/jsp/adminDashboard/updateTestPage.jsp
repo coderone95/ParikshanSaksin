@@ -107,15 +107,6 @@ $(document).ready(function () {
 	        curInputs = curStep.find("input[type='text']")
 	        isValid = true;
 	
-	   /*  $(".form-group").removeClass("has-error");
-	    for (var i = 0; i < curInputs.length; i++) {
-	        if (!curInputs[i].validity.valid) {
-	            isValid = false;
-	            $(curInputs[i]).closest(".form-group").addClass("has-error");
-	        }
-	    }
-	*/		
-			
 	    if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
 	});
 	
@@ -126,7 +117,6 @@ $(document).ready(function () {
 	        curInputs = curStep.find("input[type='text']"), 
 	        isValid = true;
 	
-	    //$(".form-group").removeClass("has-error");
 	    if (isValid) nextStepWizard.removeAttr('disabled').trigger('click'); 
 	});
 	

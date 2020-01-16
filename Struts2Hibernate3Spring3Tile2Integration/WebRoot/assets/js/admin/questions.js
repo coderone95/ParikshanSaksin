@@ -377,19 +377,20 @@ $(document).ready(function(){
 						str=str+'</tr>';
 						$('#questions-table-body').append(str);
 					}
-					$("#qTable").DataTable( {
-				        "scrollY":        '90vh',
-				        "scrollCollapse": true,
-				        "paging":         true,
-						"scrollX": false,
-						"ordering": true,
-						"info":     true,
-						"searching": true,
-						"destroy": true,
-					    'colReorder': {
-					        'allowReorder': false
-					    }
-				    } );
+					$("#qTable").DataTable();
+//					$("#qTable").DataTable( {
+//				        "scrollY":        '90vh',
+//				        "scrollCollapse": true,
+//				        "paging":         true,
+//						"scrollX": false,
+//						"ordering": true,
+//						"info":     true,
+//						"searching": true,
+//						"destroy": true,
+//					    'colReorder': {
+//					        'allowReorder': false
+//					    }
+//				    } );
 					$('.questions-table-loader').hide();
 
 				}else{

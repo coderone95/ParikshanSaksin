@@ -5,11 +5,11 @@
  
 <struts>
  	
-    <constant name="struts.devMode" value="true" />
+    <constant name="struts.devMode" value="false" />
  
 	<package name="default" extends="struts-default,json-default" >
 	
-		    <interceptors>
+	<interceptors>
         <interceptor name="Authorizeuser" class="com.codesvila.interceptor.AuthorizationInterceptor"></interceptor>
 
         <interceptor-stack name="myStack">
@@ -295,6 +295,9 @@
         </action>
          <action name="questionAnswerBank" class="com.codesvila.action.QuestionAnswerBankAction" method="execute">
 			<result name="success">/WEB-INF/jsp/adminDashboard/questionAnswerBank.jsp</result>
+		</action>
+		<action name="testDetails" class="com.codesvila.action.TestsPageAction" method="testDetails">
+			<result name="success">/WEB-INF/jsp/adminDashboard/testDetails.jsp</result>
 		</action>
        
     </package>
