@@ -1,6 +1,7 @@
 package com.codesvila.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestBO;
 import com.codesvila.bo.QuestionInfoBO;
@@ -478,6 +480,15 @@ public class TestDAOImpl implements TestDAO {
 			session.close();
 		}
 		return generatedID;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<QuestionBO> getAddedQuestionsForSelectTest(Integer testID) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("testID", testID);
+		return ApacheCommonsDBCP.DBCPDataSource("GET_ADDED_QUESTIONS_FOR_SELECT_TEST", null, true, paramMap,null);
 	}
 
 }

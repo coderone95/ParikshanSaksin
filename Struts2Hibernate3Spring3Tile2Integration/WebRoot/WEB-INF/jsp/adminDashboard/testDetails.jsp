@@ -44,144 +44,7 @@
 <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
-<script>
-$(document).ready(function(){
-	getTestInfo();
-	getAddedGroupsForSelectedTest();
-});
-function getTestInfo(){
-	var testID = $('#testID').val();
-	var data = {
-			testID : testID
-	};
-	$.ajax({
-		type : "POST",
-		url : "getTestInfoForSelectedID",
-		dataType: 'json',
-		data: JSON.stringify(data),
-		contentType:"application/json;charset=utf-8",
-		success : function(itr) {
-			if (itr.testBoList != null && itr.testBoList.length > 0) {
-				var testBo = itr.testBoList[0];
-				var testName = testBo.test_name;
-				var startOn = testBo.startOn;
-				var endOn = testBo.endOn;
-				var testKey = testBo.test_key;
-				var testAccessKey = testBo.access_key;
-				var testTime = testBo.test_time;
-				var testInstructions = testBo.test_instructions;
-				var passingCriteria = testBo.passingCriteria;
-				var createdOn = testBo.created_on;
-				var updatedOn = testBo.updated_on;
-				var createdBy = testBo.created_by;
-				var updatedBy = testBo.updated_by;
-				$('#testName').text(testName);
-				if(startOn != null){
-					startOn = startOn.substring(0, startOn.length - 5);
-				}
-				if(endOn != null){
-					endOn = endOn.substring(0, endOn.length - 5);
-				}else{
-					endOn = 'No Expiration';
-				}
-				$('#startOn').text(startOn);
-				$('#endOn').text(endOn);
-				$('#testkey').text(testKey);
-				
-				$('#accessKey').html('<input type="password" class="access-key-value" id="access-key-'+testID+'" value="'+testAccessKey+'" /><i class="fa fa-eye" onclick="toggleShow(this,'+testID+');"></i>');
-				/* $('#accessKey').text(testAccessKey); */
-				var testTimeObj = secondsToTime(testTime);
-				$('#testTime').text(testTimeObj.h+':'+testTimeObj.m+':'+testTimeObj.s);				
-				$('#passingCriteria').text(passingCriteria);
-				$('#test-instructions').html(testInstructions);
-				$('#createdBy').text(createdBy);
-				$('#updatedBy').text(updatedBy);
-				$('#createdOn').text(createdOn);
-				$('#updatedOn').text(updatedOn);
-				$('.test-instructions-loder').hide();
-			}
-		},
-		error : function(itrr) {
-			alert("Error occurred while fetching test..!!");
-		}
-	});
-	
-}
-
-function toggleShow(ths, testID){
-	if($(ths).hasClass('fa-eye')){
-		$('#access-key-'+testID).removeAttr('type');
-		$('#access-key-'+testID).attr('type','text');
-		$(ths).removeClass('fa-eye');
-		$(ths).addClass('fa-eye-slash');
-	}else{
-		$('#access-key-'+testID).removeAttr('type');
-		$('#access-key-'+testID).attr('type','password');
-		$(ths).removeClass('fa-eye-slash');
-		$(ths).addClass('fa-eye');
-	}
-}
-
-
-function secondsToTime(secs)
-{
-    var hours = Math.floor(secs / (60 * 60));
-
-    var divisor_for_minutes = secs % (60 * 60);
-    var minutes = Math.floor(divisor_for_minutes / 60);
-
-    var divisor_for_seconds = divisor_for_minutes % 60;
-    var seconds = Math.ceil(divisor_for_seconds);
-
-    var obj = {
-        "h": hours,
-        "m": minutes,
-        "s": seconds
-    };
-    return obj;
-}
-
-function getAddedGroupsForSelectedTest(){
-	$('#group-list-table-body').html('');
-	var testID = $('#testID').val();
-	var data = {
-			testID : testID
-	};
-	$.ajax({
-		type : "POST",
-		url : "getAddedGroupsForSelectedTest",
-		dataType: 'json',
-		data: JSON.stringify(data),
-		contentType:"application/json;charset=utf-8",
-		success : function(itr) {
-			str = '';
-			if(itr.addedGroupsList !=null && itr.addedGroupsList.length > 0){
-				if ($.fn.DataTable.isDataTable("#groupListTable")) {
-					  $('#groupListTable').DataTable().clear().destroy();
-				}
-				$('#total-added-groups').html('<a href="#" data-toggle="modal" data-target="#groupListModal">'+itr.addedGroupsList.length+'</a>');
-				for(var i = 0 ; i < itr.addedGroupsList.length; i++){
-					var groupID = itr.addedGroupsList[i].group_id;
-					var groupName = itr.addedGroupsList[i].group_name;
-					str=str+'<tr>';
-					str=str+'<td>'+groupID+'</td>';
-					str=str+'<td>'+groupName+'</td>';
-					str=str+'</tr>';
-				}
-				$('#group-list-table-body').append(str);
-				$("#groupListTable").DataTable();
-			}else{
-				str += '<tr><td colspan="2"><div class="text-center"> No record found </div></td></tr>';
-				$('#group-list-table-body').append(str);
-			}
-		},
-		error : function(itrr) {
-			alert("Error occurred while fetching added groups..!!");
-		}
-	});
-}
-
-</script>
+<script src="./assets/js/admin/testDetails.js"></script>
 <style>
 	#test-instructions {
 		padding: 1rem;
@@ -249,7 +112,7 @@ function getAddedGroupsForSelectedTest(){
 								<div class="col-md-3 pr-1">
 									<div class="form-group">
 										<label>No of Questions</label> 
-										<p class="">0</p>
+										<p class="" id="no-of-questions">0</p>
 									</div>
 								</div>
 								<div class="col-md-3 pr-1">
@@ -360,6 +223,81 @@ function getAddedGroupsForSelectedTest(){
 		     </div>
 		  </div>
 		</div>
+		
+		<!-- Group List Modal -->
+		  <div class="modal fade" id="questionListModal">
+		    <div class="modal-dialog">
+		      <div class="modal-content">
+		      
+		        <!-- Modal Header -->
+		        <div class="modal-header">
+		          <h5 class="modal-title">Questions</h5>
+		           <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        </div>
+		        <!-- Modal body -->
+		        <div class="modal-body">
+		        	<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+                  				<table class="table table-bordered table-vcenter table-hover table-stripped " id="questionListTable"  style="border: 2px solid #000;">
+                    				<thead class=" text-primary">
+                      						<th class="text-nowrap" style="text-transform: initial;">Question ID</th>
+											<th class="text-nowrap" style="text-transform: initial;">Name</th>
+                    				</thead>
+			                    <tbody id="question-list-table-body">
+			                    </tbody>
+			                  </table>
+			                </div>
+						</div>
+					</div>
+		        </div>
+		     </div>
+		  </div>
+		</div>
+	<!-- show question details -->
+  <div class="modal fade" id="showQuestionDetailsModal" >
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+       <div class="modal-header">
+       		<b style="font-size:1.5rem;" class="modal-title">Question</b>
+        	<button type="button" style="font-size: 2.5rem;" class="close" data-dismiss="modal">&times;</button>
+      </div>
+        <div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card demo-icons card-no-box-shadow">
+							<div class="card-header">
+								
+							</div>
+							<div class="card-body" id="question-options-card-body">
+							<div class="row">
+								<div class="col-md-12" id="questionArea">
+									<h5 id="questionName"></h5>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12" id="optionsArea">
+									<ol type="A"  id="optionList">
+										
+									</ol>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12" id="answerArea">
+									<hr>
+									<b id="answer"></b>
+								</div>
+							</div>	
+							</div>
+						</div>
+					</div>
+				</div>
+        </div>
+      </div>
+    </div>
+  </div>
 	<!--   Core JS Files   -->
 	<%-- <script src="./assets/js/core/jquery.min.js"></script> --%>
 	<script src="./assets/js/core/popper.min.js"></script>

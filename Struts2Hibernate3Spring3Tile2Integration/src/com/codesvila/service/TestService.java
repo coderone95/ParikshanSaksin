@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestBO;
 import com.codesvila.bo.QuestionInfoBO;
@@ -73,7 +74,9 @@ public interface TestService {
 
 	public Integer updateTest(String loginID, Integer testID, String testName, String testKey, String testAccessKey,
 			String testInstructions, Date formattedDate, Date formattedDate2, Integer examTime,
-			Integer passingCriteria);;
+			Integer passingCriteria);
+
+	public List<QuestionBO> getAddedQuestionsForSelectTest(Integer testID) throws Exception;
 
 
 }

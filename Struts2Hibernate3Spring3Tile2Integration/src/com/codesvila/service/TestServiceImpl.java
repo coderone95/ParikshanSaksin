@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestBO;
 import com.codesvila.bo.QuestionInfoBO;
@@ -341,6 +342,13 @@ public class TestServiceImpl implements TestService{
 		tbo.setPassingCriteria(passingCriteria);
 		tbo.setTest_time(examTime);
 		return testDao.updateTest(tbo, testID);
+	}
+
+	@Override
+	public List<QuestionBO> getAddedQuestionsForSelectTest(Integer testID) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return testDao.getAddedQuestionsForSelectTest(testID);
 	}
 
 }

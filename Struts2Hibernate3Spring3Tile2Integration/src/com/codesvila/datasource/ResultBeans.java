@@ -11,6 +11,7 @@ import com.codesvila.bean.AttendedTestDetailsBean;
 import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestAuthBean;
 import com.codesvila.bean.TestBO;
@@ -336,7 +337,6 @@ public class ResultBeans {
 	public static List<FunctionalityBO> generateResultForGetAllAccessRightsInfo(ResultSet rs) throws Exception{
 		List<FunctionalityBO> fbo = new ArrayList<FunctionalityBO>();
 		while (rs.next()) {
-			AttendedTestDetailsBean tb = new AttendedTestDetailsBean();
 			FunctionalityBO bo = new FunctionalityBO();
 			bo.setFunctionality_id(rs.getInt("functionality_id"));
 			bo.setUser_id(rs.getInt("user_id"));
@@ -346,6 +346,17 @@ public class ResultBeans {
 			fbo.add(bo);
 		}
 		return fbo;
+	}
+
+	public static List<QuestionBO> generateResultForGetAddedQuestionsForSelectedTest(ResultSet rs) throws SQLException {
+		List<QuestionBO> qboList = new ArrayList<QuestionBO>();
+		while (rs.next()) {
+			QuestionBO bo = new QuestionBO();
+			bo.setQuestion_id(rs.getInt("question_id"));
+			bo.setQuestion(rs.getString("question"));
+			qboList.add(bo);
+		}
+		return qboList;
 	}
 
 }

@@ -108,7 +108,6 @@
 											<th class="text-nowrap group-table-action-th" style='text-transform: initial;'>Action</th>
                     				</thead>
 			                    <tbody id="groups-table-body">
-			                    
 			                    </tbody>
 			                  </table>
 			                </div>
@@ -124,7 +123,6 @@
 	 <!-- Add Questions to Group Modal -->
   <div class="modal fade" id="addQuestionToGroupModal">
     <div class="modal-dialog">
-    
       <!-- Modal content-->
       <div class="modal-content">
        <div class="modal-header">
@@ -155,7 +153,6 @@
 											<th>Question</th>
                     				</thead>
 			                    <tbody id="questions-table-body">
-			                    	
 			                    </tbody>
 			                  </table>
 			                </div>
@@ -171,7 +168,6 @@
   <!-- View Group Details Modal Popup -->
   <div class="modal fade" id="viewGroupDetailsModal">
     <div class="modal-dialog" style="max-height:90vh;">
-    
       <!-- Modal content-->
       <div class="modal-content">
        <div class="modal-header">
@@ -225,7 +221,6 @@
   <!-- show question details -->
   <div class="modal fade" id="showQuestionDetailsModal" >
     <div class="modal-dialog">
-    
       <!-- Modal content-->
       <div class="modal-content">
        <div class="modal-header">
@@ -242,7 +237,7 @@
 							<div class="card-body" id="question-options-card-body">
 							<div class="row">
 								<div class="col-md-12" id="questionArea">
-									<h6 id="questionName"></h6>
+									<h5 id="questionName"></h5>
 								</div>
 							</div>
 							<div class="row">

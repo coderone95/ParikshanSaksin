@@ -14,5 +14,13 @@
 		where { user_id in($[pUserId]) }
 		and { user_type in ($[pUserType]) }
 	</query>
+	<query id="GET_ADDED_QUESTIONS_FOR_SELECT_TEST">
+		select que.question_id, que.question 
+		from tbl_questions que 
+		inner join tbl_questions_group qg 
+		on que.question_id = qg.question_id
+		inner join tbl_groups_test gt 
+		on gt.group_id = qg.group_id WHERE { gt.test_id in ($[pTestID]) }
+	</query>
 	
 </search>

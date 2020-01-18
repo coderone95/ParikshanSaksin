@@ -299,6 +299,17 @@
 		<action name="testDetails" class="com.codesvila.action.TestsPageAction" method="testDetails">
 			<result name="success">/WEB-INF/jsp/adminDashboard/testDetails.jsp</result>
 		</action>
+		<action name="getAddedQuestionsForSelectTest" class="com.codesvila.action.UpdateTestAction" method="getAddedQuestionsForSelectTest">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="addedQuestions" class="com.codesvila.action.UpdateTestAction" method="addedQuestions">
+			<result name="success">/WEB-INF/jsp/adminDashboard/addedQuestions.jsp</result>
+		</action>
+        
        
     </package>
     

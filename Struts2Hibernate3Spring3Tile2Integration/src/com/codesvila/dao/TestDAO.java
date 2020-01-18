@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestBO;
 import com.codesvila.bo.QuestionInfoBO;
@@ -67,5 +68,7 @@ public interface TestDAO {
 	public int removeSelectedGroupFromSelectedTest(Integer testID, Integer groupId) throws Exception;
 
 	public Integer addSelectedGroupsToTest(Integer groupID, Integer testID) throws Exception;
+
+	public List<QuestionBO> getAddedQuestionsForSelectTest(Integer testID)  throws Exception;
 
 }

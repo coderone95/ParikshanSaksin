@@ -340,6 +340,12 @@ public class TestsPageAction extends BaseAction {
 	
 	public String testDetails() {
 		LOG.info("Test ID \t" + testID);
+		sessionMap.put("selectedTestID", testID);
 		return "success";
 	}
+	
+//	public String addedQuestions() throws Exception {
+//		testID = (Integer) sessionMap.get("selectedTestID");
+//		return "success";
+//	}
 }

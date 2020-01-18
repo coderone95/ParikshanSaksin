@@ -17,6 +17,7 @@ import com.codesvila.bean.AttendedTestDetailsBean;
 import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestAuthBean;
 import com.codesvila.bean.TestBO;
@@ -871,6 +872,28 @@ public class ApacheCommonsDBCP extends ActionSupport{
 				List<FunctionalityBO> qi = new ArrayList<FunctionalityBO>();
 				if (rs != null) {
 					qi = ResultBeans.generateResultForGetAllAccessRightsInfo(rs);
+				}
+				return qi;
+			}else if(queryId.equals("GET_ADDED_QUESTIONS_FOR_SELECT_TEST")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				Integer testID = (Integer) paramMap.get("testID");
+				
+				ParamBO pTestID = new ParamBO();
+				pTestID.setParamName("pTestID");
+				pTestID.setParamType("SingleParamElement");
+				pTestID.setParamreturnType("Integer");
+				pTestID.setParamValue(testID);
+
+				mymap.put("pTestID", pTestID);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
+				LOG.info("QueryMapperBO qmbo : GET_ADDED_QUESTIONS_FOR_SELECT_TEST \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<QuestionBO> qi = new ArrayList<QuestionBO>();
+				if (rs != null) {
+					qi = ResultBeans.generateResultForGetAddedQuestionsForSelectedTest(rs);
 				}
 				return qi;
 			}

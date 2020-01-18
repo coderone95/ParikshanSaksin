@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.SuccessMessages;
 import com.codesvila.bean.TestBO;
 import com.codesvila.bo.ResponseBO;
@@ -46,6 +47,7 @@ public class UpdateTestAction extends BaseAction {
 	private Integer mins;
 	private Integer secs;
 	private String errorMsg = null;
+	private List<QuestionBO> questionList;
 	
 	public Integer getTestID() {
 		return testID;
@@ -255,6 +257,20 @@ public class UpdateTestAction extends BaseAction {
 		this.secs = secs;
 	}
 
+	/**
+	 * @return the questionList
+	 */
+	public List<QuestionBO> getQuestionList() {
+		return questionList;
+	}
+
+	/**
+	 * @param questionList the questionList to set
+	 */
+	public void setQuestionList(List<QuestionBO> questionList) {
+		this.questionList = questionList;
+	}
+
 	public String updateTest() throws Exception{
 		if(validateInputs()) {
 			String loginID = null;
@@ -329,4 +345,13 @@ public class UpdateTestAction extends BaseAction {
 		return true;
 	}
 	
+	public String getAddedQuestionsForSelectTest() throws Exception{
+		questionList = testService.getAddedQuestionsForSelectTest(testID);
+		return "success";
+	}
+	
+	public String addedQuestions() {
+		testID = (Integer) sessionMap.get("selectedTestID");
+		return "success";
+	}
 }

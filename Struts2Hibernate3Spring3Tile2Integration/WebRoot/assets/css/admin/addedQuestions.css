@@ -1,0 +1,15 @@
+/* addedQuestions */
+
+/* .fa-file-pdf-o {
+	font-size: 2rem;
+	padding: 1rem;
+} */
+
+.filter-icon {
+border-radius: 5px;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 23px;
+    background: #0b1961;
+    color: #fff;
+}

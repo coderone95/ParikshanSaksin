@@ -15,12 +15,9 @@ import com.codesvila.utils.CryptUtils;
 import com.codesvila.utils.GlobalConstants;
 import com.opensymphony.xwork2.ModelDriven;
 
-import forward.SendmailSSl;
-
 public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 	
 	private static final long serialVersionUID = 1L;
-	
 	
 	@Autowired
 	private UserBean userBean;
