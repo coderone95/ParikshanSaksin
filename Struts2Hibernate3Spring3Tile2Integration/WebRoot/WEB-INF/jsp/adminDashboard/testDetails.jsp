@@ -45,6 +45,7 @@
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
 <script src="./assets/js/admin/testDetails.js"></script>
+
 <style>
 	#test-instructions {
 		padding: 1rem;
