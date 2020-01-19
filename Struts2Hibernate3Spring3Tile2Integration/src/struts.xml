@@ -309,7 +309,9 @@
         <action name="addedQuestions" class="com.codesvila.action.UpdateTestAction" method="addedQuestions">
 			<result name="success">/WEB-INF/jsp/adminDashboard/addedQuestions.jsp</result>
 		</action>
-        
+		<action name="manageUsersAccess" class="com.codesvila.action.AdminUserListAction" method="manageUsersAccess">
+			<result name="success">/WEB-INF/jsp/adminDashboard/manageUsersAccess.jsp</result>
+		</action>
        
     </package>
     

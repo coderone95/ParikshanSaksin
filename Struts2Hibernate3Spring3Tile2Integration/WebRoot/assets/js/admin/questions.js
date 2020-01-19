@@ -78,17 +78,17 @@ $(document).ready(function(){
 				} */
 			});
 		});
-		$('.custom-switch').on('click',function(){
-			if($(this).hasClass('fa-toggle-on')){
-				$(this).removeClass('fa-toggle-on');
-				$(this).addClass('fa-toggle-off');
-				toggleSwitch('on');
-			}else if($(this).hasClass('fa-toggle-off')){
-				$(this).removeClass('fa-toggle-off');
-				$(this).addClass('fa-toggle-on');
-				toggleSwitch('off');
-			}
-		});
+//		$('.custom-switch').on('click',function(){
+//			if($(this).hasClass('fa-toggle-on')){
+//				$(this).removeClass('fa-toggle-on');
+//				$(this).addClass('fa-toggle-off');
+//				toggleSwitch('on');
+//			}else if($(this).hasClass('fa-toggle-off')){
+//				$(this).removeClass('fa-toggle-off');
+//				$(this).addClass('fa-toggle-on');
+//				toggleSwitch('off');
+//			}
+//		});
 	});
 	function formatDate(date) {
 	  var day = date.getDate();
@@ -96,18 +96,18 @@ $(document).ready(function(){
 	  var year = date.getFullYear();
 	  return year+'-'+monthIndex+'-'+day;
 	}
-	function toggleSwitch(flag){
-		var fields = $('.update-question-field');
-		if(flag == 'off'){
-			$(fields).each(function(index){
-				$(this).removeAttr('disabled');
-			});	
-		}else{
-			$(fields).each(function(index){
-				$(this).attr('disabled','true');
-			});
-		}
-	}
+//	function toggleSwitch(flag){
+//		var fields = $('.update-question-field');
+//		if(flag == 'off'){
+//			$(fields).each(function(index){
+//				$(this).removeAttr('disabled');
+//			});	
+//		}else{
+//			$(fields).each(function(index){
+//				$(this).attr('disabled','true');
+//			});
+//		}
+//	}
 	var count = 1;
 	function updateQuestion(queID){
 		localStorage.removeItem("selelctedQuestionID");
@@ -138,7 +138,7 @@ $(document).ready(function(){
 						if (itr.questionDetail.optionsMap.hasOwnProperty(optionID)){
 							var selectedOption ='';
 							var option = itr.questionDetail.optionsMap[optionID];
-							str += '<li value="'+optionID+'"><input type="text" style="padding:0.4rem; " class="option-item update-question-field" value="'+option+'" disabled /></li><br>';
+							str += '<li value="'+optionID+'" id="option-'+optionID+'"> <b class="option-var">&#'+cnt+';<b>. <input type="text" style="padding:0.4rem; " class="option-item update-question-field ml-1" value="'+option+'" /><i class="fa fa-trash-o fa-lg delete-option-icon ml-1" style="color:red" onclick="removeThisOption(\''+optionID+'\','+cnt+');"></i></li><br>';
 							if(itr.questionDetail.answer == option){
 								selectedOption = 'selected';
 								correctOptionSelection += '<option value="'+optionID+'" '+selectedOption+'> &#'+cnt+';</option>';
@@ -158,8 +158,21 @@ $(document).ready(function(){
 			}
 		});
 	}
+	function removeThisOption(optionID, count){
+//		$('#option-'+optionID).remove();
+//		arrangeOtherOptions(optionID);
+		
+	}
+	function arrangeOtherOptions(optionID){
+//		var count = 1;
+//		$('.update-question-field').each(function(){
+//			$('.option-var').html('');
+//			$('.option-var').html(`&#${count};`);
+//			count++;
+//		});
+	}
 	function updateQue(){
-		if($('.custom-switch').hasClass('fa-toggle-on')){
+//		if($('.custom-switch').hasClass('fa-toggle-on')){
 			$('.questions-edit-loader').show();
 			var questionID = localStorage.getItem("selelctedQuestionID");
 			var questionValue = $('#updateQuestion_name').val();
@@ -191,16 +204,16 @@ $(document).ready(function(){
 					$('#updateQuestionModal').modal('hide');
 					//getAllQuestions();
 					applyQuestionsFilter('ON_LOAD');
-					/* toggleSwitch('on'); */
+//					toggleSwitch('on'); 
 					
 				},
 				error : function(itrr) {
 					alert("Error occurred while getting question details..!!");
 				}
 			});
-		}else{
-			alert('Enable editing mode!!');
-		}
+//		}else{
+//			alert('Enable editing mode!!');
+//		}
 	}
 	function showQuestionDetails(queID){
 		getQuestionDetails(queID);

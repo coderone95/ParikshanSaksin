@@ -41,98 +41,32 @@
 
 <body class="">
 	<input type="hidden" id="pageId" value="userList" />
-	<input type="hidden" id="page" value="Users" />
+	<input type="hidden" id="page" value="Manage User's Access" />
 	<div class="wrapper ">
 		<jsp:include page="adminSideBar.jsp"></jsp:include>
 		<div class="main-panel">
 			<jsp:include page="adminDashboardTopNav.jsp"></jsp:include>
-			<!-- <div class="panel-header panel-header-sm">
-
-</div> -->
 			<div class="content">
 				<div class="row">
-				<s:if test="accessMap.get('M_ADD_USER')">
 					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
-						<div class="card demo-icons">
-							<div class="card-header">
-								<h4 id="user-form-card-heading">Add New User</h4>
-								<div class="error-div" style="display: none;">
-											<div class="err"
-												style="padding: 0.5rem; border: 1px solid red;"></div>
+						<div class="card">
+				              <div class="card-header">
+									<div class="card-header"><a href="adminUserListePage"><i class="fa fa-arrow-left"></i> Back </a></div>
 								</div>
-							</div>
-							<div class="card-body" id="">
-								<form action="" method="post" id="userForm">
-									<div class="row">
-										<div class="msg-div" style="display: none;color:#008000;margin: 0.5rem;">
-											<div class="msg"
-												style="padding: 0.1rem; border: 1px solid #008000;"></div>
-										</div>
-										
-										<div class="col-md-4 pr-1">
-											<div class="form-group">
-												<label>Name</label> 
-												<input type="text" class="form-control" id="name" name="userBean.name" placeholder="Enter Name *"  required/>
-											</div>
-										</div>
-										<div class="col-md-4 pr-1">
-											<div class="form-group">
-												<label>Email Address</label> 
-												<input type="email" class="form-control" id="email" name="userBean.email_id" placeholder="Enter Email address *" required/>
-											</div>
-										</div>
-										<div class="col-md-4 pr-1">
-											<div class="form-group">
-												<label>Phone Number</label> 
-												<input type="text" maxlength="10" minlength="10"  id="phone" name="userBean.phone_number" class="form-control" placeholder="Enter Phone *" required/>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-4 pr-1">
-											<div class="form-group">
-												<label>Password</label> 
-												<input type="password" class="form-control" id="pwd" name="userBean.password" placeholder="Enter Password *" required/>
-											</div>
-										</div>
-										<div class="col-md-4 pr-1">
-											<div class="form-group">
-												<label>Re-type Password</label> 
-												<input type="password" class="form-control" id="cpwd" name="userBean.cpassword" placeholder="Confirm Password *" required/>
-											</div>
-										</div>
-										<div class="col-md-4 pr-1">
-											<div class="form-group">
-												<label>User Type</label> 
-												<select class="form-control" id="userType" name="userBean.user_type">
-													<s:if test="accessMap.get('ADD_ADMIN_USER')"><option>ADMIN</option></s:if>
-													<s:if test="accessMap.get('ADD_EXAMINER_USER')"><option>EXAMINER</option></s:if>
-													<s:if test="accessMap.get('ADD_REVIEWER_USER')"><option>REVIEWER</option></s:if>
-													<s:if test="accessMap.get('ADD_CANDIDATE_USER')"><option>CANDIDATE</option></s:if>
-													<!-- <option>CANDIDATE</option> -->
-<!-- 													<option>EXAMINER</option> -->
-<!-- 													<option>REVIEWER</option> -->
-												</select>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="update ml-auto mr-auto">
-											<input type="submit" class="btn btn-primary btn-round" value="Add User">
-										</div>
-									</div>
-								</form>
-
-							</div>
-						</div>
+				              <div class="card-body"></div>
+				         </div>
+			         </div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
+						
 					</div>
-					</s:if>
 					<div class="col-md-12 col-log-12 col-xs-12 col-sm-12">
 			           <div class="card">
 			              <div class="card-header">
 			              	<div class="card-options text-right" style="margin-bottom: 0.2rem;">
-			              		<i class="fa fa-filter filter-icon mr-1" data-toggle="modal" data-target="#userFilterModal"></i>
-			              		<a href="#" id="exportBtn"><i class="fa fa-file-excel-o filter-icon"></i></a>
+			              		<a href="#" class=" mr-1 btn btn-primary" style="margin-top: 0px;">Manage User's Access</a> 
+			              		<i class="fa fa-filter filter-icon" data-toggle="modal" data-target="#userFilterModal"></i>
 			              	</div>
 			              </div>
 			              <div class="card-body" id="users-card-body">
@@ -387,9 +321,7 @@
 		type="text/javascript"></script>
 	<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 	<script src="./assets/demo/demo.js"></script>
-	<script>
-	$('[data-toggle="tooltip"]').tooltip();
-	</script>
+	
 
 </body>
 

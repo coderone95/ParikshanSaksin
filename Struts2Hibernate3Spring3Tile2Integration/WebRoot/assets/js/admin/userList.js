@@ -370,12 +370,12 @@ $(document).ready(function() {
 						//var btnClassforDisableEnable = 'btn-outline-warning';
 						var btnClassforDisableEnable = 'text-warning';
 						var disabledEnableOperationFunction = 'disableUser';
-						var disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-lock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true"></i>';
+						var disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-lock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Enable User"></i>';
 						if(itr.userList[i].is_disabled == 1){
 							//btnClassforDisableEnable = 'btn-outline-success';
 							btnClassforDisableEnable = 'text-success';
 							disabledEnableOperationFunction = 'enableUser';
-							disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-unlock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true"></i>';
+							disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-unlock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Disable User"></i>';
 						}
 						var str = '<tr>';
 						str=str+'<td class="text-nowrap">'+userID+'</td>';
@@ -384,8 +384,9 @@ $(document).ready(function() {
 						str=str+'<td class="text-nowrap">'+phone+'</td>';
 						str=str+'<td class="text-nowrap">'+userType+'</td>';
 						str=str+'<td class="text-nowrap">'+created_on+'</td>';
-						str=str+'<td class="text-nowrap"><i class="fa fa-trash text-danger delete" onclick="deleteThisUser('+userID+');"></i>'+disabledEnableOperationText
-									+'<i class="fa fa-pencil action-icon" onclick="updateUser('+userID+',\''+email+'\');"></i></td>';
+						str=str+'<td class="text-nowrap"><i class="fa fa-trash text-danger delete" onclick="deleteThisUser('+userID+');" data-toggle="tooltip" data-placement="top" title="Delete User"></i>'+disabledEnableOperationText
+									+'<i class="fa fa-pencil action-icon" onclick="updateUser('+userID+',\''+email+'\');" data-toggle="tooltip" data-placement="top" title="Update User"></i>'
+									+'<a href="manageUsersAccess?userID='+userID+'"><i class="fa fa-user-plus ml-1" aria-hidden="true" style=" cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Manage User Access"></i></a></td>';
 						str=str+'</tr>';
 						$('#users-table-body').append(str);
 					}

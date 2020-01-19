@@ -292,7 +292,7 @@ border-radius: 5px;
 							</div>
 							<div class="card-header">
 								<div class="card-options">
-									<i class="fa fa-toggle-off custom-switch"></i>
+									<!-- <i class="fa fa-toggle-off custom-switch"></i> -->
 								</div>
 							</div>
 							<div class="card-body">
@@ -300,7 +300,7 @@ border-radius: 5px;
 									<div class="col-md-12 pr-1">
 										<div class="form-group">
 											<label>Question</label> 
-											<textarea class="form-control update-question-field" name="question" id="updateQuestion_name" disabled></textarea>
+											<textarea class="form-control update-question-field" name="question" id="updateQuestion_name"></textarea>
 										</div>
 									</div>
 								</div>
@@ -317,7 +317,7 @@ border-radius: 5px;
 									<div class="col-md-12 pr-1">
 										<div class="form-group" id="updateAnswer_name">
 											<label>Select Answer</label> 
-											<select id="updateCorrectOption" class="form-control update-question-field" disabled="true"></select>
+											<select id="updateCorrectOption" class="form-control update-question-field"></select>
 										</div>
 									</div>
 								</div>

@@ -86,6 +86,9 @@ public class AdminUserListAction extends BaseAction {
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
-
+	
+	public String manageUsersAccess() {
+		return "success";
+	}
 
 }
