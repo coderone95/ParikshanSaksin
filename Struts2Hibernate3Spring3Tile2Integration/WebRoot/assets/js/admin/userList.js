@@ -390,6 +390,7 @@ $(document).ready(function() {
 						str=str+'</tr>';
 						$('#users-table-body').append(str);
 					}
+					
 //					$("#userListTable").DataTable( {
 //				        "scrollY":        '90vh',
 //				        "scrollCollapse": true,
