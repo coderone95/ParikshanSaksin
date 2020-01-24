@@ -377,6 +377,7 @@ $(document).ready(function() {
 							disabledEnableOperationFunction = 'enableUser';
 							disabledEnableOperationText = '<i id="user-'+userID+'" class="fa fa-unlock action-icon '+btnClassforDisableEnable+'" onclick="'+disabledEnableOperationFunction+'('+userID+',this);" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Disable User"></i>';
 						}
+						var manageAccessUsers = '';
 						var str = '<tr>';
 						str=str+'<td class="text-nowrap">'+userID+'</td>';
 						str=str+'<td class="text-nowrap">'+name+'</td>';
@@ -384,9 +385,13 @@ $(document).ready(function() {
 						str=str+'<td class="text-nowrap">'+phone+'</td>';
 						str=str+'<td class="text-nowrap">'+userType+'</td>';
 						str=str+'<td class="text-nowrap">'+created_on+'</td>';
+						if(userType != 'CANDIDATE' && userType != ''){
+							manageAccessUsers += '<a href="manageUsersAccess?userID='+userID+'&userType='+userType+'">'
+									+'<i class="fa fa-user-plus ml-1" aria-hidden="true" style=" cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Manage User Access"></i></a>';
+						}
 						str=str+'<td class="text-nowrap"><i class="fa fa-trash text-danger delete" onclick="deleteThisUser('+userID+');" data-toggle="tooltip" data-placement="top" title="Delete User"></i>'+disabledEnableOperationText
 									+'<i class="fa fa-pencil action-icon" onclick="updateUser('+userID+',\''+email+'\');" data-toggle="tooltip" data-placement="top" title="Update User"></i>'
-									+'<a href="manageUsersAccess?userID='+userID+'"><i class="fa fa-user-plus ml-1" aria-hidden="true" style=" cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Manage User Access"></i></a></td>';
+									+manageAccessUsers+'</td>';
 						str=str+'</tr>';
 						$('#users-table-body').append(str);
 					}

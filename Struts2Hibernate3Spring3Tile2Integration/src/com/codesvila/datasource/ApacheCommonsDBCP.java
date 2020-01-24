@@ -896,6 +896,50 @@ public class ApacheCommonsDBCP extends ActionSupport{
 					qi = ResultBeans.generateResultForGetAddedQuestionsForSelectedTest(rs);
 				}
 				return qi;
+			}else if(queryId.equals("GET_USERS_ACCESS_GIVEN")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				Integer userID = (Integer) paramMap.get("userID");
+				
+				ParamBO pUserID = new ParamBO();
+				pUserID.setParamName("pUserID");
+				pUserID.setParamType("SingleParamElement");
+				pUserID.setParamreturnType("Integer");
+				pUserID.setParamValue(userID);
+
+				mymap.put("pUserID", pUserID);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
+				LOG.info("QueryMapperBO qmbo : GET_USERS_ACCESS_GIVEN \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<FunctionalityBO> qi = new ArrayList<FunctionalityBO>();
+				if (rs != null) {
+					qi = ResultBeans.generateResultForGetUsersAccessGiven(rs);
+				}
+				return qi;
+			}else if(queryId.equals("GET_USERS_ACCESS_NOT_GIVEN")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				Integer userID = (Integer) paramMap.get("userID");
+				
+				ParamBO pUserID = new ParamBO();
+				pUserID.setParamName("pUserID");
+				pUserID.setParamType("SingleParamElement");
+				pUserID.setParamreturnType("Integer");
+				pUserID.setParamValue(userID);
+
+				mymap.put("pUserID", pUserID);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
+				LOG.info("QueryMapperBO qmbo : GET_USERS_ACCESS_NOT_GIVEN \n\n" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<FunctionalityBO> qi = new ArrayList<FunctionalityBO>();
+				if (rs != null) {
+					qi = ResultBeans.generateResultForGetUsersAccessNOTGiven(rs);
+				}
+				return qi;
 			}
 			
 		} catch (SQLException e) {

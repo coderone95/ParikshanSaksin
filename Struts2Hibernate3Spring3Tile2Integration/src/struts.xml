@@ -312,7 +312,34 @@
 		<action name="manageUsersAccess" class="com.codesvila.action.AdminUserListAction" method="manageUsersAccess">
 			<result name="success">/WEB-INF/jsp/adminDashboard/manageUsersAccess.jsp</result>
 		</action>
-       
+       	<action name="getUsersAccessGiven" class="com.codesvila.action.AdminUserListAction" method="getUsersAccessGiven">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="getUsersAccessNOTGiven" class="com.codesvila.action.AdminUserListAction" method="getUsersAccessNOTGiven">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="givenSelectedAccessToUser" class="com.codesvila.action.AdminUserListAction" method="givenSelectedAccessToUser">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="removeAccess" class="com.codesvila.action.AdminUserListAction" method="removeAccess">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
     </package>
     
     <package name="candidate" namespace="/" extends="struts-default,json-default" >

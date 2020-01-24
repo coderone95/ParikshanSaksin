@@ -359,4 +359,25 @@ public class ResultBeans {
 		return qboList;
 	}
 
+	public static List<FunctionalityBO> generateResultForGetUsersAccessGiven(ResultSet rs) throws Exception{
+		List<FunctionalityBO> accessRightsList = new ArrayList<FunctionalityBO>();
+		while (rs.next()) {
+			FunctionalityBO bo = new FunctionalityBO();
+			bo.setFunctionality_id(rs.getInt("functionality_id"));
+			bo.setFunctionality_code(rs.getString("functionality_code"));
+			accessRightsList.add(bo);
+		}
+		return accessRightsList;
+	}
+
+	public static List<FunctionalityBO> generateResultForGetUsersAccessNOTGiven(ResultSet rs) throws Exception{
+		List<FunctionalityBO> accessRightsList = new ArrayList<FunctionalityBO>();
+		while (rs.next()) {
+			FunctionalityBO bo = new FunctionalityBO();
+			bo.setFunctionality_code(rs.getString("functionality_code"));
+			accessRightsList.add(bo);
+		}
+		return accessRightsList;
+	}
+
 }

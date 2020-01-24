@@ -1,6 +1,8 @@
 package com.codesvila.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
@@ -11,7 +13,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.UserBean;
+import com.codesvila.datasource.ApacheCommonsDBCP;
 import com.codesvila.model.Functionality;
 import com.codesvila.model.User;
 import com.codesvila.utils.DateUtils;
@@ -162,6 +166,70 @@ public class UserDaoImpl implements UserDao {
 		} finally {
 			session.close();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<FunctionalityBO> getUsersAccessGiven(Integer userID) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("userID", userID);
+		return ApacheCommonsDBCP.DBCPDataSource("GET_USERS_ACCESS_GIVEN", null, true, paramMap,null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<FunctionalityBO> getUsersAccessNOTGiven(Integer userID) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("userID", userID);
+		return ApacheCommonsDBCP.DBCPDataSource("GET_USERS_ACCESS_NOT_GIVEN", null, true, paramMap,null);
+	}
+
+	@Override
+	public boolean givenSelectedAccessToUser(Functionality fb) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.openSession();
+		int genereatedID = 0;
+		Transaction tx2 = session.beginTransaction();
+		try {
+			genereatedID = (Integer) session.save(fb);
+			tx2.commit();
+		} catch (HibernateException e) {
+			if (tx2 != null)
+				tx2.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		if(genereatedID>0)
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean removeAccess(Integer userID, String userType, String accessCode) throws Exception {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.openSession();
+        int res = 0;
+		Transaction tx2 = session.beginTransaction();
+		try {
+			Query q=session.createQuery("delete from Functionality where user_id=:userID and user_type=:user_type and functionality_code=:accessCode");  
+	        q.setParameter("userID",userID);  
+	        q.setParameter("user_type",userType);
+	        q.setParameter("accessCode",accessCode);
+	        res = q.executeUpdate();
+			tx2.commit();
+		} catch (HibernateException e) {
+			if (tx2 != null)
+				tx2.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		if(res > 0)
+        	return true;
+		return false;
 	}
 
 }

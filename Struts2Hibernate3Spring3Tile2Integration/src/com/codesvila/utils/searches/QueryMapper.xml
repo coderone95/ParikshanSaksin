@@ -22,5 +22,19 @@
 		inner join tbl_groups_test gt 
 		on gt.group_id = qg.group_id WHERE { gt.test_id in ($[pTestID]) }
 	</query>
+	<query id="GET_USERS_ACCESS_GIVEN">
+		select distinct functionality_id, user_id, user_type, functionality_name, functionality_code 
+		from tbl_functionalities 
+		where 
+		{ user_id in ($[pUserID]) }
+	</query>
+	<query id="GET_USERS_ACCESS_NOT_GIVEN">
+		select distinct mst_f.functionality_code from tbl_mst_functionalities mst_f 
+		inner join tbl_functionalities f 
+		on f.functionality_code = mst_f.functionality_code 
+		where 
+		mst_f.functionality_code NOT IN (select distinct functionality_code from tbl_functionalities where { user_id in ($[pUserID]) }) 
+	</query>
+	
 	
 </search>

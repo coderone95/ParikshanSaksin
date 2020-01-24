@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.UserBean;
 import com.codesvila.dao.UserDao;
 import com.codesvila.datasource.ApacheCommonsDBCP;
@@ -181,6 +182,47 @@ public class UserServiceImpl implements UserService {
 		bo.setFunctionality_name(fun_code);
 		bo.setFunctionality_code(fun_code);
 		return bo;
+	}
+
+
+	@Override
+	public List<FunctionalityBO> getUsersAccessGiven(Integer userID) throws Exception {
+		// TODO Auto-generated method stub
+		return userDao.getUsersAccessGiven(userID);
+	}
+
+
+	@Override
+	public List<FunctionalityBO> getUsersAccessNOTGiven(Integer userID) throws Exception {
+		// TODO Auto-generated method stub
+		return userDao.getUsersAccessNOTGiven(userID);
+	}
+
+
+	@Override
+	public boolean givenSelectedAccessToUser(Integer userID, String userType, List<String> accessList) {
+		// TODO Auto-generated method stub
+		boolean isAccessGrantedSuccessFully = true;
+		if(accessList.size() > 0) {
+			for(String access: accessList) {
+				Functionality fb = new Functionality();
+				fb.setUser_id(userID);
+				fb.setFunctionality_code(access);
+				fb.setFunctionality_name(access);
+				fb.setUser_type(userType);
+				isAccessGrantedSuccessFully = userDao.givenSelectedAccessToUser(fb);
+				if(!isAccessGrantedSuccessFully) {
+					isAccessGrantedSuccessFully = false;
+					break;
+				}
+			}
+		}
+		return isAccessGrantedSuccessFully;
+	}
+	
+	@Override
+	public boolean removeAccess(Integer userID, String userType, String accessCode) throws Exception{
+		return userDao.removeAccess(userID,userType,accessCode);
 	}
 	
 

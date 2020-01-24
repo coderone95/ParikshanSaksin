@@ -138,7 +138,7 @@ $(document).ready(function(){
 						if (itr.questionDetail.optionsMap.hasOwnProperty(optionID)){
 							var selectedOption ='';
 							var option = itr.questionDetail.optionsMap[optionID];
-							str += '<li value="'+optionID+'" id="option-'+optionID+'"> <b class="option-var">&#'+cnt+';<b>. <input type="text" style="padding:0.4rem; " class="option-item update-question-field ml-1" value="'+option+'" /><i class="fa fa-trash-o fa-lg delete-option-icon ml-1" style="color:red" onclick="removeThisOption(\''+optionID+'\','+cnt+');"></i></li><br>';
+							str += '<li value="'+optionID+'" id="option-'+optionID+'"> <b class="option-var">&#'+cnt+';<b>. <input type="text" style="padding:0.4rem; " class="option-item update-question-field ml-1" value="'+option+'" /></li><br>';
 							if(itr.questionDetail.answer == option){
 								selectedOption = 'selected';
 								correctOptionSelection += '<option value="'+optionID+'" '+selectedOption+'> &#'+cnt+';</option>';
