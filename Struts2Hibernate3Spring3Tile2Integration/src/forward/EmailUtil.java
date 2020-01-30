@@ -18,7 +18,8 @@ public class EmailUtil {
 	 * @param subject
 	 * @param body
 	 */
-	public static void sendEmail(Session session, String toEmail, String subject, String body){
+	public static boolean sendEmail(Session session, String toEmail, String subject, String body, String htmlCont){
+		boolean flag = true;
 		try
 	    {
 	      MimeMessage msg = new MimeMessage(session);
@@ -34,6 +35,7 @@ public class EmailUtil {
 	      msg.setSubject(subject, "UTF-8");
 
 	      msg.setText(body, "UTF-8");
+	      msg.setContent(htmlCont,"text/html");
 
 	      msg.setSentDate(new Date());
 
@@ -44,7 +46,9 @@ public class EmailUtil {
 	      System.out.println("EMail Sent Successfully!!");
 	    }
 	    catch (Exception e) {
+	    	flag = false;
 	      e.printStackTrace();
 	    }
+		return flag;
 	}
 }

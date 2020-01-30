@@ -35,6 +35,12 @@
 		where 
 		mst_f.functionality_code NOT IN (select distinct functionality_code from tbl_functionalities where { user_id in ($[pUserID]) }) 
 	</query>
+	<query id="GET_AND_VERIFY_USER">
+		select user_id, name, email_id, password, phone_number from tbl_users where {email_id in ($[pEmailId])} and { phone_number in ($[pPhoneNumber]) } limit 1
+	</query>
+	<query id="GET_OTP_FOR_USER">
+		select user_id, otp from tbl_otp where {user_id in ($[pUserId])} limit 1
+	</query>
 	
 	
 </search>

@@ -17,6 +17,7 @@ import com.codesvila.bean.AttendedTestDetailsBean;
 import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.OTPBO;
 import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestAuthBean;
@@ -931,13 +932,65 @@ public class ApacheCommonsDBCP extends ActionSupport{
 
 				mymap.put("pUserID", pUserID);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
-				LOG.info("QueryMapperBO qmbo : GET_USERS_ACCESS_NOT_GIVEN \n\n" + qmbo.getQuery());
+				LOG.info("QueryMapperBO qmbo : GET_USERS_ACCESS_NOT_GIVEN ::::--" + qmbo.getQuery());
 				query = qmbo.getQuery();
 				if(query != null)
 					rs = stmt.executeQuery(query);
 				List<FunctionalityBO> qi = new ArrayList<FunctionalityBO>();
 				if (rs != null) {
 					qi = ResultBeans.generateResultForGetUsersAccessNOTGiven(rs);
+				}
+				return qi;
+			}else if(queryId.equals("GET_AND_VERIFY_USER")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				String email = (String) paramMap.get("email");
+				String phone = (String) paramMap.get("phone");
+				
+				ParamBO pEmailId = new ParamBO();
+				pEmailId.setParamName("pEmailId");
+				pEmailId.setParamType("SingleParamElement");
+				pEmailId.setParamreturnType("String");
+				pEmailId.setParamValue(email);
+				
+				ParamBO pPhoneNumber = new ParamBO();
+				pPhoneNumber.setParamName("pPhoneNumber");
+				pPhoneNumber.setParamType("SingleParamElement");
+				pPhoneNumber.setParamreturnType("String");
+				pPhoneNumber.setParamValue(phone);
+
+				mymap.put("pEmailId", pEmailId);
+				mymap.put("pPhoneNumber", pPhoneNumber);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
+				LOG.info("QueryMapperBO qmbo : GET_AND_VERIFY_USER :::--" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<UserBean> qi = new ArrayList<UserBean>();
+				if (rs != null) {
+					qi = ResultBeans.generateResultForGetUseForVerification(rs);
+				}
+				return qi;
+			}else if(queryId.equals("GET_OTP_FOR_USER")) {
+				String query = null;
+				Map<String, ParamBO> mymap = new HashMap<String,ParamBO>();
+				Integer userID = (Integer) paramMap.get("userID");
+				
+				ParamBO pUserId = new ParamBO();
+				pUserId.setParamName("pUserId");
+				pUserId.setParamType("SingleParamElement");
+				pUserId.setParamreturnType("Integer");
+				pUserId.setParamValue(userID);
+
+				mymap.put("pUserId", pUserId);
+				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "QueryMapper", mymap);
+				LOG.info("QueryMapperBO qmbo : GET_OTP_FOR_USER :::--" + qmbo.getQuery());
+				query = qmbo.getQuery();
+				if(query != null)
+					rs = stmt.executeQuery(query);
+				List<OTPBO> qi = new ArrayList<OTPBO>();
+				if (rs != null) {
+					qi = ResultBeans.generateResultForGetOTPForUser(rs);
 				}
 				return qi;
 			}

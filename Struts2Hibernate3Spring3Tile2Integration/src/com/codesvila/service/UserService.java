@@ -3,6 +3,7 @@ package com.codesvila.service;
 import java.util.List;
 
 import com.codesvila.bean.FunctionalityBO;
+import com.codesvila.bean.OTPBO;
 import com.codesvila.bean.UserBean;
 import com.codesvila.model.User;
 
@@ -27,5 +28,12 @@ public interface UserService {
 	public boolean givenSelectedAccessToUser(Integer userID, String userType, List<String> accessList);
 
 	public boolean removeAccess(Integer userID, String concat, String accessCode) throws Exception;
+
+	public List<UserBean> getAndVerifyUser(String email, String phone) throws Exception;
+
+	public Integer saveOrUpdateOTPstatus(Integer userid, String otp);
+
+	public List<OTPBO> getOTPForUser(String otp, Integer userID) throws Exception;
+
 
 }

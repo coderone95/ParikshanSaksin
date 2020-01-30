@@ -1,5 +1,6 @@
 package com.codesvila.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.codesvila.bean.FunctionalityBO;
+import com.codesvila.bean.OTPBO;
 import com.codesvila.bean.UserBean;
 import com.codesvila.datasource.ApacheCommonsDBCP;
 import com.codesvila.model.Functionality;
+import com.codesvila.model.OTP;
 import com.codesvila.model.User;
 import com.codesvila.utils.DateUtils;
 
@@ -230,6 +234,59 @@ public class UserDaoImpl implements UserDao {
 		if(res > 0)
         	return true;
 		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UserBean> getAndVerifyUser(String email, String phone) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("email", email);
+		paramMap.put("phone", phone);
+		return ApacheCommonsDBCP.DBCPDataSource("GET_AND_VERIFY_USER", null, true, paramMap,null);
+	}
+
+	@Override
+	public Integer saveOrUpdateOTPstatus(OTP otpb) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.openSession();
+		Transaction tx2 = session.beginTransaction();
+		Query q=session.createQuery("from OTP where user_id=:userID");  
+        q.setParameter("userID",otpb.getUser_id());  
+        List<OTP> results = q.list();
+		
+		int generatedID = 1;
+		try {
+			if(results.size() > 0) {
+				OTP o = results.get(0);
+				int id = o.getId();
+				OTP otp = (OTP) session.get(OTP.class, id);
+				otp.setUser_id(otpb.getUser_id());
+				otp.setOtp(otpb.getOtp());
+				otp.setCreated_on(otpb.getCreated_on());
+				session.update(otp);
+			}else {
+				session.save(otpb);
+			}
+			tx2.commit();
+		} catch (HibernateException e) {
+			generatedID=0;
+			if (tx2 != null)
+				tx2.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return generatedID;
+	}
+
+	@Override
+	public List<OTPBO> getOTPForUser(String otp, Integer userID) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("otp", otp);
+		paramMap.put("userID", userID);
+		return ApacheCommonsDBCP.DBCPDataSource("GET_OTP_FOR_USER", null, true, paramMap,null);
 	}
 
 }

@@ -208,4 +208,8 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 		return userBean;
 	}
 	
+	public String home() {
+		return "success";
+	}
+	
 }

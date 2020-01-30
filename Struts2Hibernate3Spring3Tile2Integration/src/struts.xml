@@ -6,7 +6,20 @@
 <struts>
  	
     <constant name="struts.devMode" value="false" />
- 
+ 	<package name="startup" namespace="/" extends="struts-default,json-default" >
+ 		<action name="forgot" class="com.codesvila.action.LogoutAction" method="forgotPage">
+			<result name="success">/WEB-INF/jsp/adminDashboard/forgot.jsp</result>
+		</action>
+		<action name="forgotCredentials" class="com.codesvila.action.LogoutAction" method="forgotCredentials">
+			<result name="success">/WEB-INF/jsp/adminDashboard/forgot.jsp</result>
+		</action>
+		<action name="verifyOtp" class="com.codesvila.action.LogoutAction" method="verifyOtp">
+			<result name="success">/WEB-INF/jsp/adminDashboard/forgot.jsp</result>
+		</action>
+		<action name="index" class="com.codesvila.action.LoginAction" method="home">
+			<result name="success">/WEB-INF/jsp/index.jsp</result>
+		</action>
+ 	</package>
 	<package name="default" extends="struts-default,json-default" >
 	
 	<interceptors>
@@ -340,6 +353,7 @@
 	        </interceptor-ref> 
 			<result name="success" type="json"></result>  
         </action>
+        
     </package>
     
     <package name="candidate" namespace="/" extends="struts-default,json-default" >

@@ -11,6 +11,7 @@ import com.codesvila.bean.AttendedTestDetailsBean;
 import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.GroupBO;
 import com.codesvila.bean.GroupsTestInfoBO;
+import com.codesvila.bean.OTPBO;
 import com.codesvila.bean.QuestionBO;
 import com.codesvila.bean.QuestionsGroupBO;
 import com.codesvila.bean.TestAuthBean;
@@ -378,6 +379,33 @@ public class ResultBeans {
 			accessRightsList.add(bo);
 		}
 		return accessRightsList;
+	}
+
+	public static List<UserBean> generateResultForGetUseForVerification(ResultSet rs) throws Exception{
+		// TODO Auto-generated method stub
+		List<UserBean> userBean = new ArrayList<UserBean>();
+		while (rs.next()) {
+			UserBean u = new UserBean();
+			u.setUser_id(rs.getInt("user_id"));
+			u.setName(rs.getString("name"));
+			u.setEmail_id(rs.getString("email_id"));
+			u.setPassword(rs.getString("password"));
+			u.setPhone_number(rs.getString("phone_number"));
+			userBean.add(u);
+		}
+		return userBean;
+	}
+
+	public static List<OTPBO> generateResultForGetOTPForUser(ResultSet rs) throws Exception{
+		// TODO Auto-generated method stub
+		List<OTPBO>  otps = new ArrayList<OTPBO>();
+		while(rs.next()) {
+			OTPBO otp = new OTPBO();
+			otp.setUser_id(rs.getInt("user_id"));
+			otp.setOtp(rs.getString("otp"));
+			otps.add(otp);
+		}
+		return otps;
 	}
 
 }

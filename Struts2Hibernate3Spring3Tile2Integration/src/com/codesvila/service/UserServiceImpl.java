@@ -1,6 +1,7 @@
 package com.codesvila.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,13 +12,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codesvila.bean.FunctionalityBO;
+import com.codesvila.bean.OTPBO;
 import com.codesvila.bean.UserBean;
 import com.codesvila.dao.UserDao;
 import com.codesvila.datasource.ApacheCommonsDBCP;
 import com.codesvila.model.Functionality;
+import com.codesvila.model.OTP;
 import com.codesvila.model.User;
+import com.codesvila.utils.DateUtils;
 import com.codesvila.utils.GlobalConstants;
 import com.codesvila.utils.SendEmail;
+import java.util.Date;
 
 @Service("userService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true) 
@@ -224,6 +229,33 @@ public class UserServiceImpl implements UserService {
 	public boolean removeAccess(Integer userID, String userType, String accessCode) throws Exception{
 		return userDao.removeAccess(userID,userType,accessCode);
 	}
-	
+
+
+	@Override
+	public List<UserBean> getAndVerifyUser(String email, String phone) throws Exception {
+		// TODO Auto-generated method stub
+		return userDao.getAndVerifyUser(email,phone);
+	}
+
+
+	@Override
+	public Integer saveOrUpdateOTPstatus(Integer userid, String otp) {
+		// TODO Auto-generated method stub
+		OTP otpb = new OTP();
+		otpb.setUser_id(userid);
+		otpb.setOtp(otp);
+		long time = DateUtils.getCurrentDate().getTime();
+		Date datetime = new Date(time + (10 * 60000));
+		otpb.setCreated_on(datetime);
+		return userDao.saveOrUpdateOTPstatus(otpb);
+	}
+
+
+	@Override
+	public List<OTPBO> getOTPForUser(String otp, Integer userID) throws Exception {
+		// TODO Auto-generated method stub
+		return userDao.getOTPForUser(otp,userID);
+	}
+
 
 }
