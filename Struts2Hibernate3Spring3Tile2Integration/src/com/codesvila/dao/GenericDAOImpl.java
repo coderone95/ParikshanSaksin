@@ -52,5 +52,26 @@ public class GenericDAOImpl implements GenericDAO{
 	       }
 		return data;
 	}
+
+
+	@Override
+	public void saveEntity(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void updateEntity(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void deleteEntity(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

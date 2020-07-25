@@ -488,3 +488,159 @@ alter table tbl_functionalities add column user_type varchar(255) after `user_id
 
 ALTER TABLE tbl_functionalities
 DROP INDEX functionality_code;
+
+
+---- 
+
+CREATE TABLE `tbl_mst_functionalities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `functionality_code` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`)
+)
+
+
+------- -----------
+
+insert into tbl_mst_functionalities(functionality_code)
+values
+	 ('M_DASHBOARD_PAGE'),
+	 ('M_USERS_PAGE'),
+	 ('M_SHOW_ADMIN_USERS'),
+	 ('M_SHOW_EXAMINER_USERS '),
+	 ('M_SHOW_REVIEWER_USERS'),
+	 ('M_ADD_USER'),
+	 ('M_DISABLE_USER'),
+	 ('M_ENABLE_USER'),
+	 ('M_EDIT_USER'),
+	 ('M_DELETE_USER '),
+	 ('M_GROUP_PAGE '),
+	 ('M_SHOW_GROUPS'),
+	 ('M_ADD_GROUP'),
+	 ('M_EDIT_GROUP'),
+	 ('M_DELETE_GROUP'),
+	 ('M_TEST_PAGE'),
+	 ('M_ADD_TEST '),
+	 ('M_EDIT_TEST '),
+	 ('M_DELETE_TEST'), 
+	 ('M_QUESTIONS_PAGE'),
+	 ('M_SHOW_QUESTIONS'),
+	 ('M_ADD_QUESTION'),
+	 ('M_EDIT_QUESTION'),
+	 ('M_DELETE_QUESTION'),
+	 ('M_ADD_QUESTIONS_TO_GROUP'),
+	 ('M_SHOW_ADDED_QUESTIONS_TO_GROUP'),
+	 ('M_DELETE_QUESTIONS_FROM_GROUP');
+
+insert into tbl_mst_functionalities(functionality_code) values('ADD_ADMIN_USER'),('ADD_EXAMINER_USER'),('ADD_REVIEWER_USER'),('ADD_CANDIDATE_USER')
+
+
+CREATE TABLE `tbl_otp` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `user_id` int(100) NOT NULL,
+  `otp` varchar(100) DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_key_` (`id`),
+  UNIQUE KEY `unique_user_id_key` (`user_id`)
+);
+
+alter table tbl_otp add column created_on datetime
+
+
+--- OTP expire ----
+	
+DELIMITER $$
+DROP Procedure IF EXISTS checkOTPExpire $$
+DELIMITER $$
+CREATE PROCEDURE checkOTPExpire ()
+BEGIN
+    DECLARE finished INTEGER DEFAULT 0;
+    Declare V_id INT ;
+    Declare V_createdOn DATETIME;
+    Declare V_otp VARCHAR(255);
+    Declare V_diff INT;
+  
+    DEClARE curOTPExpireCheck 
+        CURSOR FOR 
+            SELECT user_id, otp, created_on from tbl_otp;
+ 
+    -- declare NOT FOUND handler
+    DECLARE CONTINUE HANDLER 
+        FOR NOT FOUND SET finished = 1;
+ 
+    OPEN curOTPExpireCheck;
+ 
+    getExpireDiff: LOOP
+        FETCH curOTPExpireCheck INTO V_id, V_otp, V_createdOn;
+        IF finished = 1 THEN 
+            LEAVE getExpireDiff;
+        END IF;
+        
+              SELECT TIMESTAMPDIFF(MINUTE, now(),V_createdOn)  into V_diff ;
+              -- select V_diff;
+              IF V_createdOn IS NOT NULL THEN
+                IF V_diff <= 0  THEN
+                	Update tbl_otp set otp = NULL where tbl_otp.user_id = V_id;
+              	END IF; 
+              END IF;
+      
+    END LOOP getExpireDiff;
+    CLOSE curOTPExpireCheck;
+ 
+END$$
+DELIMITER ;
+
+
+CREATE EVENT checkOTPExpire
+    ON SCHEDULE
+      EVERY 1 SECOND
+    DO
+     CALL checkOTPExpire();
+     
+     
+SET GLOBAL event_scheduler = ON;
+
+
+
+-- -------------------------
+-- Date : 1st June 2020 Description: Add new column in tbl_user_answered
+-- ----------------------
+
+alter table tbl_user_answered add column test_id int(255) after `user_id`
+
+
+drop table tbl_user_answered 
+
+CREATE TABLE `tbl_user_answered` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `test_answered_context_id` int(255) DEFAULT NULL,
+  `question_id` int(255) DEFAULT NULL,
+  `answer_id` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_id` (`question_id`),
+  KEY `test_answered_context_id` (`test_answered_context_id`),
+  CONSTRAINT `tbl_user_answered_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `tbl_questions` (`question_id`),
+  CONSTRAINT `tbl_user_answered_ibfk_2` FOREIGN KEY (`test_answered_context_id`) REFERENCES `tbl_test_submission_details` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `tbl_test_submission_details` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) DEFAULT NULL,
+  `test_id` int(255) DEFAULT NULL,
+  `test_start_time` datetime DEFAULT NULL,
+  `submitted_successfully` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `test_id` (`test_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `tbl_test_submission_details_ibfk_1` FOREIGN KEY (`test_id`) REFERENCES `tbl_tests` (`test_id`),
+  CONSTRAINT `tbl_test_submission_details_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`email_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE tbl_attended_test_details
+DROP COLUMN test_started_time;
+
+
+ALTER TABLE tbl_attended_test_details
+DROP COLUMN test_ended_time;
+
+alter table tbl_test_submission_details add column test_end_time datetime after `test_start_time`

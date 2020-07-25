@@ -187,7 +187,7 @@ public class ApacheCommonsDBCP extends ActionSupport{
 			}else if(queryId.equals("GET_ALL_ATTENDED_TEST_DETAILS")) {
 				String query = null;
 //				query = "select id, test_id, org_id, user_id, test_started_time, test_ended_time,attempted,max_attempt from tbl_attended_test_details";
-				query = "select atd.id, atd.test_id, atd.org_id, t.test_key, atd.user_id, atd.test_started_time, atd.test_ended_time,atd.attempted,atd.max_attempt "
+				query = "select atd.id, atd.test_id, atd.org_id, t.test_key, atd.user_id, atd.attempted,atd.max_attempt "
 						+ "from tbl_attended_test_details atd " + 
 						"inner join tbl_tests t on t.test_id = atd.test_id ";
 				LOG.info("Query---- :\n" + query);
@@ -197,6 +197,44 @@ public class ApacheCommonsDBCP extends ActionSupport{
 					testInfo = ResultBeans.generateResultForgetAllAttendedTestDetails(rs); 
 				}
 				return testInfo;
+			}else if(queryId.equals("GET_QUESTION_ONLY")) {
+				Integer quesID = null;
+				List<QuestionBO> quesList = new ArrayList<QuestionBO>();
+				if(paramMap != null) {
+					quesID = (Integer) paramMap.get("QuestionID");
+				}
+				if(quesID !=null) {
+					StringBuffer query = new StringBuffer();
+					query.append("SELECT q.question FROM tbl_questions q ");
+					query.append(" Where q.question_id = ").append(quesID);
+					rs = stmt.executeQuery(query.toString());
+					LOG.info("Query---- GET_QUESTION_ONLY:\n" + query.toString());
+					if(rs !=null) {
+						QuestionBO qbo = ResultBeans.convertVoToBoForQuestionBO(rs);
+						if(qbo !=null) {
+							quesList.add(qbo);
+						}
+					}
+				}
+				return quesList;
+			}else if(queryId.equals("GET_OPTIONS_ONLY")) {
+				Integer quesID = null;
+				
+				List<QuestionInfoBO> optionList = new ArrayList<QuestionInfoBO>();
+				if(paramMap != null) {
+					quesID = (Integer) paramMap.get("QuestionID");
+				}
+				if(quesID !=null) {
+					StringBuffer query = new StringBuffer();
+					query.append("SELECT qo.option_id, qo.option_value FROM tbl_que_options qo ");
+					query.append(" WHERE qo.question_id = ").append(quesID);
+					rs = stmt.executeQuery(query.toString());
+					LOG.info("Query---- GET_OPTIONS_ONLY:\n" + query.toString());
+					if(rs !=null) {
+						optionList = ResultBeans.generateResultForGetOptionsForQuestions(rs);
+					}
+				}
+				return optionList;
 			}
 			
 			

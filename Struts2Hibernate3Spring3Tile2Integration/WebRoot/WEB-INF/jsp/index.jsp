@@ -10,10 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <%-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> --%>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <link href="./assets/css/loader.css" rel="stylesheet" />
     <script>
         $(document).ready(function(){
             $('#login-tb').click();
@@ -78,8 +83,8 @@
     <style>
         /*Font CDN*/
 
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic);
-
+/* @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic);
+ */
 /*Font CDN*/
 
 
@@ -207,6 +212,13 @@ ul {
 
 .login-form {
     text-align: center;
+}
+
+.login-loader {
+	width: 115%;
+	height: 110%;
+	margin: -0.7rem;
+	display:none;
 }
 
 .login-form input {
@@ -531,7 +543,18 @@ button.form-btn {
                                                 <input type="password" id="password" name="password" placeholder="Enter password ">
                                             </label>
                                         </div>
-                                        <button type="submit" id="loginBtn" class="btnRegister form-btn">Login</button>
+                                        <button type="submit" id="loginBtn" class="btnRegister form-btn">
+                                        <div class="loaddercontainer login-loader">
+											<div class="lds-ring">
+										        <div></div>
+										        <div></div>
+										        <div></div>
+										        <div></div>
+											</div>
+										</div>
+                                        Login</button>
+                                        <br/>
+                                        <a href="forgot" class="text-info"><small>Forgot username or password? click here</small></a>
                                     </form>
                                 </div>
                             </div>
@@ -541,8 +564,7 @@ button.form-btn {
             </div>
         </div>
     </div>
-  </body>
-  <footer class="footer">
+    <footer class="footer">
     <div class="container-fluid">
       <div class="row">
         <div class="credits">
@@ -553,4 +575,5 @@ button.form-btn {
       </div>
     </div>
   </footer>
+  </body>
 </html>

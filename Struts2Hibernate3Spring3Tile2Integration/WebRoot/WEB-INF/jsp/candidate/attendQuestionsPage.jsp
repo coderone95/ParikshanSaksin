@@ -10,12 +10,26 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 <!-- CSS Files -->
 <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
 <script src="./assets/js/core/jquery.min.js"></script>
 <script src="./assets/js/bootstrap-select.min.js"></script>
 <script src="./assets/js/core/popper.min.js"></script>
 <script src="./assets/js/core/bootstrap.min.js"></script>
+<!--  Candidate Panel Sources -->
+	<link href="./assets/css/candidate/candidatePanel.css" rel="stylesheet" />
+	<script src="./assets/js/candidate/candidatePanel.js"></script>
+	<!--  Instructions Page sources  -->
+	<link href="./assets/css/candidate/examSet.css" rel="stylesheet" />
+	<script src="./assets/js/candidate/questionPage.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('.submit-answer').on('click',function(){
+				submitAnswer();
+			});
+		});
+	</script>
 <style>
 .privew {
     margin-bottom: 20px;
@@ -132,97 +146,174 @@ input[type=checkbox], input[type=radio] {
 }
 .back-sign { float:left;margin-top: 1rem; }
 
-</style>
-<style>
-.pag-link {
-    display: inline-block;
-    vertical-align: middle;
-    padding: 5px;
+.question:hover{
+  background: #007fbe !important;
 }
-.pag-link.disabled > span,
-.pag-link.current > span,
-.pag-link > a{
-    display: block;
-    border-radius: 50%;
-    font-size: 16px;
-    line-height: 1.42857;
-    margin-right: 5px;
-    padding: 10px 17px;
-    position: relative;
-    text-decoration: none;
-    border: none;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-}
-.pag-link:active > a,
-.pag-link:hover > a,
-.pag-link:focus > a,
-.pag-link.current > span{
-    font-size: 24px;
-    font-weight: bold;
-    padding: 10px 20px;
-}
-.pag-link > a{
-    background-color: #7f4189;
-    color: #fff;
-    cursor: pointer;
-}
-.pag-link.disabled > span,
-.pag-link.current > span{
-    background-color: #13b3bc;
-    color: #fff;
-    cursor: inherit;
-}
-.pag-link:active > a,
-.pag-link:hover > a,
-.pag-link:focus > a {
-    background-color: #ec217c !important;
-    border-color: #ec217c;
-    color: #fff;
+
+.active-question{
+ background: #007fbe !important; 
 }
 
 </style>
 </head>
 <body>
-	<div class="container">
-		<div class="row">
- 			<div class="col-md-12">
- 				<div class="back-sign">
- 					<a href="startTest.action" class="btn btn-outline-warning btn-md">Back</a>
- 				</div>
-	 			<div class="sign-out">
-	            	<a onclick="clearSessionValues();" href="#" class="btn btn-outline-primary btn-md"><i class="fa fa-sign-out"></i>Log out</a>
-	         	</div>
-	        </div>
- 		</div>
-		<div class="privew">
-		    <div class="questionsBox">
-		        <div class="questions">Which of the following is correct about data-keyboard Data attribute of Modal Plugin?</div>
-		        <ul class="answerList">
-		            <li>
-		                <label>
-		                    <input type="radio" name="answerGroup" value="0" id="answerGroup_0"> It specifies static for a backdrop, if you don't want the modal to be closed when the user clicks outside of the modal.</label>
-		            </li>
-		            <li>
-		                <label>
-		                    <input type="radio" name="answerGroup" value="1" id="answerGroup_1"> It closes the modal when escape key is pressed; set to false to disable.</label>
-		            </li>
-		            <li>
-		                <label>
-		                    <input type="radio" name="answerGroup" value="2" id="answerGroup_2"> It shows the modal when initialized.</label>
-		            </li>
-		            <li>
-		                <label>
-		                    <input type="radio" name="answerGroup" value="3" id="answerGroup_3"> Using the jQuery .load method, injects content into the modal body. If an href with a valid URL is added, it will load that content.</label>
-		            </li>
-		        </ul>
-		        <div class="questionsRow"><a href="#" class="btn btn-primary" id="nextquestions">Next</a> <a href="#" class="btn btn-primary" id="prevquestion">Prev</a> <a href="#" class="btn btn-primary" id="skipquestions">Skip</a><span>2 of 20</span></div>
-		    </div>
-		</div>
-	</div>
+<s:hidden key="testId"></s:hidden>
+<s:hidden key="loginId"></s:hidden>
+<s:hidden key="hasExamStarted"></s:hidden>
+<s:hidden key="groupId"></s:hidden>
+<input type="hidden" id="selectedQuestionId">
+<div class="page-wrapper chiller-theme toggled">
+  <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+    <i class="fas fa-bars"></i>
+  </a>
+  <nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+      <div class="sidebar-brand">
+        <a href="#">Pariskhan Saksin</a>
+        <div id="close-sidebar">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div class="sidebar-header l-bg-orange">
+        <div class="user-pic">
+          <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+            alt="User picture">
+        </div>
+        <div class="user-info">
+          <span class="user-name"><s:property value="name"></s:property>
+          </span>
+          <span class="user-role user-email-id"><s:property value="loginId"/></span>
+        </div>
+      </div>
+      <div class="sidebar-menu">
+        <ul>
+          <!-- <li class="header-menu">
+            <span>Extra</span>
+          </li> -->
+          <li>
+            <a href="testInstructions">
+              <i class="fa fa-book"></i>
+              <span>Exam Instructions</span>
+            </a>
+          </li>
+          <s:if test="%{hasExamStarted == 'YES'}">
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-newspaper active"></i>
+              <span id="exam-sets" class="active">Exam Set</span>
+            </a>
+            <div class="sidebar-submenu set-question-area-dropdown">
+              <ul class="exam-set-dropdown-ul">
+                <li class="lis">
+                    <a href="#">
+                        <span class="exam-set-name">Set 1</span>
+                      </a>
+                </li>
+                <li class="lis">
+                    <a href="#">
+                        <span class="exam-set-name">Set 2</span>
+                      </a>
+                </li>
+                <li class="lis"> 
+                    <a href="#">
+                        <span class="exam-set-name">Set 3</span>
+                      </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          </s:if>
+          <li>
+            <a onclick="clearSessionValues();" href="#">
+                <i class="fa fa-power-off"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- sidebar-menu  -->
+    </div>
+  </nav>
+  <!-- sidebar-wrapper  -->
+  <main class="page-content">
+    <div class="container-fluid" id="exam-set-container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="p-2">
+              <a href="examSet.action" class="text-secondary p-2" style="color:#007fbe !important;"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back</a>
+            </div>
+        </div>
+      </div>
+    	<div class="row">
+    		<div class="col-lg-9 col-md-9 col-sm-12">
+		    	<div class="privew">
+            <div class="p-1" class="groupTitleSection">
+              <hr>
+              <span id="groupTitle" style="font-size: 1rem;"></span>
+              <hr>
+            </div>
+				    <div class="questionsBox">
+				        <div class="questions question-name"></div>
+				        <ul class="answerList">
+				            <!-- <li>
+				                <label>
+				                    <input type="radio" name="answerGroup" value="0" id="answerGroup_0"> It specifies static for a backdrop, if you don't want the modal to be closed when the user clicks outside of the modal.</label>
+				            </li>
+				            <li>
+				                <label>
+				                    <input type="radio" name="answerGroup" value="1" id="answerGroup_1"> It closes the modal when escape key is pressed; set to false to disable.</label>
+				            </li>
+				            <li>
+				                <label>
+				                    <input type="radio" name="answerGroup" value="2" id="answerGroup_2"> It shows the modal when initialized.</label>
+				            </li>
+				            <li>
+				                <label>
+				                    <input type="radio" name="answerGroup" value="3" id="answerGroup_3"> Using the jQuery .load method, injects content into the modal body. If an href with a valid URL is added, it will load that content.</label>
+				            </li> -->
+				        </ul>
+				        <div class="questionsRow">
+                  <a href="#" class="btn btn-outline-secondary" id="prevquestion">Prev</a>
+                  <a href="#" class="btn btn-outline-secondary" id="nextquestions">Next</a> <!--  <a href="#" class="btn btn-primary" id="skipquestions">Skip</a> -->
+				        <button class="btn btn-success" class="submit-answer">Submit Answer</button></div>
+				    </div>
+				</div>	
+    		</div> 
+    		<div class="col-lg-3 col-md-3 col-sm-12 questions-window">
+    			<div class="row p-2">
+    				<div class="text-center">
+    					<h5 class="text-center"> Questions </h5>
+    				</div>
+    			</div>
+    			<div class="row question-id-row">
+    				<div class="col-lg-3">
+    					<button class="btn btn-outline-secondary m-1">1</button>
+    				</div>
+    				<div class="col-lg-3">
+    					<button class="btn btn-outline-secondary m-1">2</button>
+    				</div>
+    				<div class="col-lg-3">
+    					<button class="btn btn-outline-secondary m-1">3</button>
+    				</div>
+    				<div class="col-lg-3">
+    					<button class="btn btn-outline-secondary m-1">4</button>
+    				</div>
+    				<div class="col-lg-3">
+    					<button class="btn btn-outline-secondary m-1">5</button>
+    				</div>
+    				<div class="col-lg-3">
+    					<button class="btn btn-outline-secondary m-1">6</button>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+        
+    </div>
+    
+  </main>
+  <!-- page-content" -->
+</div>
+	<%-- 
 	<div class="container">
 	<div class="row">
 		<ul class="pagination-custom text-center">
@@ -232,7 +323,25 @@ input[type=checkbox], input[type=radio] {
 	        <li class="pag-link"><a href="#">4</a></li>
 	        <li class="pag-link"><a href="#">5</a></li>
         </ul>
-	</div>
-</div>
+	</div> 
+</div>--%>
 </body>
+<!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+ 			Please select option
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </html>

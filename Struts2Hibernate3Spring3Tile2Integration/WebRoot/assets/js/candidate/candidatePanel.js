@@ -37,3 +37,9 @@ $(".page-wrapper").addClass("toggled");
 
 
 });
+        
+   function clearSessionValues(){
+    sessionStorage.clear();
+    // similar behavior as clicking on a link
+    window.location.href = "logout";
+   }

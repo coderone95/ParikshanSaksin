@@ -1,6 +1,7 @@
 package com.codesvila.datasource;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.codesvila.bean.UserBean;
 import com.codesvila.bean.UserMasterBO;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.utils.CommonUtility;
+import com.codesvila.utils.searches.ParamBO;
 
 public class ResultBeans {
 
@@ -325,8 +327,6 @@ public class ResultBeans {
 			tb.setTest_id(rs.getInt("test_id"));
 			tb.setOrg_id(rs.getInt("org_id"));
 			tb.setUser_id(rs.getString("user_id"));
-			tb.setTest_started_time(rs.getString("test_started_time"));
-			tb.setTest_ended_time(rs.getString("test_ended_time"));
 			tb.setAttempted(rs.getInt("attempted"));
 			tb.setMax_attempt(rs.getInt("max_attempt"));
 			tb.setTest_key(rs.getString("test_key"));
@@ -407,5 +407,27 @@ public class ResultBeans {
 		}
 		return otps;
 	}
+
+	public static QuestionBO convertVoToBoForQuestionBO(ResultSet rs) throws Exception{
+		// TODO Auto-generated method stub
+		QuestionBO qbo = new QuestionBO();
+		while(rs.next()) {
+			qbo.setQuestion(rs.getString("question"));
+		}
+		return qbo;
+	}
+
+	public static List<String> convertResultIntoStringList(ResultSet rs, ParamBO paramBo) throws Exception{
+		// TODO Auto-generated method stub
+		List<String> resultList = new ArrayList<String>();
+		if(paramBo !=null) {
+			while(rs.next()) {
+				String value = rs.getString(paramBo.getParamName());
+				resultList.add(value);
+			}
+		}
+		return resultList;
+	}
+	
 
 }

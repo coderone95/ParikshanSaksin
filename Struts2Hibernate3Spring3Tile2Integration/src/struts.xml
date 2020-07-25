@@ -353,7 +353,9 @@
 	        </interceptor-ref> 
 			<result name="success" type="json"></result>  
         </action>
-        
+        <action name="getAllUsersCount" class="com.codesvila.action.AdminDashboardPageAction" method="getAllUsersCount">
+			<result name="success" type="json"></result>
+		</action>
     </package>
     
     <package name="candidate" namespace="/" extends="struts-default,json-default" >
@@ -384,7 +386,7 @@
          <action name="updateCandidateProfile" class="com.codesvila.action.TestAutheniticationAction" method="updateProfile">
 			<result name="success" type="json">/WEB-INF/jsp/candidate/testAuth.jsp</result>
 		</action>
-		<action name="getTestInstructions" class="com.codesvila.action.TestAutheniticationAction" method="getTestInstructions">
+		<action name="getTestInstructions" class="com.codesvila.action.TestInstructionsAction" method="getTestInstructions">
              <interceptor-ref name="defaultStack"/>
 	         <interceptor-ref name="json">
 	            <param name="enableSMD">true</param>
@@ -412,11 +414,34 @@
 	        </interceptor-ref> 
 			<result name="success" type="json"></result>  
         </action>
-        <action name="questions" class="com.codesvila.action.AttendQuestionsAction" method="showQuestions">
+		 <action name="saveAttendedTestDetails" class="com.codesvila.action.StartTestAction" method="saveAttendedTestDetails">
+             <result name="success">/WEB-INF/jsp/candidate/examSet.jsp</result> 
+        </action>
+        <action name="testInstructions" class="com.codesvila.action.StartTestAction" method="showTestIns">
+             <result name="success">/WEB-INF/jsp/candidate/testInstructions.jsp</result> 
+        </action>
+        <action name="examSet" class="com.codesvila.action.StartTestAction" method="showExamSet">
+             <result name="success">/WEB-INF/jsp/candidate/examSet.jsp</result> 
+        </action>
+		<action name="questions" class="com.codesvila.action.AttendQuestionsAction" method="showQuestions">
 			<result name="success">/WEB-INF/jsp/candidate/attendQuestionsPage.jsp</result>
 		</action>
-		 <action name="saveAttendedTestDetails" class="com.codesvila.action.StartTestAction" method="saveAttendedTestDetails">
+		<action name="getQuestionIds" class="com.codesvila.action.AttendQuestionsAction" method="getQuestionIds">
              <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="retrieveQustionWithOptions" class="com.codesvila.action.AttendQuestionsAction" method="retrieveQustionWithOptions">
+             <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref> 
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="submitAnswer" class="com.codesvila.action.AttendQuestionsAction" method="submitAnswer">
+        	<interceptor-ref name="defaultStack"/>
 	         <interceptor-ref name="json">
 	            <param name="enableSMD">true</param>
 	        </interceptor-ref> 

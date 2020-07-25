@@ -35,5 +35,25 @@ public class Generic {
 		}
 		return data;
 	}
+	
+	public <T> List<T> nativeSQLQueryForList(String query) {
+		List<T> resultList = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			SQLQuery w = session.createSQLQuery(query);
+//			w.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			resultList = w.list();
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return resultList;
+	}
 
 }

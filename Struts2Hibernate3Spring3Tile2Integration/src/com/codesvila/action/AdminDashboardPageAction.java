@@ -68,7 +68,7 @@ public class AdminDashboardPageAction extends BaseAction{
 		
 		return "success";
 	}
-	
+//	@RequestMapping(value = "/api/counts", method = RequestMethod.GET)
 	public String populateCandidateCount() throws Exception {
 		countMap  = CommonUtility.getDashboardCandidateCounts("GET_DASHBOARDS_CANDIDATE_COUNT", null, false);
 		
@@ -92,6 +92,19 @@ public class AdminDashboardPageAction extends BaseAction{
 	public String populateQuestionsCount() throws Exception{
 		questionsCountMap = CommonUtility.getDashboardQuestionsCount("GET_DASHBOARDS_QUESTIONS_COUNT", null, false);
 		return "success";
+	}
+	
+	public String getAllUsersCount() throws Exception{
+		LOG.debug("AdminDashboardPageAction.getAllUsersCount()----- start");
+		Map<String,Object> data = new HashMap<String,Object>();
+		try {
+			Map<String,Integer> userCount = userService.getAllUsersCount();
+			data.put("ALL_USERS_COUNT_MAP", userCount);
+		}catch(Exception e) {
+			LOG.error("Error while executing getAllUsersCount() method",e);
+		}
+		LOG.debug("AdminDashboardPageAction.getAllUsersCount()----- end");
+		return writeJsonResponse(data);
 	}
 
 	/**

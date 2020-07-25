@@ -125,7 +125,7 @@ function getTestNameAndTime(){
 		contentType:"application/json;charset=utf-8",
 		success : function(itr) {
 			$('#test-name').text(itr.testBo.test_name);
-			startTime(itr.testBo.test_time);
+			//startTime(itr.testBo.test_time);
 			//setTimer(itr.testBo.test_time);
 			$('.loader').hide();;
 		},
@@ -169,7 +169,7 @@ function setTimer(timeInSec){
 	}, 1000); 
 }
 function saveAttendedTestDetails(starttime,endtime){
-	var testID =  $('#testID').val();
+	/* var testID =  $('#testID').val();
 	var starttime = new Date(starttime);
 	var data = {
 			testID : testID,
@@ -188,7 +188,7 @@ function saveAttendedTestDetails(starttime,endtime){
 		error : function(itr) {
 			alert("Error while processing the request....!!");
 		}
-	});
+	}); */
 }
 function convertToLocalStringTime(today){
 	var day = today.getDate() + "";

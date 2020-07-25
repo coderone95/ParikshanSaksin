@@ -62,6 +62,22 @@ public class QuestionAction extends BaseAction{
 
 	private String loginId;
 	private String errorMsg = null;
+	
+	private String answerMode;
+	/**
+	 * @return the answerMode
+	 */
+	public String getAnswerMode() {
+		return answerMode;
+	}
+
+	/**
+	 * @param answerMode the answerMode to set
+	 */
+	public void setAnswerMode(String answerMode) {
+		this.answerMode = answerMode;
+	}
+
 	public String getCorrectOption() {
 		return correctOption;
 	}

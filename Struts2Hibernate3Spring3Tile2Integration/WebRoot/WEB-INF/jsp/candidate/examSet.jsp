@@ -10,18 +10,18 @@
     <title>Parikshan Saksin</title>
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" /> -->
 	<!-- page-wrapper -->
 	<script src="./assets/js/core/jquery.min.js"></script>
 	<script src="./assets/js/bootstrap-select.min.js"></script>
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
-  <link href="./assets/css/loader.css" rel="stylesheet" />
 	<!--  Candidate Panel Sources -->
 	<link href="./assets/css/candidate/candidatePanel.css" rel="stylesheet" />
 	<script src="./assets/js/candidate/candidatePanel.js"></script>
 	<!--  Instructions Page sources  -->
-	<link href="./assets/css/candidate/testInstructionsPage.css" rel="stylesheet" />
-	<script src="./assets/js/candidate/testInstructionPage.js"></script>
+	<link href="./assets/css/candidate/examSet.css" rel="stylesheet" />
+	<script src="./assets/js/candidate/examSet.js"></script>
 </head>
 
 <body>
@@ -56,20 +56,37 @@
           <!-- <li class="header-menu">
             <span>Extra</span>
           </li> -->
-          <s:if test="%{hasExamStarted == 'YES'}">
           <li>
             <a href="testInstructions">
-              <i class="fa fa-book active"></i>
-              <span class="active">Exam Instructions</span>
+              <i class="fa fa-book"></i>
+              <span>Exam Instructions</span>
             </a>
           </li>
-          </s:if>
           <s:if test="%{hasExamStarted == 'YES'}">
-          <li>
-            <a href="examSet">
-              <i class="fa fa-newspaper"></i>
-              <span id="exam-sets">Exam Set</span>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-newspaper active"></i>
+              <span id="exam-sets"class="active">Exam Set</span>
             </a>
+            <div class="sidebar-submenu set-question-area-dropdown">
+              <ul class="exam-set-dropdown-ul">
+                <li class="lis">
+                    <a href="#">
+                        <span class="exam-set-name">Set 1</span>
+                      </a>
+                </li>
+                <li class="lis">
+                    <a href="#">
+                        <span class="exam-set-name">Set 2</span>
+                      </a>
+                </li>
+                <li class="lis"> 
+                    <a href="#">
+                        <span class="exam-set-name">Set 3</span>
+                      </a>
+                </li>
+              </ul>
+            </div>
           </li>
           </s:if>
           <li>
@@ -85,44 +102,16 @@
   </nav>
   <!-- sidebar-wrapper  -->
   <main class="page-content">
-    <div class="container-fluid" id="exam-instructions-container">
-        <div class="card">
-          <div class="loaddercontainer instrustions-loader display-none" >
-                    <div class="lds-ring">
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                    </div>
-                    </div>
-            <div class="card-header no-header-bg">
-                <p>EXAM INSTRUCTIONS</p>
-                <!-- <div class="card-option text-right"><button class="btn btn-info">SUBMIT</button><button type="button" class="btn btn-primary ml-1">
-                    <i class="fa fa-hourglass-half"></i> <span class="badge badge-light" id="time">12.45</span>
-                </button></div> -->
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xs-1-12 col-sm-12 col-lg-12">
-                        <div class="test-instructions-area">
-                            <div class="test-instructions" style="max-height: 500px; overflow: auto;">
-                            </div>
-                        </div>
-                        <s:if test="%{hasExamStarted != 'YES'}">
-	                        <div>
-	                            <button type="button" id="startTest-btn" class="btn btn-dark btn-block">START EXAM</button>
-	                        </div>
-	                    </s:if>
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid" id="exam-set-container">
+        <div class="row exam-set-row">
         </div>
     </div>
     
   </main>
   <!-- page-content" -->
 </div>
-
+<!-- <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div> -->
 </body>
-
 </html>

@@ -24,6 +24,7 @@ $(document).ready(function(){
 			var question = $('#question').val();
 			var correctOption = $('#correctOption').val();
 			var myoptions = {};
+			var answerMode = $('#answerMode').val();
 			var cnt = 0;
 			$('.option').each(function(){
 				optionList.push($(this).val());
@@ -33,7 +34,8 @@ $(document).ready(function(){
 					question : question,
 					optionList : optionList,
 					correctOption : correctOption,
-					myoptions : myoptions
+					myoptions : myoptions,
+					answerMode: answerMode
 			};
 			$.ajax({
 				type : "POST",

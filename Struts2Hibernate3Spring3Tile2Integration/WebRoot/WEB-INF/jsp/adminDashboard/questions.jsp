@@ -156,6 +156,17 @@ border-radius: 5px;
 									</div>
 									<div class="row">
 										<div class="col-md-10 pr-1">
+											<div class="form-group">
+												<label>Answer Mode</label> 
+												<select class="form-control" required name="answerMode" id="answerMode">
+													<option value="radio">Radio</option>
+													<option value="multi-select">Multi-Select</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-10 pr-1">
 											<div class="form-group" id="option-area">
 											</div>
 										</div>

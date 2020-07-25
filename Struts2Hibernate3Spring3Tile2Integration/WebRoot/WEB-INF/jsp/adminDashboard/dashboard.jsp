@@ -91,8 +91,22 @@
 				alert("Error....!!");
 			}
 		});
+  }
+    function getAllUsersCount(){
+      $.ajax({
+        type : "POST",
+        url : "getAllUsersCount",
+        dataType: 'json',
+        contentType:"application/json;charset=utf-8",
+        success : function(data) {
+          console.log(data);
+        },
+        error : function(data) {
+          alert("Error....!!");
+        }
+      });
   	}
-  </script>
+</script>
 </head>
 
 <body class="">

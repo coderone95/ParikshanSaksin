@@ -1,6 +1,7 @@
 package com.codesvila.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.OTPBO;
@@ -34,6 +35,8 @@ public interface UserService {
 	public Integer saveOrUpdateOTPstatus(Integer userid, String otp);
 
 	public List<OTPBO> getOTPForUser(String otp, Integer userID) throws Exception;
+
+	public Map<String, Integer> getAllUsersCount() throws Exception;
 
 
 }

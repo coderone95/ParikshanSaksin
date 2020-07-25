@@ -137,6 +137,7 @@ public class LoginAction extends BaseAction implements ModelDriven<UserBean>{
 		{
 			String encrypted = CryptUtils.encrypt(userBean.getPassword(), GlobalConstants.cipher_Key);
 			login_id = u.getEmail_id();
+			sessionMap.put("name",u.getName());
 			loggedInUserName = u.getName();
 			if(u.getIs_disabled() == 1 && u.getEmail_id().equalsIgnoreCase(userBean.getEmail_id())) {
 				isUserPresent = true;

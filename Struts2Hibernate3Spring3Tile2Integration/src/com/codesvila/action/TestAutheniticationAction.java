@@ -1,6 +1,5 @@
 package com.codesvila.action;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +35,8 @@ public class TestAutheniticationAction extends BaseAction{
 	private String loginId;
 	private String message;
 	private String error;
+	private String name;
+	private String hasExamStarted;
 	
 	public Map<String, Object> getMap() {
 		return map;
@@ -85,6 +86,34 @@ public class TestAutheniticationAction extends BaseAction{
 	public void setTestID(Integer testID) {
 		this.testID = testID;
 	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the hasExamStarted
+	 */
+	public String getHasExamStarted() {
+		return hasExamStarted;
+	}
+
+	/**
+	 * @param hasExamStarted the hasExamStarted to set
+	 */
+	public void setHasExamStarted(String hasExamStarted) {
+		this.hasExamStarted = hasExamStarted;
+	}
+
 	public String display() {
 		return "success";
 	}
@@ -105,8 +134,10 @@ public class TestAutheniticationAction extends BaseAction{
 		this.error = error;
 	}
 	public String execute() throws Exception{
+		hasExamStarted = "NO";
 		error = null;
 		loginId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
+		name = (String) sessionMap.get("name");
 		System.out.println("TestKey:"+testAuthBean.getTestKey());
 		List<TestAuthBean> authBean = candidateService.getAllTestKeyAccess();
 		List<AttendedTestDetailsBean> dataList = candidateService.getAllAttendedTestDetails();

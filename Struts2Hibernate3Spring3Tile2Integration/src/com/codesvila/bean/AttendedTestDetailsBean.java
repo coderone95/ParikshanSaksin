@@ -15,10 +15,6 @@ public class AttendedTestDetailsBean {
 	
 	private String user_id;
 	
-	private String test_started_time;
-	
-	private String test_ended_time;
-	
 	private int attempted;
 	
 	private int max_attempt;
@@ -47,22 +43,6 @@ public class AttendedTestDetailsBean {
 
 	public void setOrg_id(int org_id) {
 		this.org_id = org_id;
-	}
-
-	public String getTest_started_time() {
-		return test_started_time;
-	}
-
-	public void setTest_started_time(String test_started_time) {
-		this.test_started_time = test_started_time;
-	}
-
-	public String getTest_ended_time() {
-		return test_ended_time;
-	}
-
-	public void setTest_ended_time(String test_ended_time) {
-		this.test_ended_time = test_ended_time;
 	}
 
 	public int getAttempted() {

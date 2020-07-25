@@ -6,11 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codesvila.action.Generic;
 import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.OTPBO;
 import com.codesvila.bean.UserBean;
@@ -30,6 +32,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+	
+	private static final Logger LOG = Logger.getLogger(UserServiceImpl.class);
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)  
@@ -255,6 +259,33 @@ public class UserServiceImpl implements UserService {
 	public List<OTPBO> getOTPForUser(String otp, Integer userID) throws Exception {
 		// TODO Auto-generated method stub
 		return userDao.getOTPForUser(otp,userID);
+	}
+
+
+	@Override
+	public Map<String, Integer> getAllUsersCount() throws Exception{
+		// TODO Auto-generated method stub
+		Map<String, Integer> allUsersCount = new HashMap<String,Integer>();
+		try {
+			Generic generic = new Generic();
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT CONCAT(user_type,':', count(1)) AS userCount");
+			query.append("FROM tbl_users WHERE user_type IN ('ADMIN','CANDIDATE','EXAMINER','REVIEWER') GROUP BY user_type");
+			List<String> resultList = generic.nativeSQLQueryForList(query.toString());
+			
+			if(resultList !=null && resultList.size()>0) {
+				for(String obj : resultList) {
+					String arr[] = obj.split(":");
+					if(arr.length > 0) {
+						allUsersCount.put(arr[0], Integer.parseInt(arr[1]));
+					}
+				}
+			}
+			
+		}catch(Exception e) {
+			LOG.error("Erorr while getAllUsersCount() method");
+		}
+		return allUsersCount;
 	}
 
 

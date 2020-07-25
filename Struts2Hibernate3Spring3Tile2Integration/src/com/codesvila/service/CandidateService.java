@@ -21,4 +21,8 @@ public interface CandidateService {
 
 	List<AttendedTestDetailsBean> getAllAttendedTestDetails() throws Exception;
 
+	List<Integer> getQuestionIds(Integer groupId, Integer testId);
+
+	Map<String, Object> retrieveQustionWithOptions(String quesID);
+
 }

@@ -33,12 +33,6 @@ public class AttendedTestDetails implements Serializable{
 	@Column(name = "user_id")
 	private String user_id;
 	
-	@Column(name = "test_started_time")
-	private Date test_started_time;
-	
-	@Column(name = "test_ended_time")
-	private Date test_ended_time;
-	
 	@Column(name = "attempted")
 	private int attempted;
 	
@@ -67,22 +61,6 @@ public class AttendedTestDetails implements Serializable{
 
 	public void setOrg_id(int org_id) {
 		this.org_id = org_id;
-	}
-
-	public Date getTest_started_time() {
-		return test_started_time;
-	}
-
-	public void setTest_started_time(Date test_started_time) {
-		this.test_started_time = test_started_time;
-	}
-
-	public Date getTest_ended_time() {
-		return test_ended_time;
-	}
-
-	public void setTest_ended_time(Date test_ended_time) {
-		this.test_ended_time = test_ended_time;
 	}
 
 	public int getAttempted() {

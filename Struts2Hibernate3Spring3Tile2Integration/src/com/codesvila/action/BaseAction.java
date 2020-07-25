@@ -15,6 +15,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.apache.struts2.json.JSONUtil;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.codesvila.bean.FunctionalityBO;
 import com.codesvila.bean.UserBean;
@@ -33,7 +34,7 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
 
 	protected Map<String,Object> sessionMap ;
 	
-	  protected HttpServletRequest request;
+	 protected HttpServletRequest request;
 	  protected HttpServletResponse response;
 	  protected HttpSession session;
 	  protected Map<String,Object> contextSession = ActionContext.getContext().getSession();
@@ -54,9 +55,9 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
 		return response;
 	}
 
-	public void setResponse(HttpServletResponse response) {
-		this.response = response;
-	}
+//	public void setResponse(HttpServletResponse response) {
+//		this.response = response;
+//	}
 
 	public HttpSession getSession() {
 		return session;
@@ -79,9 +80,9 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
 	}
 
 	@Override
-	public void setServletResponse(HttpServletResponse arg0) {
+	public void setServletResponse(HttpServletResponse response) {
 		// TODO Auto-generated method stub
-		
+		this.response = response;
 	}
 
 	@Override
