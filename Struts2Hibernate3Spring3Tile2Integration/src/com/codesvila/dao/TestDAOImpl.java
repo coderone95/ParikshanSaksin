@@ -107,15 +107,17 @@ public class TestDAOImpl implements TestDAO {
 	}
 
 	@Override
-	public Integer updateQuestionDetails(int questionid, String loginId, String questionValue, int correctOptionId,
-			Map<String, String> optionMap) throws Exception {
+	public Integer updateQuestionDetails(int questionid, String loginId, String questionValue, String [] correctOptionIds,
+			Map<String, String> optionMap, String questionType) throws Exception {
 		int res = 1;
 		Session session = sessionFactory.openSession();
 
 		try {
-			updateQuestion(session, questionid, questionValue, loginId);
+			updateQuestion(session, questionid, questionValue, loginId,questionType);
 			updateOptions(session, optionMap);
-			updateCorrectOption(session, correctOptionId);
+			for(String id : correctOptionIds) {
+				updateCorrectOption(session, Integer.parseInt(id));
+			}
 		} catch (Exception e) {
 			res = 0;
 			e.printStackTrace();
@@ -125,10 +127,11 @@ public class TestDAOImpl implements TestDAO {
 		return res;
 	}
 
-	public void updateQuestion(Session session, Integer questionID, String question, String loginID) {
+	public void updateQuestion(Session session, Integer questionID, String question, String loginID, String questionType) {
 		Transaction tx2 = session.beginTransaction();
 		Question que = (Question) session.get(Question.class, questionID);
 		que.setQuestion(question);
+		que.setQuestion_type(questionType);
 		que.setCreated_by(loginID);
 		que.setUpdated_on(DateUtils.getCurrentDate());
 		try {

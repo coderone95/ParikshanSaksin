@@ -15,6 +15,9 @@
     	.sidebar .sidebar-wrapper{
     		overflow: unset !important;
     	}
+      .dropdown-groups{
+        transform: translate3d(25px, 36px, 0px) !important;
+      }
     </style>
     <div class="sidebar" data-color="white" data-active-color="danger">
       <!--
@@ -78,11 +81,20 @@
             </a>
           </li>
           
-          <li >
-            <a href="groups"  id="lnk-groups" class="nav-lnk-groups nav-lnk">
+          <li class="nav-item btn-rotate dropdown">
+            <!-- <a href="groups"  id="lnk-groups" class="nav-lnk-groups nav-lnk">
                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
               <p>Groups</p>
+            </a> -->
+            <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="lnk-groups" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                  Groups
             </a>
+             <div class="dropdown-menu dropdown-menu-right dropdown-groups" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="groups" style="font-size: 12px !important"><i class="fa fa-plus-circle" aria-hidden="true"></i></i>CREATE GROUP</a>
+                  <a class="dropdown-item" href="groupReport" style="font-size: 12px !important"><i class="fa fa-bar-chart" aria-hidden="true"></i>GROUP REPORT</a>
+            </div>
+
           </li>
           
           <li >

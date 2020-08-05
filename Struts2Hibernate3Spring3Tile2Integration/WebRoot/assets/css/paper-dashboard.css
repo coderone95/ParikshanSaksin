@@ -2245,7 +2245,7 @@ textarea.form-control {
 }
 
 .form-group input[type=file] {
-  opacity: 0;
+  /*opacity: 0;*/
   position: absolute;
   top: 0;
   right: 0;
@@ -2291,13 +2291,13 @@ textarea.form-control {
   margin-top: 6px;
 }
 
-button,
+/*button,
 input,
 optgroup,
 select,
 textarea {
   font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-}
+}*/
 
 h1,
 h2,
@@ -2317,7 +2317,7 @@ a:focus {
   color: #51cbce;
 }
 
-h1,
+/*h1,
 .h1 {
   font-size: 3.5em;
   line-height: 1.15;
@@ -2329,9 +2329,9 @@ h1 small,
   font-weight: 700;
   text-transform: uppercase;
   opacity: .8;
-}
+}*/
 
-h2,
+/*h2,
 .h2 {
   font-size: 2.5em;
   margin-bottom: 30px;
@@ -2371,7 +2371,7 @@ h6,
   font-size: 1em;
   font-weight: 700;
   text-transform: uppercase;
-}
+}*/
 
 p.description {
   font-size: 1.14em;

@@ -17,6 +17,9 @@ public class TestBO {
 	private String endOn;
 	private int test_time;
 	private int passingCriteria;
+	private int showResultsAfterSubmit;
+	private int isFailureSessionAllowed;
+	private Integer maxFailureSessionAllowed;
 	public int getTest_id() {
 		return test_id;
 	}
@@ -112,6 +115,24 @@ public class TestBO {
 	}
 	public void setPassingCriteria(int passingCriteria) {
 		this.passingCriteria = passingCriteria;
+	}
+	public int getShowResultsAfterSubmit() {
+		return showResultsAfterSubmit;
+	}
+	public void setShowResultsAfterSubmit(int showResultsAfterSubmit) {
+		this.showResultsAfterSubmit = showResultsAfterSubmit;
+	}
+	public int getIsFailureSessionAllowed() {
+		return isFailureSessionAllowed;
+	}
+	public void setIsFailureSessionAllowed(int isFailureSessionAllowed) {
+		this.isFailureSessionAllowed = isFailureSessionAllowed;
+	}
+	public Integer getMaxFailureSessionAllowed() {
+		return maxFailureSessionAllowed;
+	}
+	public void setMaxFailureSessionAllowed(Integer maxFailureSessionAllowed) {
+		this.maxFailureSessionAllowed = maxFailureSessionAllowed;
 	}
 	
 	

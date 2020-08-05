@@ -118,6 +118,8 @@ public class ResultBeans {
 			QuestionInfoBO qb = new QuestionInfoBO();
 			qb.setQuestion_id(rs.getInt("questionID"));
 			qb.setQuestion(rs.getString("question"));
+			qb.setQuestionType(rs.getString("questionType"));
+			qb.setGroupId(rs.getInt("group_id"));
 			qb.setAnswer(rs.getString("answer"));
 			qb.setQuestion_createdBy(rs.getString("createdBy"));
 			qb.setQuestion_updatedBy(rs.getString("updatedBy"));
@@ -146,6 +148,7 @@ public class ResultBeans {
 		while (rs.next()) {
 			QuestionInfoBO qb = new QuestionInfoBO();
 			qb.setQuestion(rs.getString("question"));
+			qb.setQuestionType(rs.getString("questionType"));
 			qb.setAnswer(rs.getString("answer"));
 			qinfo.add(qb);
 		}
@@ -218,6 +221,7 @@ public class ResultBeans {
 			QuestionsGroupBO qs = new QuestionsGroupBO();
 			qs.setQuestion(rs.getString("question"));
 			qs.setQuestion_id(rs.getInt("question_id"));
+			qs.setGroup_id(rs.getInt("group_id"));
 			QuestionGroupInfo.add(qs);
 		}
 		return QuestionGroupInfo;
@@ -413,6 +417,7 @@ public class ResultBeans {
 		QuestionBO qbo = new QuestionBO();
 		while(rs.next()) {
 			qbo.setQuestion(rs.getString("question"));
+			qbo.setQuestion_type(rs.getString("question_type"));
 		}
 		return qbo;
 	}

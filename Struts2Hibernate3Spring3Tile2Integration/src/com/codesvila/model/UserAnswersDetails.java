@@ -30,7 +30,16 @@ public class UserAnswersDetails implements Serializable{
 	private Integer questionId;
 	
 	@Column(name = "answer_id")
-	private Integer answerId;
+	private String answerId;
+	
+	@Column(name = "test_id")
+	private Integer test_id;
+	
+	@Column(name = "group_id")
+	private Integer group_id;
+	
+	@Column(name = "is_correct_answer")
+	private int isCorrectAnswer;
 
 	/**
 	 * @return the id
@@ -77,15 +86,47 @@ public class UserAnswersDetails implements Serializable{
 	/**
 	 * @return the answerId
 	 */
-	public Integer getAnswerId() {
+	public String getAnswerId() {
 		return answerId;
 	}
 
 	/**
 	 * @param answerId the answerId to set
 	 */
-	public void setAnswerId(Integer answerId) {
+	public void setAnswerId(String answerId) {
 		this.answerId = answerId;
 	}
+
+	public Integer getTest_id() {
+		return test_id;
+	}
+
+	public void setTest_id(Integer test_id) {
+		this.test_id = test_id;
+	}
+
+	public Integer getGroup_id() {
+		return group_id;
+	}
+
+	public void setGroup_id(Integer group_id) {
+		this.group_id = group_id;
+	}
+
+	/**
+	 * @return the isCorrectAnswer
+	 */
+	public int getIsCorrectAnswer() {
+		return isCorrectAnswer;
+	}
+
+	/**
+	 * @param isCorrectAnswer the isCorrectAnswer to set
+	 */
+	public void setIsCorrectAnswer(int isCorrectAnswer) {
+		this.isCorrectAnswer = isCorrectAnswer;
+	}
+	
+	
 	
 }

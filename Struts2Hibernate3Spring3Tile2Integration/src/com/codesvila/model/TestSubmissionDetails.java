@@ -39,6 +39,12 @@ public class TestSubmissionDetails implements Serializable{
 	@Column(name = "submitted_successfully")
 	private boolean isSubmittedSuccessfully;
 	
+	@Column(name = "after_failure_remaining_time")
+	private Integer afterFailureRemainingTime;
+	
+	@Column(name = "failure_session_count")
+	private Integer failureSessionCount;
+	
 	/**
 	 * @return the id
 	 */
@@ -110,6 +116,18 @@ public class TestSubmissionDetails implements Serializable{
 	 */
 	public void setTestEndTime(Date testEndTime) {
 		this.testEndTime = testEndTime;
+	}
+	public Integer getAfterFailureRemainingTime() {
+		return afterFailureRemainingTime;
+	}
+	public void setAfterFailureRemainingTime(Integer afterFailureRemainingTime) {
+		this.afterFailureRemainingTime = afterFailureRemainingTime;
+	}
+	public Integer getFailureSessionCount() {
+		return failureSessionCount;
+	}
+	public void setFailureSessionCount(Integer failureSessionCount) {
+		this.failureSessionCount = failureSessionCount;
 	}
 	
 	

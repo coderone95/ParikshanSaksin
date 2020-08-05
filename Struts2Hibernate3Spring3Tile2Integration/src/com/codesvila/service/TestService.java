@@ -26,7 +26,7 @@ public interface TestService {
 	public List<QuestionInfoBO> getQuestionAndAnswer(String quesID);
 
 	public Integer updateQuestionDetails(String selelctedQuestionID, String loginId, String questionValue,
-			String selectedCorrectOption, Map<String, String> optionMap) throws NumberFormatException, Exception;
+			String [] selectedCorrectOptions, Map<String, String> optionMap, String questionType) throws NumberFormatException, Exception;
 
 	public int createGroup(GroupBO groupbean);
 

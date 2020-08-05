@@ -87,7 +87,7 @@
   <main class="page-content">
     <div class="container-fluid" id="exam-instructions-container">
         <div class="card">
-          <div class="loaddercontainer instrustions-loader display-none" >
+          <div class="loaddercontainer instrustions-loader" style="display: none">
                     <div class="lds-ring">
                           <div></div>
                           <div></div>

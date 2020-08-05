@@ -21,32 +21,19 @@
 	name='viewport' />
 	
 <!-- jQuery library -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!--     Fonts and icons     -->
-<link
-	href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200"
-	rel="stylesheet" />
-<link
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"
-	rel="stylesheet">
-	
+<script src="./assets/js/core/jquery.min.js"></script>
+<link href="./assets/fonts/montserrat.google.font.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+<link href="./assets/css/summernote.css" rel="stylesheet" />
 <!-- CSS Files -->
 <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
 <link href="./assets/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
-<!-- CSS Just for demo purpose, don't include it in your project -->
-<link href="./assets/demo/demo.css" rel="stylesheet" />
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
 <link href="./assets/css/loader.css" rel="stylesheet" />
 <!-- <link href="./assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" /> -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" rel="stylesheet" /> 
-<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
-
+<link href="./assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+<link href="./assets/plugins/jQuery-DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
  <sx:head />
-<script
-	src="./assets/js/core/jquery.min.js"></script>
-<script
-	src="./assets/js/bootstrap-select.min.js"></script>
 	<style>
 	.padding-0-6-rem{
 		padding: 0.6rem;
@@ -54,7 +41,6 @@
 	</style>
 
 <script src="./assets/js/admin/questions.js"></script>
-<%-- <script src="./assets/js/admin/questions.min.js"></script> --%>
 <style type="text/css">
 .errorDiv {
 	color: red;
@@ -112,6 +98,93 @@ border-radius: 5px;
     font-size: unset;
     padding: 1rem;
 }
+.note-btn-group .note-btn {
+	margin: 0 !important;
+}
+@media (min-width:576px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+    }
+}
+@media (min-width:768px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+	
+}
+@media (min-width:992px){
+	/*.note-editor {
+        max-width: 100% !important; /* New width for default modal */
+    }*/
+    .note-editor {
+        max-width: 700px !important; /* New width for default modal */
+    }
+	
+}
+@media (min-width:1200px){
+	.note-editor {
+        max-width: 800px !important; /* New width for default modal */
+    }
+	
+}
+ 
+@media screen and (max-width: 374px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (max-width: 413px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (max-width: 413px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+} 
+@media screen and (max-width: 576px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+}
+@media screen and (max-width: 991px){
+	.note-editor {
+        max-width: 700px !important; /* New width for default modal */
+    }
+ 
+}
+@media (max-width: 991px) and (min-width: 768px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (min-width: 768px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (min-width: 992px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (max-width: 768px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+}
+@media screen and (max-width: 767px){
+	.note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+}
 </style>
 
 </head>
@@ -129,7 +202,7 @@ border-radius: 5px;
 </div> -->
 			<div class="content">
 				<div class="row">
-					<div class="col-md-7 col-lg-6 col-sm-12 col-xs-12">
+					<div class="col-md-10 col-lg-10 col-sm-12 col-xs-12">
 					
 						<s:if test="accessMap.get('M_ADD_QUESTION')">
 						<div class="card demo-icons">
@@ -241,7 +314,8 @@ border-radius: 5px;
       <!-- Modal content-->
       <div class="modal-content">
        <div class="modal-header">
-       		<b style="font-size:1.5rem;" class="modal-title">Question</b>
+       		<b style="font-size:1.5rem;" class="modal-title">Question <sub><span style="font-weight: 400;font-size: 0.7rem;"><label>Answer Type</label>-<label class="question-ans-type"></label></span></sub></b>
+       		
         	<button type="button" style="font-size: 2.5rem;" class="close" data-dismiss="modal">&times;</button>
       </div>
         <div class="modal-body">
@@ -249,7 +323,6 @@ border-radius: 5px;
 					<div class="col-md-12">
 						<div class="card demo-icons card-no-box-shadow ">
 							<div class="card-header">
-								
 							</div>
 							<div class="card-body" id="question-options-card-body">
 							<div class="row">
@@ -280,9 +353,8 @@ border-radius: 5px;
     </div>
   </div>
 	<s:if test="accessMap.get('M_EDIT_QUESTION')">
-	<div class="modal fade" id="updateQuestionModal">
-    <div class="modal-dialog" >
-    
+	<div class="modal fade bd-example-modal-lg" id="updateQuestionModal">
+    <div class="modal-dialog modal-lg">
       <!-- Modal content-->
       <div class="modal-content">
        <div class="modal-header">
@@ -307,6 +379,17 @@ border-radius: 5px;
 								</div>
 							</div>
 							<div class="card-body">
+								<div class="row">
+									<div class="col-md-12 pr-1">
+										<div class="form-group">
+											<label>Answer Type</label> 
+											<select id="updateAnswerType">
+												<option value="radio">Radio</option>
+												<option value="multi-select">Multi-Select</option>
+											</select>
+										</div>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-md-12 pr-1">
 										<div class="form-group">
@@ -444,23 +527,18 @@ border-radius: 5px;
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
 	<%-- <script src="./assets/js/bootstrap-datetimepicker.js"></script> --%>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script src="https://legacy.datatables.net/extras/thirdparty/ColReorderWithResize/ColReorderWithResize.js"></script>
+	<script src="./assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>	
+	
+	<script src="./assets/plugins/jQuery-DataTables/js/jquery.dataTables.min.js"></script>
+<script src="./assets/plugins/jQuery-DataTables/js/ColReorderWithResize.js"></script>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-	<!--  Google Maps Plugin    -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-	<!-- Chart JS -->
-	<script src="./assets/js/plugins/chartjs.min.js"></script>
-	<!--  Notifications Plugin    -->
 	<script src="./assets/js/plugins/bootstrap-notify.js"></script>
 	<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 	<script src="./assets/js/paper-dashboard.min.js?v=2.0.0"
 		type="text/javascript"></script>
 	<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-	<script src="./assets/demo/demo.js"></script>
-	
-
+	<!-- <script src="./assets/demo/demo.js"></script> -->
+	<script src="./assets/js/summernote.js"></script>
 </body>
 
 </html>

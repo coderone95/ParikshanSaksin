@@ -10,6 +10,7 @@ import com.codesvila.bean.TestAuthBean;
 import com.codesvila.bean.TestBO;
 import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.model.AttendedTestDetails;
+import com.codesvila.model.UserAnswersDetails;
 
 public interface CandidateDAO {
 
@@ -26,5 +27,7 @@ public interface CandidateDAO {
 	QuestionBO getQuestion(String quesID);
 
 	List<QuestionInfoBO> getOptions(String quesID);
+
+	int saveSubmitAnswerObject(UserAnswersDetails userAnswersDetails, String operationFlag);
 
 }

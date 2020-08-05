@@ -22,9 +22,9 @@ public class ReportServiceImpl implements ReportService{
 
 	@Override
 	public List<QuestionInfoBO> getQuestionReport(String startDate, String endDate, String createdBy, String questionName,
-			Integer questionId) throws Exception {
+			Integer questionId, Integer groupId) throws Exception {
 		// TODO Auto-generated method stub
-		return reportDao.getQuestionReport(startDate,endDate,createdBy,questionName,questionId);
+		return reportDao.getQuestionReport(startDate,endDate,createdBy,questionName,questionId,groupId);
 	}
 
 	@Override

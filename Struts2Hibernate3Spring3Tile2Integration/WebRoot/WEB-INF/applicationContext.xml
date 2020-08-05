@@ -2,16 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 	
 	<context:component-scan base-package="com.codesvila" />
-
+	<context:component-scan base-package="com.codesvila.schedular" />
 	<!-- Database Configuration Start here-->
 	<context:property-placeholder location="classpath:database.properties"/>
 	<tx:annotation-driven transaction-manager="hibernateTransactionManager"/>
@@ -64,10 +66,19 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	<bean id="questionGroupBean" class="com.codesvila.bean.QuestionsGroupBO"/>
 	<bean id="testAuthBean" class="com.codesvila.bean.TestAuthBean"/>
 	<bean id="attendedTestDetailsBean" class="com.codesvila.bean.AttendedTestDetailsBean"/>
+
+
+	<bean id="schedular" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">	
+	</bean>
 	
-	
-<!-- 	<bean id="userr" class="com.idmission.action.UserAction"/> -->
-<!-- 	<bean id="library" class="com.idmission.action.AddBookAction"/> -->
-    
-<!--   	<bean id="libraryBean" class="com.idmission.bean.LibraryBean"/> -->
+	<bean id="schedulerExecutor" class="com.codesvila.schedular.SchedulerExecutor">
+	    <constructor-arg ref="schedular" />
+	</bean>
+		
+<!-- 	<task:scheduled-tasks scheduler="printingScheduler">
+     <task:scheduled ref="printer" method="print" fixed-delay="3000" />
+</task:scheduled-tasks>
+
+<task:scheduler id="printingScheduler" /> -->
+
 </beans>

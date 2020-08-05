@@ -205,7 +205,7 @@ public class ApacheCommonsDBCP extends ActionSupport{
 				}
 				if(quesID !=null) {
 					StringBuffer query = new StringBuffer();
-					query.append("SELECT q.question FROM tbl_questions q ");
+					query.append("SELECT q.question, q.question_type FROM tbl_questions q ");
 					query.append(" Where q.question_id = ").append(quesID);
 					rs = stmt.executeQuery(query.toString());
 					LOG.info("Query---- GET_QUESTION_ONLY:\n" + query.toString());
@@ -358,9 +358,9 @@ public class ApacheCommonsDBCP extends ActionSupport{
 				}
 				return ub;
 			} else if (queryId.equals("GET_ALL_QUESTIONS")) {
-				String query = "select q.question_id as questionID, q.question as question , o.option_value as answer,"
+				String query = "select q.question_id as questionID, q.group_id, q.question as question , q.question_type as questionType,'' as answer,"
 						+ "q.created_by as createdBy, q.updated_by as updatedBy, q.created_on as createdOn, q.updated_on as updatedOn "
-						+ " from tbl_questions q inner join tbl_que_options o on o.question_id = q.question_id where o.isCorrect = 1";
+						+ " from tbl_questions q";
 
 				LOG.info(" Returned Query :::\n\n\n\n" + query);
 				rs = stmt.executeQuery(query);
@@ -383,7 +383,21 @@ public class ApacheCommonsDBCP extends ActionSupport{
 					rs = stmt.executeQuery(proceQuery);
 				}
 				return null;
-			} else if (queryId.equals("GET_OPTIONS_FOR_QUESTION")) {
+			}else if (queryId.equals("CALL_UPDATE_EXPIRAED_TEST_PROC")) {
+				Integer testID = null;
+				String proceQuery = null;
+				if (listObj != null && isParamsAvailable) {
+					for (Object o : listObj) {
+						testID = (Integer) o;
+						break;
+					}
+				}
+				if (testID != null) {
+					proceQuery = "call updateExpiredTest(" + testID + ");";
+					rs = stmt.executeQuery(proceQuery);
+				}
+				return null;
+			}else if (queryId.equals("GET_OPTIONS_FOR_QUESTION")) {
 				Integer questionId = null;
 				String query = null;
 				if (listObj != null && isParamsAvailable) {
@@ -412,8 +426,7 @@ public class ApacheCommonsDBCP extends ActionSupport{
 						break;
 					}
 				}
-
-				query = "select q.question as question , o.option_value as answer from tbl_questions q inner join tbl_que_options o on\n"
+				query = "select q.question as question , q.question_type as questionType, o.option_value as answer from tbl_questions q inner join tbl_que_options o on\n"
 						+ "q.question_id = o.question_id\n" + "where q.question_id =  " + questionId
 						+ " and o.isCorrect = 1";
 				LOG.info("query for : GET_QUESTION_WITH_ANSWER " + query);
@@ -458,8 +471,7 @@ public class ApacheCommonsDBCP extends ActionSupport{
 				if (listObj != null) {
 					groupId = intParams(listObj);
 				}
-				query = "select q.question_id, q.question from tbl_questions q "
-						+"inner join tbl_questions_group qg on q.question_id = qg.question_id where qg.group_id in ("+ groupId.toString()+")";
+				query = "select q.question_id, q.question, q.group_id from tbl_questions q where q.group_id in ("+ groupId.toString()+")";
 				
 				if(query != null) {
 					rs = stmt.executeQuery(query);
@@ -578,8 +590,7 @@ public class ApacheCommonsDBCP extends ActionSupport{
 				if (listObj != null) {
 					groupId = intParams(listObj);
 				}
-				query = "select q.question_id, q.question from tbl_questions_group qg inner join tbl_questions q "
-						+ "on q.question_id = qg.question_id where qg.group_id in ("+ groupId.toString()+")";
+				query = "select q.question_id, q.question, q.group_id from tbl_questions q inner join tbl_groups g on g.group_id = q.group_id where g.group_id in ("+ groupId.toString()+")";
 				
 				if(query != null) {
 					rs = stmt.executeQuery(query);
@@ -626,6 +637,7 @@ public class ApacheCommonsDBCP extends ActionSupport{
 				String createdBy = (String) paramMap.get("createdBy");
 				String questionName = (String) paramMap.get("questionName");
 				Integer questionId = (Integer) paramMap.get("questionId");
+				Integer groupId = (Integer) paramMap.get("groupId");
 				
 				ParamBO pStartDate = new ParamBO();
 				pStartDate.setParamName("pStartDate");
@@ -657,12 +669,19 @@ public class ApacheCommonsDBCP extends ActionSupport{
 				pQuestionId.setParamType("SingleParamElement");
 				pQuestionId.setParamreturnType("Integer");
 				pQuestionId.setParamValue(questionId);
+				
+				ParamBO pGroupId = new ParamBO();
+				pQuestionId.setParamName("pGroupId");
+				pQuestionId.setParamType("SingleParamElement");
+				pQuestionId.setParamreturnType("Integer");
+				pQuestionId.setParamValue(groupId);
 
 				mymap.put("pStartDate", pStartDate);
 				mymap.put("pEndDate", pEndDate);
 				mymap.put("pCreatedBy", pCreatedBy);
 				mymap.put("pQuestionName", pQuestionName);
 				mymap.put("pQuestionId", pQuestionId);
+				mymap.put("pGroupId", pGroupId);
 				LOG.info("questionId \t\t\t\t \n" + questionId);
 				QueryMapperBO qmbo = SearchReport.getQuery(queryId, "ReportQuery", mymap);
 				LOG.info("QueryMapperBO qmbo : GET_QUESTIONS_REPORT \n\n" + qmbo.getQuery());

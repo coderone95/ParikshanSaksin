@@ -86,9 +86,10 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
 	}
 
 	@Override
-	public void setServletRequest(HttpServletRequest arg0) {
+	public void setServletRequest(HttpServletRequest httpServletRequest) {
 		// TODO Auto-generated method stub
-		
+		this.request = httpServletRequest;
+	    this.session = request.getSession();
 	}
 
 	 public Map<String, Object> getContextSession() {

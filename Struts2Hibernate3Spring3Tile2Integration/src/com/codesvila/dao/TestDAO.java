@@ -27,7 +27,8 @@ public interface TestDAO {
 
 	public List<QuestionInfoBO> getOptionsForQuestion(Integer questionId) throws Exception;
 
-	public Integer updateQuestionDetails(int questionid, String loginId, String questionValue, int correctOptionId, Map<String, String> optionMap) throws Exception;
+	public Integer updateQuestionDetails(int questionid, String loginId, String questionValue, String [] correctOptionIds, 
+			Map<String, String> optionMap, String questionType) throws Exception;
 
 	public int createGroup(Group group);
 

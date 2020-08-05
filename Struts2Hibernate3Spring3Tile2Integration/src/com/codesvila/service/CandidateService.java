@@ -25,4 +25,8 @@ public interface CandidateService {
 
 	Map<String, Object> retrieveQustionWithOptions(String quesID);
 
+	int submitAnswer(int testId, int groupId, int queId, String answerIDS, String testContextId);
+
+	Map<String, String> populateSubmittedAnswer(String testID, String groupID, String quesID, String contextID);
+
 }

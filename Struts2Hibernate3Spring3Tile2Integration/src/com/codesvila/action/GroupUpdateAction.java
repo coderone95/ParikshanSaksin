@@ -195,9 +195,21 @@ public class GroupUpdateAction extends BaseAction{
 	}
 
 	public String getAddedQuestionsForSelectedGroup()  throws Exception {
-		addedQuestionsList = testService.getAddedQuestionsForSelectedGroup(selectedGroupID); 
-		totalQuestionsAddedForSelectGroup = addedQuestionsList.size();
-		return "success";
+		LOG.debug("GroupUpdateAction.getAddedQuestionsForSelectedGroup()--- start");
+		Map<String,Object> data = new HashMap<String,Object>();
+		Integer totalQuestionsAddedForSelectGroup = null;
+		List<GroupsTestInfoBO> addedQuestionsList;
+		List<QuestionsGroupBO> groupQuestionInfo = new ArrayList<QuestionsGroupBO>();
+		try {
+			addedQuestionsList = testService.getAddedQuestionsForSelectedGroup(selectedGroupID);
+			totalQuestionsAddedForSelectGroup = addedQuestionsList.size();
+			data.put("addedQuestionsList", addedQuestionsList);
+			data.put("totalQuestionsAddedForSelectGroup", totalQuestionsAddedForSelectGroup);
+		}catch(Exception e) {
+			LOG.error("Error while getting the added questions in group", e);
+		}
+		LOG.debug("GroupUpdateAction.getAddedQuestionsForSelectedGroup()--- end");
+		return writeJsonResponse(data);
 	}
 	
 	public String getAvailableQuestionsForSelectedGroup() throws Exception{

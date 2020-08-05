@@ -1,9 +1,9 @@
 var isAlreadyChecked = false;
 	var isSelectedAllCheckBox = false;
+	var count = 1;
 	$(document).ready(function(){
 		var selectedID = $('#selectedId').val();
 		getAddedQuestionsForSelectedGroup(selectedID);
-		getAvailableQuestionsForSelectedGroup(selectedID);
 		$('.groups-update-loader-row-1').show();
 		$('.groups-update-loader-row-2').show();
 		$('#selectAll').on('click',function(){
@@ -20,45 +20,91 @@ var isAlreadyChecked = false;
 				isAlreadyChecked = false;
 			}
 		});
-	});
-	
-	function getAvailableQuestionsForSelectedGroup(selectedGroupID){
-		$('#questions-table-body').html('');
-		var data = {
-				selectedGroupID: selectedGroupID
-		};
-		$.ajax({
-			type : "POST",
-			url : "getAvailableQuestionsForSelectedGroup",
-			data: JSON.stringify(data),
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(itr) {
-				var str = '';
-				if (itr.availableQuestionsList != null && itr.availableQuestionsList.length > 0) {
-					for (var i = 0; i < itr.availableQuestionsList.length; i++) {
-						var queID = itr.availableQuestionsList[i].question_id;
-						var question = itr.availableQuestionsList[i].question;
-						
-						str += '<tr><td><input type="checkbox" onclick="addThis('+queID+')" class="selectQuestionCheckBox" value ="'+queID+'" /></td>'
-							+'<td>'+queID+'</td>'
-							+'<td>'+question+'</td>'
-							+'</tr>';
+		$('#addQueBtn').on('click',function(){
+		if($('#selectedId').val() != "" && $('#selectedId').val() != null){
+			let optionList = [];
+			let question = $('#question').val();
+			let correctOption = $('#correctOption').val();
+			let myoptions = {};
+			let answerMode = $('#answerMode').val();
+			let cnt = 0;
+			let groupId = $('#selectedId').val();
+			$('.option').each(function(){
+				optionList.push($(this).val());
+				myoptions[cnt++] = $(this).val();
+			});
+			let data = {
+					question : question,
+					optionList : optionList,
+					correctOption : correctOption.toString(),
+					myoptions : myoptions,
+					questionType: answerMode,
+					groupId : groupId
+			};
+			$.ajax({
+				type : "POST",
+				url : "addQuestion",
+				data: JSON.stringify(data),
+				dataType: 'json',
+				contentType:"application/json;charset=utf-8",
+				success : function(data) {
+					if(data.successMsg != null && data.successMsg != undefined){
+						alert(data.successMsg);
+						getAddedQuestionsForSelectedGroup(selectedID);
+					}else{
+						if(data.errorMsg != null && data.errorMsg != undefined){
+							alert(data.errorMsg);
+							getAddedQuestionsForSelectedGroup(selectedID);
+						}
 					}
-					$('#questions-table-body').append(str);
-					$('.groups-update-loader-row-2').hide();
-
-				}else{
-					str += '<div class="text-center"> No record found </div>';
-					$('#questions-table-body').append(str);
-				}
-			},
-			error : function(itr) {
-				alert("Error while processing the request....!!");
+				},
+				 error : function(er) {
+					alert("Error....!!");
+				} 
+			});
+		}else{
+			alert("Please create group first!!");
+		}
+	});
+		$('#answerMode').on('click change', function(){
+			if($(this).val() == 'multi-select'){
+				$('#correctOption').attr('multiple',true);
+			}else{
+				$('#correctOption').attr('multiple',false);
+			}
+		});
+		$('#updateAnswerType').on('click change', function(){
+			if($(this).val() == 'multi-select'){
+				$('#updateCorrectOption').attr('multiple',true);
+			}else{
+				$('#updateCorrectOption').attr('multiple',false);
 			}
 		});
 		
-	}
+		$('.option').on('keyup blur', function(){
+			selectCorrectOption();
+		});
+				$('#question').summernote({
+			height: 200,
+			width:800,
+			popover: {
+		         image: [],
+		         link: [],
+		         air: []
+		    },
+		    toolbar: [
+			    // [groupName, [list of button]]
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['font', ['strikethrough', 'superscript', 'subscript']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']],
+			    ['insert', ['picture']],
+			    ['view', ['codeview', 'help']]
+			]
+		});	
+	});
 	
 	function getAddedQuestionsForSelectedGroup(selectedGroupID){
 		$('#u-group-questions-table-body').html('');
@@ -74,21 +120,28 @@ var isAlreadyChecked = false;
 			contentType:"application/json;charset=utf-8",
 			success : function(itr) {
 				var str ='';
+				if ($.fn.DataTable.isDataTable("#qTable")) {
+					$('#qTable').DataTable().clear().destroy();
+				}
 				$('#u-group-name').val(localStorage.getItem("selectedGroupName"));
 				$('#u-total-que').text(itr.totalQuestionsAddedForSelectGroup);
 				if(itr.addedQuestionsList != null && itr.addedQuestionsList.length > 0){
 					for(var i = 0 ; i < itr.addedQuestionsList.length;i++){
 						var questionID = itr.addedQuestionsList[i].question_id;
 						var question = itr.addedQuestionsList[i].question;
-						str += '<tr class="added-question ques-'+questionID+'" value="'+questionID+'"><td>'+questionID+'</td><td>'+question+'</td>'
-							+'<td><button class="btn btn-outline-danger" onclick="removeThisQuestion('+selectedGroupID+','+questionID+');"><i class="fa fa-trash"></i></button></td>'
-							+'</tr>';
+						var str = '<tr class="added-question ques-'+questionID+'" value="'+questionID+'">';
+						str=str+'<td class="text-nowrap" style="max-height:50px;max-width:300px;overflow: auto;">'+questionID+'</td>';
+						str=str+'<td class="text-nowrap" style="max-height:50px;max-width:300px;overflow: auto;">'+question+'</td>';
+						str=str+'<td class="text-nowrap" style="max-height:50px;max-width:300px;overflow: auto;"><button class="btn btn-outline-danger" onclick="removeThisQuestion('+selectedGroupID+','+questionID+');"><i class="fa fa-trash"></i></button></td>';
+						str=str+'</tr>';
+						$('#u-group-questions-table-body').append(str);
 					}
-					$('#u-group-questions-table-body').append(str);
+					$("#qTable").DataTable();
 					$('.groups-update-loader-row-1').hide();
 				}else{
 					str = '<div class="text-center"> No Questions are added!!</div>';
 					$('#u-group-questions-table-body').append(str);
+					$("#qTable").DataTable();
 				}
 			},
 			error : function(itr) {
@@ -117,15 +170,18 @@ var isAlreadyChecked = false;
 					for(var i = 0 ; i < data.groupQuestionInfo.length;i++){
 						var questionID = data.groupQuestionInfo[i].question_id;
 						var question = data.groupQuestionInfo[i].question;
-						str += '<tr><td><a href="#" onclick="showQuestionDetails('+questionID+');">'+questionID+'</a></td><td>'+question+'</td></tr>';
+						str += '<tr><td class="text-nowrap" style="max-height:50px;max-width:300px;overflow: auto;"><a href="#" onclick="showQuestionDetails('+questionID+');">'+questionID+'</a></td><td>'+question+'</td></tr>';
 					}
 					$('#group-questions-table-body').append(str);
 				}else{
 					str = '<div class="text-center"> No Questions are added!!</div>';
 					$('#group-questions-table-body').append(str);
+					$("#qTable").DataTable();
 				}
 			},
 			error : function(itr) {
+				let str = '<div class="text-center"> No Questions are added!!</div>';
+				$('#group-questions-table-body').append(str);
 				alert("Error while processing the request....!!");
 			}
 		});
@@ -152,11 +208,7 @@ var isAlreadyChecked = false;
 				$('.ques-'+questionId).fadeTo("slow",0.7, function(){
 		            $(this).remove();
 		            getAddedQuestionsForSelectedGroup(selectedGroupID);
-		            getAvailableQuestionsForSelectedGroup(selectedGroupID);
 		        })
-		       /*  if($('.added-question').length == 0){
-					$('#u-group-questions-table-body').append('<div class="text-center"> No Questions are added!!</div>');
-				} */
 			},
 			error : function(itr) {
 				alert("Error while processing the request....!!");
@@ -193,7 +245,6 @@ var isAlreadyChecked = false;
 					alert("Questions added Successfully");
 					$('#addQuestionToGroupModal').modal('hide');	
 					getAddedQuestionsForSelectedGroup(selectedGroupID);
-					getAvailableQuestionsForSelectedGroup(selectedGroupID);
 				}
 			},
 			error : function(itr) {
@@ -220,22 +271,23 @@ var isAlreadyChecked = false;
 			data: JSON.stringify(data),
 			contentType:"application/json;charset=utf-8",
 			success : function(itr) {
-				if(itr.re.status == 403 && itr.re != null ){
-					alert("Unable to fetch question details");
-				}else{
-					if(itr.questionDetail != null){
-						$('#questionName').text(itr.questionDetail.question);
-						var str = '';
-						var cnt = 65;
-						for( var i = 0 ; i < itr.questionDetail.options.length; i++){
-							if(itr.questionDetail.answer == itr.questionDetail.options[i]){
-								ans = cnt;
-							}
-							str += '<li>'+itr.questionDetail.options[i]+'</li>';
-							cnt++;
+				if(itr.questionDetail != null && itr.questionDetail != undefined){
+					$('#questionName').text(itr.questionDetail.question);
+					var str = '';
+					var cnt = 65;
+					for( var i = 0 ; i < itr.questionDetail.options.length; i++){
+						if(itr.questionDetail.answer == itr.questionDetail.options[i]){
+							ans = cnt;
 						}
-						$('#optionList').append(str);
-						$('#answer').append('Answer: &#'+ans+';');
+						str += '<li>'+itr.questionDetail.options[i]+'</li>';
+						cnt++;
+					}
+					$('#optionList').append(str);
+					$('#answer').append('Answer: &#'+ans+';');
+					
+				}else{
+					if(itr.re.status == 403 && itr.re != null ){
+						alert(itr.re);
 					}					
 				}
 			},
@@ -270,4 +322,57 @@ var isAlreadyChecked = false;
 			}
 		});
 	}  
+	function addOption(id, flag){
+		var optionArea = $('#'+id);
+		var idCount = count++;
+		str = '<div id="option-div-'+ idCount +'"><label class="mr-2">Option</label>'
+			+'<a href="javascript:void(0);" onclick="deleteOption(\''+idCount+'\');" style="color:red"><i class="fa fa-trash-o fa-lg delete-option-icon"></i></a>'
+			+'<div class="row"><div class="col-md-8"><textarea class="form-control option"  rows="1" ></textarea>'
+			+'</div></div></div>';
+		$(optionArea).append(str);
+		if(flag == 'y'){
+			selectCorrectOption();
+		}
+		triggerSummerNoteForOption();
+	}
 	
+	function triggerSummerNoteForOption(){
+		$('.option').summernote({
+			height: 200,
+			width:800,
+			popover: {
+		         image: [],
+		         link: [],
+		         air: []
+		    },
+		    toolbar: [
+			    // [groupName, [list of button]]
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['font', ['strikethrough', 'superscript', 'subscript']],
+			    ['fontsize', ['fontsize']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['insert', ['picture']],
+			    ['view', ['codeview', 'help']]
+			]
+		});
+	}
+	function deleteOption(cnt){
+		if($('.delete-option-icon').length == 1){
+			alert('At least one option must be available');
+		}else{
+			$('#option-div-'+cnt).remove();
+			count--;
+			selectCorrectOption();
+		}
+	} 
+	function selectCorrectOption(){
+		$('#correctOption').html('');
+		var str = '';
+		var cnt = 0;
+		$('.option').each(function(){
+			var option = cnt+1;
+			str += '<option value="'+cnt+'">Option '+ option +'</option>';
+			cnt++;
+		});
+		$('#correctOption').append(str);
+	}

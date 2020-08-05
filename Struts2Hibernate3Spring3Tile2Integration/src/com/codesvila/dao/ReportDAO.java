@@ -10,7 +10,7 @@ import com.codesvila.bo.QuestionInfoBO;
 public interface ReportDAO {
 
 	List<QuestionInfoBO> getQuestionReport(String startDate, String endDate, String createdBy, String questionName,
-			Integer questionId) throws Exception;
+			Integer questionId, Integer groupId) throws Exception;
 
 	List<GroupBO> getGroupReport(String startDate, String endDate, String createdBy, String groupName, Integer groupId)throws Exception;
 

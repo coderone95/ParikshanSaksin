@@ -270,7 +270,7 @@ public class UserServiceImpl implements UserService {
 			Generic generic = new Generic();
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT CONCAT(user_type,':', count(1)) AS userCount");
-			query.append("FROM tbl_users WHERE user_type IN ('ADMIN','CANDIDATE','EXAMINER','REVIEWER') GROUP BY user_type");
+			query.append(" FROM tbl_users WHERE user_type IN ('ADMIN','CANDIDATE','EXAMINER','REVIEWER') GROUP BY user_type");
 			List<String> resultList = generic.nativeSQLQueryForList(query.toString());
 			
 			if(resultList !=null && resultList.size()>0) {

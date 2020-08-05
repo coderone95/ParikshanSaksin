@@ -85,10 +85,12 @@ public class TestServiceImpl implements TestService{
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)  
-	public Integer updateQuestionDetails(String selelctedQuestionID, String loginID,String questionValue, String selectedCorrectOption,
-			Map<String, String> optionMap) throws NumberFormatException, Exception {
+	public Integer updateQuestionDetails(String selelctedQuestionID, String loginID,String questionValue, String [] selectedCorrectOptions,
+			Map<String, String> optionMap, String questionType) throws NumberFormatException, Exception {
 		// TODO Auto-generated method stub
-		Integer res = testDao.updateQuestionDetails(Integer.parseInt(selelctedQuestionID), loginID, questionValue,Integer.parseInt(selectedCorrectOption),optionMap);
+		
+		Integer res = testDao.updateQuestionDetails(Integer.parseInt(selelctedQuestionID), loginID, questionValue,
+				selectedCorrectOptions,optionMap,questionType);
 		return res;
 	}
 

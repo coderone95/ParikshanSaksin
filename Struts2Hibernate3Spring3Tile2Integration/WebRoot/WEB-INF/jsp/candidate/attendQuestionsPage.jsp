@@ -25,9 +25,9 @@
 	<script src="./assets/js/candidate/questionPage.js"></script>
 	<script>
 		$(document).ready(function(){
-			$('.submit-answer').on('click',function(){
-				submitAnswer();
-			});
+			// $('.submit-answer').on('click',function(){
+			// 	submitAnswer();
+			// });
 		});
 	</script>
 <style>
@@ -43,8 +43,8 @@
     border-radius: 3px;
     margin: 0 10px;
 }.questions {
-    background: #007fbe;
-    color: #FFF;
+/*    background: #007fbe;
+    color: #FFF;*/
     font-size: 22px;
     padding: 8px 30px;
     font-weight: 300;
@@ -151,9 +151,20 @@ input[type=checkbox], input[type=radio] {
 }
 
 .active-question{
- background: #007fbe !important; 
+ /*background: #007fbe !important; */
+ border: 2px solid #000 !important;
+ border-color: #000 !important;
 }
-
+.btn-control{
+  font-size: 0.8rem !important; 
+}
+.btn-control:focus{
+  box-shadow: none !important;
+}
+.answered-question{
+  background-color: #28a745 !important;
+  color:#fff !important;
+}
 </style>
 </head>
 <body>
@@ -273,16 +284,16 @@ input[type=checkbox], input[type=radio] {
 				            </li> -->
 				        </ul>
 				        <div class="questionsRow">
-                  <a href="#" class="btn btn-outline-secondary" id="prevquestion">Prev</a>
-                  <a href="#" class="btn btn-outline-secondary" id="nextquestions">Next</a> <!--  <a href="#" class="btn btn-primary" id="skipquestions">Skip</a> -->
-				        <button class="btn btn-success" class="submit-answer">Submit Answer</button></div>
+                  <a href="#" class="btn btn-outline-secondary btn-control" id="prevquestion">Prev</a>
+                  <a href="#" class="btn btn-outline-secondary btn-control" id="nextquestions">Next</a> <!--  <a href="#" class="btn btn-primary" id="skipquestions">Skip</a> -->
+				        <button class="btn btn-warning submit-answer btn-control" onclick="submitAnswer();">Submit Answer</button></div>
 				    </div>
 				</div>	
     		</div> 
     		<div class="col-lg-3 col-md-3 col-sm-12 questions-window">
     			<div class="row p-2">
     				<div class="text-center">
-    					<h5 class="text-center"> Questions </h5>
+    					<h5 class="text-center" style="font-weight: 400 !important"> Questions </h5>
     				</div>
     			</div>
     			<div class="row question-id-row">

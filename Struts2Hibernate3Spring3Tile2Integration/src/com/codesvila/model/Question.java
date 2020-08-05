@@ -27,6 +27,12 @@ public class Question implements Serializable{
 	@Column(name="question")
 	private String question;
 	
+	@Column(name="question_type")
+	private String question_type;
+	
+	@Column(name="group_id")
+	private Integer groupId;
+	
 	@Column(name="created_by")
 	private String created_by;
 	
@@ -86,6 +92,28 @@ public class Question implements Serializable{
 
 	public void setUpdated_on(Date updated_on) {
 		this.updated_on = updated_on;
+	}
+
+	public String getQuestion_type() {
+		return question_type;
+	}
+
+	public void setQuestion_type(String question_type) {
+		this.question_type = question_type;
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	/**
+	 * @param groupId the groupId to set
+	 */
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
 	}
 	
 	

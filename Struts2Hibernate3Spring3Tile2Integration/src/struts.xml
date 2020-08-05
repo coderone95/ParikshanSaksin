@@ -152,6 +152,9 @@
         <action name="groups" class="com.codesvila.action.GroupAction" method="show">
 			<result name="success">/WEB-INF/jsp/adminDashboard/groups.jsp</result>
 		</action>
+		<action name="groupReport" class="com.codesvila.action.GroupAction" method="showGroupReport">
+			<result name="success">/WEB-INF/jsp/adminDashboard/groupReports.jsp</result>
+		</action>
 		 <action name="createGroup" class="com.codesvila.action.GroupAction" method="execute">
 			<result name="success" type="json"></result>
 		</action>
@@ -440,11 +443,18 @@
 	        </interceptor-ref> 
 			<result name="success" type="json"></result>  
         </action>
-        <action name="submitAnswer" class="com.codesvila.action.AttendQuestionsAction" method="submitAnswer">
-        	<interceptor-ref name="defaultStack"/>
+        <action name="submitAnswer" class="com.codesvila.action.TestSubmissionAction" method="submitAnswer">
+            <interceptor-ref name="defaultStack"/>
 	         <interceptor-ref name="json">
 	            <param name="enableSMD">true</param>
-	        </interceptor-ref> 
+	        </interceptor-ref>
+			<result name="success" type="json"></result>  
+        </action>
+        <action name="populateSubmittedAnswer" class="com.codesvila.action.TestSubmissionAction" method="populateSubmittedAnswer">
+            <interceptor-ref name="defaultStack"/>
+	         <interceptor-ref name="json">
+	            <param name="enableSMD">true</param>
+	        </interceptor-ref>
 			<result name="success" type="json"></result>  
         </action>
     </package>

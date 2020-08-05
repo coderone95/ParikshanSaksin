@@ -189,3 +189,89 @@ border-radius: 5px;
 #dtable thead > th {
 	overflow: auto !important;
 }
+
+@media (min-width:576px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+}
+@media (min-width:768px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+    
+}
+@media (min-width:992px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+    
+}
+@media (min-width:1200px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+    
+}
+ 
+@media screen and (max-width: 374px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (max-width: 413px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (max-width: 413px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+} 
+@media screen and (max-width: 576px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+}
+@media screen and (max-width: 991px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+ 
+}
+@media (max-width: 991px) and (min-width: 768px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (min-width: 768px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (min-width: 992px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+
+}
+@media screen and (max-width: 768px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+}
+@media screen and (max-width: 767px){
+    .note-editor {
+          max-width: 100% !important; /* New width for default modal */
+        }
+}
+
+.note-btn-group .note-btn {
+	margin: 0 !important;
+}

@@ -121,6 +121,8 @@ public class CommonUtility {
 		q.setCreated_by(queBO.getCreated_by());
 		q.setUpdated_by(queBO.getUpdated_by());
 		q.setQuestion(queBO.getQuestion());
+		q.setQuestion_type(queBO.getQuestion_type());
+		q.setGroupId(queBO.getGroupId());
 		q.setCreated_on(DateUtils.getCurrentDate());
 		q.setUpdated_on(DateUtils.getCurrentDate());
 		return q;

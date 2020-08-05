@@ -208,22 +208,54 @@ var isAlreadyChecked = false;
 			data: JSON.stringify(data),
 			contentType:"application/json;charset=utf-8",
 			success : function(itr) {
-				if(itr.re.status == 403 && itr.re != null ){
-					alert("Unable to fetch question details");
-				}else{
-					if(itr.questionDetail != null){
-						$('#questionName').text(itr.questionDetail.question);
-						var str = '';
-						var cnt = 65;
-						for( var i = 0 ; i < itr.questionDetail.options.length; i++){
-							if(itr.questionDetail.answer == itr.questionDetail.options[i]){
-								ans = cnt;
+				if(itr.questionDetail != null && itr.questionDetail != undefined){
+					$('#questionName').html(itr.questionDetail.question);
+					$('#questionName').prepend("<span>Q.</span>");
+					let questionType = itr.questionDetail.questionType;
+					let str = '';
+					let cnt = 65;
+					let ans;
+					if(questionType != null && questionType == 'multi-select'){
+							let countList = new Array();
+							let answerList = itr.questionDetail.answer.split("answer-delimiter");
+							for( let i = 0 ; i < itr.questionDetail.options.length; i++){
+								if(isCorrectAnswer(answerList,itr.questionDetail.options[i])){
+									countList.push(cnt);
+								}
+								str += '<li>'+itr.questionDetail.options[i]+'</li>';
+								cnt++;
 							}
-							str += '<li>'+itr.questionDetail.options[i]+'</li>';
-							cnt++;
+							let answer = '';
+							let count = 0
+							for(let i in countList){
+								if(count < (countList.length-1)){
+									answer = answer + '\t&#'+countList[i]+';'+',';
+									count++;
+								}
+								else{
+									answer = answer + '\t&#'+countList[i]+';';
+								}
+							}
+							$('.question-ans-type').text('Multiple Choice');
+							$('#optionList').append(str);
+							$('#answer').append(`Answer: \t${answer}`);
+						}else{
+							if(questionType != null && questionType == 'radio'){
+								for( let i = 0 ; i < itr.questionDetail.options.length; i++){
+									if(itr.questionDetail.answer == itr.questionDetail.options[i]){
+										ans = cnt;
+									}
+									str += '<li>'+itr.questionDetail.options[i]+'</li>';
+									cnt++;
+								}
+								$('.question-ans-type').text('Single Choice');
+								$('#optionList').append(str);
+								$('#answer').append('Answer: &#'+ans+';');
+							}	
 						}
-						$('#optionList').append(str);
-						$('#answer').append('Answer: &#'+ans+';');
+				}else{
+					if(itr.re.status == 403 && itr.re != null ){
+						alert(itr.re);
 					}					
 				}
 			},
@@ -231,6 +263,15 @@ var isAlreadyChecked = false;
 				alert("Error occurred while getting question details..!!");
 			}
 		});
+	}
+
+	function isCorrectAnswer(answerList,value){
+		for(let i in answerList){
+			if(answerList[i] == value){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	function applyGroupsFilter(flag){

@@ -644,3 +644,79 @@ ALTER TABLE tbl_attended_test_details
 DROP COLUMN test_ended_time;
 
 alter table tbl_test_submission_details add column test_end_time datetime after `test_start_time`
+
+
+-- Date : 26th July 2020 ----
+alter table tbl_questions add question_type varchar(20) after question
+
+--- Date 29th July 2020---
+
+DELIMITER $$
+DROP Procedure IF EXISTS updateExpiredTest $$
+DELIMITER $$
+CREATE PROCEDURE updateExpiredTest (IN testId int)
+BEGIN 
+	update tbl_tests set is_live = 0 where test_id = testId;
+END$$
+DELIMITER ;
+
+-- Date 2nd Aug 2020 --- 
+
+alter table tbl_tests add show_results_after_submit tinyint(1) default 0
+
+alter table tbl_tests add is_failure_session_allowed tinyint(1) default 0
+
+alter table tbl_tests add max_failure_session_allowed int(10) default 3
+
+alter table tbl_test_submission_details add after_failure_remaining_time int(20) default 0
+
+alter table tbl_test_submission_details add failure_session_count int(10) default 0
+
+alter table tbl_user_answered drop column answer_id
+
+alter table tbl_user_answered add answer_id varchar(255)
+
+alter table tbl_user_answered add test_id int(12)
+
+alter table tbl_user_answered add group_id int(12)
+
+-- Add new column isCorrect in tbl_user_answered table
+
+alter table tbl_user_answered add is_correct_answer tinyint(1) after answer_id
+
+
+
+drop table tbl_user_answered
+
+CREATE TABLE `tbl_user_answered` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `test_answered_context_id` int(255) DEFAULT NULL,
+  `question_id` int(255) DEFAULT NULL,
+  `answer_id` varchar(255) DEFAULT NULL,
+  `is_correct_answer` tinyint(1) DEFAULT NULL,
+  `test_id` int(12) DEFAULT NULL,
+  `group_id` int(12) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_id` (`question_id`),
+  KEY `test_answered_context_id` (`test_answered_context_id`)
+)
+
+
+drop table tbl_test_submission_details;
+
+
+
+CREATE TABLE `tbl_test_submission_details` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) DEFAULT NULL,
+  `test_id` int(255) DEFAULT NULL,
+  `test_start_time` datetime DEFAULT NULL,
+  `test_end_time` datetime DEFAULT NULL,
+  `submitted_successfully` tinyint(1) DEFAULT '0',
+  `after_failure_remaining_time` int(20) DEFAULT '0',
+  `failure_session_count` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `test_id` (`test_id`),
+  KEY `user_id` (`user_id`)
+)
+

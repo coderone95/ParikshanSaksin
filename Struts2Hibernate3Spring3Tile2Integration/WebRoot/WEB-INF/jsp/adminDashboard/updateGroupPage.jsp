@@ -19,7 +19,7 @@
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	
 <!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="./assets/js/core/jquery.min.js"></script>
 <!--     Fonts and icons     -->
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -27,8 +27,7 @@
 <!-- CSS Files -->
 <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
 <link href="./assets/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
-<!-- CSS Just for demo purpose, don't include it in your project -->
-<link href="./assets/demo/demo.css" rel="stylesheet" />
+<link href="./assets/css/summernote.css" rel="stylesheet" />
  <sx:head />
 <script src="./assets/js/core/jquery.min.js"></script>
 <script src="./assets/js/bootstrap-select.min.js"></script>
@@ -37,6 +36,7 @@
 <link href="./assets/css/loader.css" rel="stylesheet" />
 <script src="./assets/js/admin/updateGroupPage.js"></script>
 <link href="./assets/css/admin/updateGroupPage.css" rel="stylesheet" />
+<link href="./assets/plugins/jQuery-DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -85,12 +85,12 @@
 								</div>
 								<div class="row">
 				              		<div class="col-md-12">
-						              	<div class="table-responsive" style="min-height: 300px;max-height: 300px;">
-			                  				<table class="table">
+						              	<div class="table-responsive">
+			                  				<table class="table table-bordered table-vcenter table-hover table-stripped" style="border: 2px solid #000;" id="qTable">
 			                    			<thead class=" text-primary">
-			                      				<th>Question ID</th>
-												<th>Question</th>
-												<th>Remove</th>
+			                      				<th class="text-nowrap" style='text-transform: initial;'>Question ID</th>
+												<th class="text-nowrap" style='text-transform: initial;'>Question</th>
+												<th class="text-nowrap" style='text-transform: initial;'>Remove</th>
 			                    			</thead>
 						                    <tbody id="u-group-questions-table-body">
 						                    </tbody>
@@ -101,43 +101,72 @@
 								</div>
 							</div>
 						</div>
-					<div class="col-md-12">
-			           <div class="card">
-			              <div class="card-header"></div>
-			              <div class="card-body" id="questions-card-body">
-			              				<div class="loaddercontainer groups-update-loader-row-2" style="display:none;">
-											<div class="lds-ring">
-										        <div></div>
-										        <div></div>
-										        <div></div>
-										        <div></div>
+						<div class="col-md-12">
+			       		<s:if test="accessMap.get('M_ADD_QUESTION')">
+						<div class="card demo-icons">
+							<div class="card-header">
+								<h4 id="user-form-card-heading">Add New Question</h4>
+								<div class="error-div" style="display: none;">
+											<div class="err"
+												style="padding: 0.5rem; border: 1px solid red;"></div>
+								</div>
+							</div>
+							<div class="card-body" id="">
+									<div class="row">
+										<div class="msg-div" style="display: none;color:#008000;margin: 0.5rem;">
+											<div class="msg"
+												style="padding: 0.1rem; border: 1px solid #008000;"></div>
+										</div>
+										
+										<div class="col-md-8 pr-1">
+											<div class="form-group">
+												<label>Question</label> 
+												<textarea class="form-control" required name="question" rows="4" id="question"></textarea>
 											</div>
 										</div>
-						              	<input type="hidden" id="groupID" />
-						              	<input type="hidden" id="singleQuestionID" />
-						              	<div class="row">
-						              		<div class="col-md-8"></div>
-							              	<div class="col-md-4">
-							              		<div class="update ml-auto mr-auto">
-														<input type="button" style="float:right;" class="btn btn-primary btn-round" onclick ="addSelectedQuestionsToGroup();" value="Add Selected Questions">
-												</div>
+									</div>
+									<div class="row">
+										<div class="col-md-10 pr-1">
+											<div class="form-group">
+												<label>Answer Mode</label> 
+												<select class="form-control" required name="answerMode" id="answerMode">
+													<option value="radio">Radio</option>
+													<option value="multi-select">Multi-Select</option>
+												</select>
 											</div>
 										</div>
-						              	<div class="table-responsive">
-			                  				<table class="table">
-			                    				<thead class=" text-primary">
-			                    						<th><input type="checkbox" id="selectAll" /></th>
-			                      						<th>Question ID</th>
-														<th>Question</th>
-			                    				</thead>
-						                    <tbody id="questions-table-body">
-						                    	
-						                    </tbody>
-						                  </table>
-						                </div>
-						              </div>
-						           </div>
-						       </div>
+									</div>
+									<div class="row">
+										<div class="col-md-10 pr-1">
+											<div class="form-group" id="option-area">
+											</div>
+										</div>
+										<div class="col-md-8 pr-1">
+											<div class="form-group">
+												<a href="#" onclick="addOption('option-area','y');">
+													<i class="fa fa-plus-circle fa-lg"></i> Add option
+												</a>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-8 pr-1">
+											<div class="form-group">
+												<label> Correct Answer</label>
+												<select id="correctOption" class="form-control"></select>
+											</div>											
+										</div>
+									</div>
+									</div>
+									<div class="row">
+										<div class="update ml-auto mr-auto">
+											<input type="button" id="addQueBtn" class="btn btn-primary btn-round" value="Add Question">
+										</div>
+									</div>
+							</div>
+							</s:if>
+			       	</div>
+				</div>
 							</div>
 			              </div>
 			           </div>
@@ -180,19 +209,16 @@
 	<script src="./assets/js/core/jquery.min.js"></script>
 	<script src="./assets/js/core/popper.min.js"></script>
 	<script src="./assets/js/core/bootstrap.min.js"></script>
+	<script src="./assets/plugins/jQuery-DataTables/js/jquery.dataTables.min.js"></script>
+	<script src="./assets/plugins/jQuery-DataTables/js/dataTables.responsive.min.js"></script>
+	<script src="./assets/plugins/jQuery-DataTables/js/ColReorderWithResize.js"></script>
 	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-	<!--  Google Maps Plugin    -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-	<!-- Chart JS -->
-	<script src="./assets/js/plugins/chartjs.min.js"></script>
 	<!--  Notifications Plugin    -->
 	<script src="./assets/js/plugins/bootstrap-notify.js"></script>
 	<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 	<script src="./assets/js/paper-dashboard.min.js?v=2.0.0"
 		type="text/javascript"></script>
-	<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-	<script src="./assets/demo/demo.js"></script>
-	
+	<script src="./assets/js/summernote.js"></script>
 
 </body>
 

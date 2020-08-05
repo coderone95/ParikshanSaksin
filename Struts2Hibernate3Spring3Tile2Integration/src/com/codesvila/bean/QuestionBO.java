@@ -6,6 +6,8 @@ public class QuestionBO {
 	
 	private String question;
 	
+	private String question_type;
+	
 	private String correctOption;
 	
 	private String created_by;
@@ -15,6 +17,8 @@ public class QuestionBO {
 	private String created_on;
 	
 	private String updated_on;
+	
+	private Integer groupId;
 
 	public int getQuestion_id() {
 		return question_id;
@@ -70,6 +74,28 @@ public class QuestionBO {
 
 	public void setCorrectOption(String correctOption) {
 		this.correctOption = correctOption;
+	}
+
+	public String getQuestion_type() {
+		return question_type;
+	}
+
+	public void setQuestion_type(String question_type) {
+		this.question_type = question_type;
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	/**
+	 * @param groupId the groupId to set
+	 */
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
 	}
 
 }

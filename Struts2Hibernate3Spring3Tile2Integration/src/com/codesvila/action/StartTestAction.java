@@ -163,6 +163,7 @@ public class StartTestAction extends BaseAction{
 		loginId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
 		int generatedID = candidateService.saveAttendedTestDetails(loginId,testID,startTime,endTime);
 		if(generatedID > 0) {
+			session.setAttribute("TEST_CONTEXT_ID", String.valueOf(generatedID));
 			hasExamStarted = "YES";
 			sessionMap.put("hasExamStarted",hasExamStarted);
 		}

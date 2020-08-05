@@ -176,12 +176,23 @@ demo = {
 
     ctx = document.getElementById('chartEmail').getContext("2d");
 
+    let UserCountsArray = new Array();
+
+    if(CountsMap != undefined){
+      let ObjKeys = Object.keys(CountsMap);
+      for(let key of ObjKeys){
+         // console.log(CountsMap[key]);
+         UserCountsArray.push(CountsMap[key]);
+      }
+    }
+    
+
     myChart = new Chart(ctx, {
       type: 'pie',
       data: {
         labels: [1, 2, 3],
         datasets: [{
-          label: "Emails",
+          label: "Users",
           pointRadius: 0,
           pointHoverRadius: 0,
           backgroundColor: [
@@ -191,7 +202,7 @@ demo = {
             '#ef8157'
           ],
           borderWidth: 0,
-          data: [342, 480, 530, 120]
+          data: UserCountsArray
         }]
       },
 

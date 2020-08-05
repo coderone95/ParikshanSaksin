@@ -125,22 +125,23 @@ function getQuestionDetails(queID){
 		data: JSON.stringify(data),
 		contentType:"application/json;charset=utf-8",
 		success : function(itr) {
-			if(itr.re.status == 403 && itr.re != null ){
-				alert("Unable to fetch question details");
-			}else{
-				if(itr.questionDetail != null){
-					$('#questionName').text(itr.questionDetail.question);
-					var str = '';
-					var cnt = 65;
-					for( var i = 0 ; i < itr.questionDetail.options.length; i++){
-						if(itr.questionDetail.answer == itr.questionDetail.options[i]){
-							ans = cnt;
-						}
-						str += '<li>'+itr.questionDetail.options[i]+'</li>';
-						cnt++;
+			if(itr.questionDetail != null && itr.questionDetail != undefined){
+				$('#questionName').text(itr.questionDetail.question);
+				var str = '';
+				var cnt = 65;
+				for( var i = 0 ; i < itr.questionDetail.options.length; i++){
+					if(itr.questionDetail.answer == itr.questionDetail.options[i]){
+						ans = cnt;
 					}
-					$('#optionList').append(str);
-					$('#answer').append('Answer: &#'+ans+';');
+					str += '<li>'+itr.questionDetail.options[i]+'</li>';
+					cnt++;
+				}
+				$('#optionList').append(str);
+				$('#answer').append('Answer: &#'+ans+';');
+				
+			}else{
+				if(itr.re.status == 403 && itr.re != null ){
+					alert(itr.re);
 				}					
 			}
 		},

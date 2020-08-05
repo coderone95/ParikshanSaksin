@@ -29,6 +29,7 @@ public class AttendQuestionsAction extends BaseAction{
 	private List<Integer> questionIdList = new ArrayList<Integer>();
 	private String quesID;
 	private String optionId;
+	private String answerIDS;
 	
 	/**
 	 * @return the groupId
@@ -140,6 +141,20 @@ public class AttendQuestionsAction extends BaseAction{
 		this.optionId = optionId;
 	}
 
+	/**
+	 * @return the answerIDS
+	 */
+	public String getAnswerIDS() {
+		return answerIDS;
+	}
+
+	/**
+	 * @param answerIDS the answerIDS to set
+	 */
+	public void setAnswerIDS(String answerIDS) {
+		this.answerIDS = answerIDS;
+	}
+
 	public String showQuestions() {
 		setLoginId((String) sessionMap.get(GlobalConstants.LOGIN_ID));
 		testId = (Integer) sessionMap.get("currentTestID");
@@ -175,9 +190,11 @@ public class AttendQuestionsAction extends BaseAction{
 			if(quesID != null && !StringUtils.isEmpty(quesID)) {
 				Map<String,Object> result = candidateService.retrieveQustionWithOptions(quesID);
 				String question = (String) result.get("QUESTION");
+				String questionType = (String) result.get("QUESTION_TYPE");
 				List<String> options = (List<String>) result.get("OPTIONS");
 				data.put("QUESTION", question);
 				data.put("OPTIONS", options);
+				data.put("QUESTION_TYPE", questionType);
 			}
 		}catch(Exception e) {
 			LOG.error("Error while populating the question", e);
@@ -185,11 +202,32 @@ public class AttendQuestionsAction extends BaseAction{
 		LOG.debug("AttendQuestionsAction : retrieveQustionWithOptions - end");
 		return writeJsonResponse(data);
 	}
-	
+
 	public String submitAnswer() {
-		
-		return "success";
+		LOG.debug("AttendQuestionsAction.submitAnswer()--- start");
+		Map<String, Object> data = new HashMap<String, Object>();
+		String testContextId = null;
+		try {
+			testContextId = (String) session.getAttribute("TEST_CONTEXT_ID");
+			if(!StringUtils.isNotBlank(answerIDS) || answerIDS == null) {
+				data.put("errorMsg","Please select answer");
+			}else {
+				if(testId == null || groupId == null || quesID == null || testContextId == null ) {
+					throw new Exception("Missing testID or groupID or question ID");
+				}else {
+					int result = candidateService.submitAnswer(testId,groupId,Integer.parseInt(quesID),answerIDS,testContextId);
+					if(result > 0) {
+						data.put("successMsg","Answer submitted!!");
+					}else {
+						data.put("errorMsg","Error while submitting the test");
+					}
+				}
+			}
+		}catch(Exception e) {
+			LOG.error("Error while submitting the test", e);
+		}
+		LOG.debug("AttendQuestionsAction.submitAnswer()--- end");
+		return writeJsonResponse(data);
 	}
-	
 
 }

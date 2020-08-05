@@ -23,7 +23,7 @@ public class ReportDAOImpl implements ReportDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<QuestionInfoBO> getQuestionReport(String startDate, String endDate, String createdBy,
-			String questionName, Integer questionId) throws Exception {
+			String questionName, Integer questionId, Integer groupId) throws Exception {
 		// TODO Auto-generated method stub
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("startDate", startDate);
@@ -34,6 +34,11 @@ public class ReportDAOImpl implements ReportDAO{
 			paramMap.put("questionId", null);
 		}else {
 			paramMap.put("questionId", questionId);
+		}
+		if(groupId == 0) {
+			paramMap.put("groupId", null);
+		}else {
+			paramMap.put("groupId", groupId);
 		}
 		return ApacheCommonsDBCP.DBCPDataSource("GET_QUESTIONS_REPORT", null, true, paramMap,null);
 	}

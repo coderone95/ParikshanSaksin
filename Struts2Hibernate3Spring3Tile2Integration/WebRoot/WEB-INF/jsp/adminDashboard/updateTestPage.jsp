@@ -33,7 +33,7 @@
 <script src="./assets/js/summernote.js"></script>
 <link href="./assets/css/summernote.css" rel="stylesheet" />
 <link href="./assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet" />
+<link href="./assets/plugins/bootstrap/glyphicon/bootstrap-glyphicons.css" rel="stylesheet" />
 <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
 <script src="./assets/js/common.js"></script>
 <script src="./assets/js/admin/updateTest.js"></script>

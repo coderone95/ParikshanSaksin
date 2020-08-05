@@ -33,4 +33,6 @@
 }
 #updateOptions li{
 	 list-style: none;
+}.note-btn-group .note-btn {
+	margin: 0 !important;
 }

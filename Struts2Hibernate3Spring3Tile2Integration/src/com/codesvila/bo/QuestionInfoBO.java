@@ -13,6 +13,10 @@ public class QuestionInfoBO {
 	
 	private String answer;
 	
+	private Integer groupId;
+	
+	private String questionType;
+	
 	private String question_createdBy;
 	
 	private String question_updatedBy;
@@ -115,6 +119,28 @@ public class QuestionInfoBO {
 
 	public void setOptionsMap(Map<Integer, String> optionsMap) {
 		this.optionsMap = optionsMap;
+	}
+
+	public String getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	/**
+	 * @param groupId the groupId to set
+	 */
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
 	}
 
 

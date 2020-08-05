@@ -87,7 +87,7 @@ function getGroupsInfoAndNumberOfQuestionCount(){
 
 	
 	function getTestInstructions(){
-		setTimeout(function(){$('.instrustions-loader').addClass('display-none')},1000);
+		//setTimeout(function(){$('.instrustions-loader').addClass('display-none')},1000);
 		$('.test-instructions').html('');
 		var testID = $('#testID').val();
 		var data = {

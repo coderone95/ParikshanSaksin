@@ -65,6 +65,15 @@ public class Test implements Serializable{
 	
 	@Column(name = "test_time")
 	private int test_time;
+	
+	@Column(name = "show_results_after_submit")
+	private int showResultsAfterSubmit;
+	
+	@Column(name = "is_failure_session_allowed")
+	private int isFailureSessionAllowed;
+	
+	@Column(name = "max_failure_session_allowed")
+	private Integer maxFailureSessionAllowed;
 
 	public int getTest_id() {
 		return test_id;
@@ -193,6 +202,30 @@ public class Test implements Serializable{
 	public void setPassingCriteria(int passingCriteria) {
 		this.passingCriteria = passingCriteria;
 	}
-	
 
+	public int getShowResultsAfterSubmit() {
+		return showResultsAfterSubmit;
+	}
+
+	public void setShowResultsAfterSubmit(int showResultsAfterSubmit) {
+		this.showResultsAfterSubmit = showResultsAfterSubmit;
+	}
+
+	public int getIsFailureSessionAllowed() {
+		return isFailureSessionAllowed;
+	}
+
+	public void setIsFailureSessionAllowed(int isFailureSessionAllowed) {
+		this.isFailureSessionAllowed = isFailureSessionAllowed;
+	}
+
+	public Integer getMaxFailureSessionAllowed() {
+		return maxFailureSessionAllowed;
+	}
+
+	public void setMaxFailureSessionAllowed(Integer maxFailureSessionAllowed) {
+		this.maxFailureSessionAllowed = maxFailureSessionAllowed;
+	}
+	
+	
 }

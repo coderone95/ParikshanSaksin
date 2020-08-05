@@ -1,6 +1,7 @@
 package com.codesvila.report.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,12 @@ import com.codesvila.utils.GlobalConstants;
 
 public class GetQuestionsExecuteReportAction extends BaseAction{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	@Autowired
 	private ReportService reportService;
 	
@@ -26,6 +33,7 @@ public class GetQuestionsExecuteReportAction extends BaseAction{
 	private List<QuestionInfoBO> questionInfo = new ArrayList<QuestionInfoBO>();
 	private boolean hasQuestionEditAccess;
 	private boolean hasQuestionDeleteAccess;
+	private Integer groupId;
 	
 	/**
 	 * @return the startDate
@@ -124,20 +132,44 @@ public class GetQuestionsExecuteReportAction extends BaseAction{
 	public void setHasQuestionDeleteAccess(boolean hasQuestionDeleteAccess) {
 		this.hasQuestionDeleteAccess = hasQuestionDeleteAccess;
 	}
+	
+	/**
+	 * @return the groupId
+	 */
+	public Integer getGroupId() {
+		return groupId;
+	}
+	/**
+	 * @param groupId the groupId to set
+	 */
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
 	public String getQuestionReport() throws Exception{
-//		if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
-//			startDate = startDate+".000";
-//		}
-//		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
-//			endDate = endDate+".000";
-//		}
-		Map<String,Boolean> accessListMap = getAccessMap();
-		hasQuestionEditAccess = accessListMap.get(GlobalConstants.M_EDIT_QUESTION);
-		hasQuestionDeleteAccess = accessListMap.get(GlobalConstants.M_DELETE_QUESTION);
-		questionInfo = reportService.getQuestionReport(startDate,
-				endDate,createdBy,questionName,questionId);
+		LOG.debug("GetQuestionReport.getQuestionReport()---start");
+		Map<String,Object> data = new HashMap<String,Object>();
+		try {
+	//			if(startDate != null && startDate != "" && StringUtils.isNotBlank(startDate)) {
+	//			startDate = startDate+".000";
+	//		}
+	//		if(endDate != null && endDate != "" && StringUtils.isNotBlank(endDate)) {
+	//			endDate = endDate+".000";
+	//		}
+			Map<String,Boolean> accessListMap = getAccessMap();
+			boolean hasQuestionEditAccess = accessListMap.get(GlobalConstants.M_EDIT_QUESTION);
+			boolean hasQuestionDeleteAccess = accessListMap.get(GlobalConstants.M_DELETE_QUESTION);
+			List<QuestionInfoBO> questionInfo = reportService.getQuestionReport(startDate,
+					endDate,createdBy,questionName,questionId,groupId);
+			data.put("QUESTION_REPORT", questionInfo);
+			data.put("hasQuestionEditAccess", hasQuestionEditAccess);
+			data.put("hasQuestionDeleteAccess", hasQuestionDeleteAccess);
+			
+		}catch(Exception e) {
+			LOG.error("Error in getting que report", e);
+		}
 		
-		return "success";
+		LOG.debug("GetQuestionReport.getQuestionReport()---end");
+		return writeJsonResponse(data);
 	}
 
 }

@@ -13,15 +13,19 @@
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <script src="./assets/js/core/jquery.min.js"></script>
+  <link href="./assets/fonts/montserrat.google.font.css" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"rel="stylesheet">
   <!-- CSS Files -->
   <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="./assets/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="./assets/demo/demo.css" rel="stylesheet" />
   <link href="./assets/css/dashboard-common.css" rel="stylesheet" />
+  <!-- Load c3.css -->
+  <link href="./assets/plugins/c3/c3.css" rel="stylesheet">
+  <!-- Load d3.js and c3.js -->
+  <script src="./assets/plugins/c3/d3.min.js" charset="utf-8"></script>
+  <script src="./assets/plugins/c3/c3.min.js"></script>
+
   <style>
   	@media screen and (min-width: 768px) {
         .modal-dialog {
@@ -41,26 +45,28 @@
 }
   </style>
   <script>
+    var CountsMap;
   	$(document).ready(function(){
   		sessionStorage.setItem("loginId",($('#login_id').val()));
-  		populateCandidateCount();
-  		populateAdminUsersCount();
-  		populateQuestionsCount();
+  		//populateCandidateCount();
+  		//populateAdminUsersCount();
+  		//populateQuestionsCount();
+      getAllUsersCount();
   	});
   	function populateCandidateCount(){
   		$('#candidateCount').html('');
-		$.ajax({
-			type : "POST",
-			url : "populateCandidateCount",
-			dataType: 'json',
-			contentType:"application/json;charset=utf-8",
-			success : function(data) {
-				$('#candidateCount').append('<a href="candidateUserList.action">'+data.countMap.totalCandidateCount+'</a>')
-			},
-			error : function(data) {
-				alert("Error....!!");
-			}
-		});
+  		$.ajax({
+  			type : "POST",
+  			url : "populateCandidateCount",
+  			dataType: 'json',
+  			contentType:"application/json;charset=utf-8",
+  			success : function(data) {
+  				$('#candidateCount').append('<a href="candidateUserList.action">'+data.countMap.totalCandidateCount+'</a>')
+  			},
+  			error : function(data) {
+  				alert("Error....!!");
+  			}
+  		});
   	}
   	function populateAdminUsersCount(){
   		$('#AdminCount').html('');
@@ -99,7 +105,30 @@
         dataType: 'json',
         contentType:"application/json;charset=utf-8",
         success : function(data) {
-          console.log(data);
+          //console.log(data);
+          if(data != null){
+            if(data.ALL_USERS_COUNT_MAP != null && data.ALL_USERS_COUNT_MAP != undefined){
+              CountsMap = data.ALL_USERS_COUNT_MAP;
+              var dataPIe = [];
+              let ObjKeys = Object.keys(data.ALL_USERS_COUNT_MAP);
+              for ( let key of ObjKeys) {
+                dataPIe.push([ key, CountsMap[key] ]);
+              }
+              console.log(dataPIe);
+              var chart = c3.generate({
+                  bindto: '#userChart',
+                  data: {
+                      // iris data from R
+                      columns: dataPIe,
+                      type : 'pie',
+                      // onclick: function (d, i) { console.log("onclick", d, i); },
+                      // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                      // onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                  }
+              });
+              //demo.initChartsPages(); 
+            }
+          }
         },
         error : function(data) {
           alert("Error....!!");
@@ -233,23 +262,14 @@
           <div class="col-md-4">
             <div class="card ">
               <div class="card-header ">
-                <h5 class="card-title">Email Statistics</h5>
-                <p class="card-category">Last Campaign Performance</p>
+                <h5 class="card-title">User Statistics</h5>
+                <!-- <p class="card-category">Last Campaign Performance</p> -->
               </div>
               <div class="card-body ">
-                <canvas id="chartEmail"></canvas>
+                <!-- <canvas id="chartEmail"></canvas> -->
+                <div id="userChart"></div>
               </div>
               <div class="card-footer ">
-                <div class="legend">
-                  <i class="fa fa-circle text-primary"></i> Opened
-                  <i class="fa fa-circle text-warning"></i> Read
-                  <i class="fa fa-circle text-danger"></i> Deleted
-                  <i class="fa fa-circle text-gray"></i> Unopened
-                </div>
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-calendar"></i> Number of emails sent
-                </div>
               </div>
             </div>
           </div>
@@ -318,22 +338,8 @@
   <script src="./assets/js/core/popper.min.js"></script>
   <script src="./assets/js/core/bootstrap.min.js"></script>
   <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chart JS -->
-  <script src="./assets/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
   <script src="./assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="./assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
-  <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-  <script src="./assets/demo/demo.js"></script>
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-      demo.initChartsPages();
-    });
-  </script>
 </body>
 
 </html>

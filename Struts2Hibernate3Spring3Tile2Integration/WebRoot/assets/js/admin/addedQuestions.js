@@ -46,28 +46,29 @@ function getQuestionDetails(queID){
 		data: JSON.stringify(data),
 		contentType:"application/json;charset=utf-8",
 		success : function(itr) {
-			if(itr.re.status == 403 && itr.re != null ){
-				alert("Unable to fetch question details");
-			}else{
-				if(itr.questionDetail != null){
-					str += '<div class="que-bank-row" style="padding: 1rem;"><div class="row mt-4"><div class="col-md-12 questionArea">'
-							+'<h5 class="questionName">'+itr.questionDetail.question+'</h5></div></div>';
-					str += '<div class="row"><div class="col-md-12 optionsArea">';
-					var cnt = 65;
-					for( var i = 0 ; i < itr.questionDetail.options.length; i++){
-						if(itr.questionDetail.answer == itr.questionDetail.options[i]){
-							ans = cnt;
-							correctAns = '<i class="fa fa-check-circle ml-2" style="font-size:20px;color:#198764;"></i>';
-							/* str += '<li>'+itr.questionDetail.options[i]+'<b class="ml-1" style="color:#198764;">CORRECT</b></li>';	 */
-							str += '<p> &#'+cnt+'; . '+itr.questionDetail.options[i]+'  '+correctAns+'</p>';
-						}else{
-							str += '<p> &#'+cnt+'; . '+itr.questionDetail.options[i]+'</p>';	
-						}
-						cnt++;
+			if(itr.questionDetail != null && itr.questionDetail != undefined){
+				str += '<div class="que-bank-row" style="padding: 1rem;"><div class="row mt-4"><div class="col-md-12 questionArea">'
+					+'<h5 class="questionName">'+itr.questionDetail.question+'</h5></div></div>';
+				str += '<div class="row"><div class="col-md-12 optionsArea">';
+				var cnt = 65;
+				for( var i = 0 ; i < itr.questionDetail.options.length; i++){
+					if(itr.questionDetail.answer == itr.questionDetail.options[i]){
+						ans = cnt;
+						correctAns = '<i class="fa fa-check-circle ml-2" style="font-size:20px;color:#198764;"></i>';
+						/* str += '<li>'+itr.questionDetail.options[i]+'<b class="ml-1" style="color:#198764;">CORRECT</b></li>';	 */
+						str += '<p> &#'+cnt+'; . '+itr.questionDetail.options[i]+'  '+correctAns+'</p>';
+					}else{
+						str += '<p> &#'+cnt+'; . '+itr.questionDetail.options[i]+'</p>';	
 					}
-					str += '</div></div>';
-					str += '<div class="row mb-2 "><div class="col-md-12 answerArea"><b class="answer">Answer: &#'+ans+';</b></div></div></div><hr>';
-					 $('.question-ans-bank-area').append(str);
+					cnt++;
+				}
+				str += '</div></div>';
+				str += '<div class="row mb-2 "><div class="col-md-12 answerArea"><b class="answer">Answer: &#'+ans+';</b></div></div></div><hr>';
+				 $('.question-ans-bank-area').append(str);
+
+			}else{
+				if(itr.re.status == 403 && itr.re != null ){
+					alert(itr.re);
 				}
 				
 			}

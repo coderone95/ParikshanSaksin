@@ -23,6 +23,7 @@ import com.codesvila.bo.QuestionInfoBO;
 import com.codesvila.datasource.ApacheCommonsDBCP;
 import com.codesvila.model.AttendedTestDetails;
 import com.codesvila.model.TestSubmissionDetails;
+import com.codesvila.model.UserAnswersDetails;
 
 @Repository("candidateDao")
 public class CandidateDAOImpl implements CandidateDAO {
@@ -60,15 +61,16 @@ public class CandidateDAOImpl implements CandidateDAO {
 	@Override
 	public int saveAttendedTestDetails(AttendedTestDetails atd, Date startTime, Date endTime) {
 		// TODO Auto-generated method stub
-		Session session = sessionFactory.openSession();
-		Transaction tx2 = session.beginTransaction();
 		int generatedID = 0;
 		List<AttendedTestDetailsBean>  tdlist = new ArrayList<AttendedTestDetailsBean>();
 		try {
 			tdlist = ApacheCommonsDBCP.CandidateDBCPDataSource("GET_ALL_ATTENDED_TEST_DETAILS", false, null);
 			if(tdlist.size() > 0) {
+				LOG.info("This saveAttendedTestDetails obj already present.. updating now");
 				for(AttendedTestDetailsBean tbo : tdlist) {
 					if(tbo.getUser_id().equals(atd.getUser_id()) && tbo.getTest_id() == atd.getTest_id()) {
+						Session session = sessionFactory.openSession();
+						Transaction tx2 = session.beginTransaction();
 						//Test already given
 						LOG.debug("Updating the test attended details");
 						AttendedTestDetails attendedTest  = (AttendedTestDetails) session.get(AttendedTestDetails.class, tbo.getId());
@@ -81,22 +83,39 @@ public class CandidateDAOImpl implements CandidateDAO {
 							if (tx2 != null)
 								tx2.rollback();
 							e.printStackTrace();
-						} finally {
+						}finally {
 							session.close();
 						}
 					}
 					break;
 				}
-			}else{
+			}else {
+				Session session = sessionFactory.openSession();
+				Transaction tx2 = session.beginTransaction();
+				LOG.info("Saving new saveAttendedDetails obj");
 				try {
 					generatedID = (Integer) session.save(atd);
+					tx2.commit();
+				} catch (HibernateException e) {
+					if (tx2 != null)
+						tx2.rollback();
+					e.printStackTrace();
+				}finally {
+					session.close();
+				}
+			}
+				Session session = sessionFactory.openSession();
+				Transaction tx2 = session.beginTransaction();
+				LOG.info("Saving the test submission details");
+				try {
+					
 					if(generatedID > 0) {
 						TestSubmissionDetails testSubmissionDetails = new TestSubmissionDetails();
 						testSubmissionDetails.setTestId(atd.getTest_id());
 						testSubmissionDetails.setTestStartTime(startTime);
 						testSubmissionDetails.setTestEndTime(endTime);
 						testSubmissionDetails.setUserId(atd.getUser_id());
-						session.save(testSubmissionDetails);
+						generatedID = (Integer) session.save(testSubmissionDetails);
 					}
 					tx2.commit();
 				} catch (HibernateException e) {
@@ -106,7 +125,6 @@ public class CandidateDAOImpl implements CandidateDAO {
 				} finally {
 					session.close();
 				}
-			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -131,7 +149,9 @@ public class CandidateDAOImpl implements CandidateDAO {
 			List<QuestionBO> questionList = ApacheCommonsDBCP.CandidateDBCPDataSource("GET_QUESTION_ONLY", true, paramMap);
 			if(questionList !=null && questionList.size()>0) {
 				String question = questionList.get(0).getQuestion();
+				String question_type = questionList.get(0).getQuestion_type();
 				qbo.setQuestion(question);
+				qbo.setQuestion_type(question_type);
 			}
 		}catch(Exception e) {
 			LOG.error("Error while getting the question",e);
@@ -151,5 +171,37 @@ public class CandidateDAOImpl implements CandidateDAO {
 			LOG.error("Error while getting the options",e);
 		}
 		return questionList;
+	}
+
+	@Override
+	public int saveSubmitAnswerObject(UserAnswersDetails userAnswersDetails, String operationFlag) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		Session session = sessionFactory.openSession();
+		Transaction tx2 = session.beginTransaction();
+		try {
+			if(operationFlag.equalsIgnoreCase("UPDATE")) {
+				UserAnswersDetails bean = (UserAnswersDetails) session.get(UserAnswersDetails.class, userAnswersDetails.getId());
+				bean.setAnswerId(userAnswersDetails.getAnswerId());
+				bean.setGroup_id(userAnswersDetails.getGroup_id());
+				bean.setQuestionId(userAnswersDetails.getQuestionId());
+				bean.setTest_id(userAnswersDetails.getTest_id());
+				bean.setTestAnswerContextId(userAnswersDetails.getTestAnswerContextId());
+				bean.setIsCorrectAnswer(userAnswersDetails.getIsCorrectAnswer());
+				session.update(bean);
+				result = 1;
+			}else {
+				result = (int) session.save(userAnswersDetails);
+			}
+			tx2.commit();
+		} catch (HibernateException e) {
+			if (tx2 != null)
+				tx2.rollback();
+			LOG.error("Error while saving the submit answer",e);
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return result;
 	}
 }

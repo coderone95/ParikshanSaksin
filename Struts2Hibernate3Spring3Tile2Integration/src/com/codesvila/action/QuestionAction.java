@@ -64,6 +64,9 @@ public class QuestionAction extends BaseAction{
 	private String errorMsg = null;
 	
 	private String answerMode;
+	
+	private String questionType;
+	private String groupId;
 	/**
 	 * @return the answerMode
 	 */
@@ -238,78 +241,150 @@ public class QuestionAction extends BaseAction{
 		this.errorMsg = errorMsg;
 	}
 
+	public String getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public String getGroupId() {
+		return groupId;
+	}
+
+	/**
+	 * @param groupId the groupId to set
+	 */
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
 	public String show() {
 		loginId = (String) sessionMap.get(GlobalConstants.LOGIN_ID);
 		return "success";
 	}
 	
 	public String addQuestion() throws Exception {
-		if(!validateInput()) {
-			errorMsg = "Question is mandatory";
-			return "success";
-		}
-		LOG.info("option 1 : : " + myoptions.get("" + correctOption));
-		boolean isAlreadyExists = false;
-		questionInfo = ApacheCommonsDBCP.DBCPDataSource("GET_ALL_QUESTIONS", null, false, null,null);
-		if (questionInfo != null) {
-			for (QuestionInfoBO q : questionInfo) {
-				if (q.getQuestion().equalsIgnoreCase(question)) {
-					isAlreadyExists = true;
-					break;
+		LOG.debug("QuestionAction.addQuestion() method --- start");
+		Map<String,Object> data = new HashMap<String,Object>();
+		try{
+			if(!validateInput()) {
+				errorMsg = "Question is mandatory";
+				data.put("errorMsg",errorMsg);
+				return writeJsonResponse(data);
+			}
+			LOG.info("option 1 : : " + myoptions.get("" + correctOption));
+			boolean isAlreadyExists = false;
+			List<QuestionInfoBO> questionInfo = ApacheCommonsDBCP.DBCPDataSource("GET_ALL_QUESTIONS", null, false, null,null);
+			if (questionInfo != null) {
+				for (QuestionInfoBO q : questionInfo) {
+					if (q.getQuestion().equalsIgnoreCase(question) && q.getGroupId() == Integer.parseInt(groupId)) {
+						isAlreadyExists = true;
+						break;
+					}
 				}
 			}
-		}
-		if (!isAlreadyExists) {
-			QuestionBO qbo = createTestBO();
-			int generatedID = testService.saveQuestion(CommonUtility.createQuestionModel(qbo));
-			LOG.info("generatedID : " + generatedID);
-			if (generatedID > 0) {
-				boolean isAdded = addOption(generatedID);
-				if (isAdded) {
-					SuccessMessages sm = new SuccessMessages();
-					sm.setSuccessMsg("Question added successfully!!");
-					successMessageList.add(sm);
-				} else {
-					errorMsg = "Error while adding the question";
+			if (!isAlreadyExists) {
+				if(groupId != null) {
+					QuestionBO qbo = createTestBO();
+					int generatedID = testService.saveQuestion(CommonUtility.createQuestionModel(qbo));
+					LOG.info("generatedID : " + generatedID);
+					if (generatedID > 0) {
+						boolean isAdded = addOption(generatedID,questionType);
+						if (isAdded) {
+							data.put("successMsg", "Question added successfully");
+						} else {
+							data.put("errorMsg","Error while adding the question");
+						}
+					}
+				}else {
+					data.put("errorMsg", "Please create group first!!");
 				}
+			} else {
+				data.put("errorMsg","Question already exists!");
 			}
-		} else {
-			errorMsg = "Question already exists!";
+		}catch(Exception e) {
+			LOG.error("Error while adding the question");
 		}
-
-		return "success";
+		LOG.debug("QuestionAction.addQuestion() method --- end");
+		return writeJsonResponse(data);
 	}
 
 	public QuestionBO createTestBO() {
 		QuestionBO qu = new QuestionBO();
 		qu.setQuestion(question);
+		qu.setGroupId(Integer.parseInt(groupId));
+		qu.setQuestion_type(questionType);
 		qu.setCreated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
 		qu.setUpdated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
 		return qu;
 	}
 
-	public boolean addOption(int questionID) {
+	public boolean addOption(int questionID,String queType) {
 		// LOG.info("We are in addOptions");
 		boolean isAdded = false;
-		for (String option : optionList) {
-			OptionsBO opBO = new OptionsBO();
-			opBO.setQuestion_id(questionID);
-			opBO.setOption_value(option);
-			opBO.setCreated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
-			opBO.setUpdated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
-			if (correctOption != null && option.equals(myoptions.get("" + correctOption))) {
-				opBO.setIsCorrect(1);
+		
+		if(queType.equalsIgnoreCase("multi-select")) {
+			int index = 0;
+			String correctAns [] = correctOption.split(",");
+			for (String option : optionList) {
+				OptionsBO opBO = new OptionsBO();
+				opBO.setQuestion_id(questionID);
+				opBO.setOption_value(option);
+				opBO.setCreated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
+				opBO.setUpdated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
+				if (isCorrectOption(option,correctAns)) {
+					opBO.setIsCorrect(1);
+				}
+				LOG.info("opBO.setIsCorrect: " + opBO.getIsCorrect());
+				int generatedID = testService.saveOption(CommonUtility.createOptionModel(opBO));
+				LOG.info("Options id : " + generatedID);
+				if (generatedID > 0) {
+					LOG.info("Option " + option + " inserted");
+					isAdded = true;
+				}
 			}
-			LOG.info("opBO.setIsCorrect: " + opBO.getIsCorrect());
-			int generatedID = testService.saveOption(CommonUtility.createOptionModel(opBO));
-			LOG.info("Options id : " + generatedID);
-			if (generatedID > 0) {
-				LOG.info("Option " + option + " inserted");
-				isAdded = true;
+		}else {
+			for (String option : optionList) {
+				OptionsBO opBO = new OptionsBO();
+				opBO.setQuestion_id(questionID);
+				opBO.setOption_value(option);
+				opBO.setCreated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
+				opBO.setUpdated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
+				if (correctOption != null && option.equals(myoptions.get("" + correctOption))) {
+					opBO.setIsCorrect(1);
+				}
+				LOG.info("opBO.setIsCorrect: " + opBO.getIsCorrect());
+				int generatedID = testService.saveOption(CommonUtility.createOptionModel(opBO));
+				LOG.info("Options id : " + generatedID);
+				if (generatedID > 0) {
+					LOG.info("Option " + option + " inserted");
+					isAdded = true;
+				}
 			}
 		}
 		return isAdded;
 	}
+	
+	public boolean isCorrectOption(String option,String [] correctAns) {
+		boolean isCorrectOption = false;
+		for(String id : correctAns) {
+			for(String key : myoptions.keySet()) {
+				String opt = myoptions.get(key);
+				if(option.equals(opt)) {
+					if(id.equals(key)) {
+						isCorrectOption = true;
+						break;
+					}
+				}
+			}
+		}
+		return isCorrectOption;
+	} 
 
 	@SuppressWarnings("unchecked")
 	public String getAllQuestions() throws Exception {
@@ -319,51 +394,99 @@ public class QuestionAction extends BaseAction{
 	}
 
 	public String deleteQuestion() {
-		if (queID != null) {
-			testService.deleteQuestion(Integer.parseInt(queID));
-		} else {
-			re.setMessage("Unable to delete");
-			re.setStatus(403);
+		LOG.debug("QuestinAction.deleteQuestion()---start");
+		Map<String,Object> data = new HashMap<String,Object>();
+		try {
+			if (queID != null) {
+				testService.deleteQuestion(Integer.parseInt(queID));
+				data.put("successMsg", "Question deleted successfully!");
+			} else {
+				data.put("errorMsg", "Unable to delete. Something went wrong!!");
+			}
+		}catch(Exception e) {
+			LOG.error("Error in deleteQuestion()", e);
 		}
-
-		return "success";
+		
+		LOG.debug("QuestinAction.deleteQuestion()---end");
+		return writeJsonResponse(data);
 	}
 
 	@SuppressWarnings("unchecked")
 	public String getQuestionDetails() throws Exception {
+		LOG.debug("QuestinAction.getQuestionDetails()---start");
 		List<QuestionInfoBO> questionAnswerInfo = new ArrayList<QuestionInfoBO>();
 		List<QuestionInfoBO> optionsList = new ArrayList<QuestionInfoBO>();
+		QuestionInfoBO questionDetail = new QuestionInfoBO();
 		List<String> options = new ArrayList<String>();
-		
-		if (quesID != null) {
-			questionAnswerInfo = testService.getQuestionAndAnswer(quesID);
-			for (QuestionInfoBO qi : questionAnswerInfo) {
-				questionDetail.setQuestion(qi.getQuestion());
-				questionDetail.setAnswer(qi.getAnswer());
-			}
-
-			optionsList = testService.getOptionsForQuestion(quesID);
-			Map<Integer,String> myOptionMap = new HashMap<Integer,String>();
-			if (optionsList != null) {
-				for (QuestionInfoBO qi : optionsList) {
-					options.add(qi.getOption());
-					myOptionMap.put(qi.getOptionId(), qi.getOption());
+		Map<String,Object> data = new HashMap<String,Object>();
+		try {
+			if (quesID != null) {
+				questionAnswerInfo = testService.getQuestionAndAnswer(quesID);
+				List<String> answerList = new ArrayList<String>();
+				for (QuestionInfoBO qi : questionAnswerInfo) {
+					questionDetail.setQuestion(qi.getQuestion());
+					questionDetail.setQuestionType(qi.getQuestionType());
+					answerList.add(qi.getAnswer());
 				}
-				questionDetail.setOptions(options);
-				questionDetail.setOptionsMap(myOptionMap);
+				//splitting the answers and putting delimiter - 'answer-delimiter'
+				int count = 0;
+				String newAnswerString = "";
+				for(String answer : answerList) {
+					if(answerList.size() == 1) {
+						newAnswerString += answer;
+					}else {
+						if(count < answerList.size()-1) {
+							newAnswerString += answer+"answer-delimiter";
+							count++;
+						}else {
+							newAnswerString += answer;
+							count++;
+						}
+					}
+				}
+				//questionDetail.setAnswer(answerList.toString().replace("[", "").replace("]", ""));
+				questionDetail.setAnswer(newAnswerString);
+				optionsList = testService.getOptionsForQuestion(quesID);
+				Map<Integer,String> myOptionMap = new HashMap<Integer,String>();
+				if (optionsList != null) {
+					for (QuestionInfoBO qi : optionsList) {
+						options.add(qi.getOption());
+						myOptionMap.put(qi.getOptionId(), qi.getOption());
+					}
+					questionDetail.setOptions(options);
+					questionDetail.setOptionsMap(myOptionMap);
+				}
+				data.put("questionDetail", questionDetail);
+				data.put("questionDetail", questionDetail);
+			} else {
+				data.put("re", "Unable to fetch question details");
+				data.put("re.status",403);
 			}
-
-		} else {
-			re.setMessage("Unable to fetch question details");
-			re.setStatus(403);
+		}catch(Exception e) {
+			LOG.error("Error in getQuestionDetails()", e);
 		}
-
-		return "success";
+		
+		LOG.debug("QuestinAction.getQuestionDetails()---start");
+		return writeJsonResponse(data);
 	}
 	
 	public String updateQuestionDetails()  throws Exception{
-		Integer res = testService.updateQuestionDetails(selelctedQuestionID,(String) sessionMap.get(GlobalConstants.LOGIN_ID), questionValue,selectedCorrectOption,optionMap);
-		return "success";
+		LOG.debug("QuestinAction.updateQuestionDetails()---start");
+		Map<String,Object> data = new HashMap<String,Object>();
+		try {
+			String answerList [] = selectedCorrectOption.split(",");
+			Integer res = testService.updateQuestionDetails(selelctedQuestionID,(String) sessionMap.get(GlobalConstants.LOGIN_ID), 
+					questionValue,answerList,optionMap,questionType);
+			if(res > 0) {
+				data.put("successMsg", "Question updated successfully!!");
+			}else {
+				data.put("errorMsg", "Error while updating question!!");
+			}
+		}catch(Exception e) {
+			LOG.error("Error in updateQuestionDetails()", e);
+		}
+		LOG.debug("QuestinAction.updateQuestionDetails()---end");
+		return writeJsonResponse(data);
 	}
 	
 	public boolean validateInput() {

@@ -1,7 +1,9 @@
 package com.codesvila.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,12 +148,11 @@ public class GroupAction extends BaseAction {
 	@SuppressWarnings({ "unchecked" })
 	public String execute() throws Exception {
 		LOG.info("GroupAction---- execute()-- add group section--- start");
+		Map<String,Object> data = new HashMap<String,Object>();
 		boolean isAlreadyExists = false;
 		if(groupbean.getGroup_name() == null || !StringUtils.isNotBlank(groupbean.getGroup_name())) {
-			ErrorMessages er = new ErrorMessages();
-			er.setErrorMsg("Please enter group name");
-			errorMessagesList.add(er);
-			return "success";
+			data.put("errorMsg","Please enter group name");
+			return writeJsonResponse(data);
 		}
 		List<GroupBO> groups = (List<GroupBO>) sessionMap.get("groupList");
 		if (groups != null) {
@@ -163,21 +164,18 @@ public class GroupAction extends BaseAction {
 			}
 		}
 		if (!isAlreadyExists) {
-//			System.out.println("name :" + groupbean.getGroup_name());
 			LOG.info("------Name:----- "+groupbean.getGroup_name());
 			groupbean.setCreated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
 			groupbean.setUpdated_by((String) sessionMap.get(GlobalConstants.LOGIN_ID));
 			int res = testService.createGroup(groupbean);
-			groupID = res;
-//			System.out.println("groupID" + res);
+			data.put("GROUP_ID", res);
 			LOG.info("------groupID:----- "+res);
 		} else {
-			ErrorMessages er = new ErrorMessages();
-			er.setErrorMsg("Group already exists!!");
-			errorMessagesList.add(er);
+			data.put("errorMsg","Group already exists!!!");
+			return writeJsonResponse(data);
 		}
 		LOG.info("GroupAction---- execute()-- add group section--- end");
-		return "success";
+		return writeJsonResponse(data);
 	}
 
 	public String getAllGroupsInfo() throws Exception {
@@ -217,14 +215,28 @@ public class GroupAction extends BaseAction {
 
 	public String allAddedQuestionsOfSelectedGroup() throws Exception {
 		LOG.info("GroupAction---- allAddedQuestionsOfSelectedGroup--- start");
-		groupQuestionInfo = testService.getDetailsForSelectedGroup(selectedGId);
-		totalQuestionsAddedForSelectGroup = groupQuestionInfo.size(); 
+		Map<String,Object> data = new HashMap<String,Object>();
+		Integer totalQuestionsAddedForSelectGroup = null;
+		List<QuestionsGroupBO> groupQuestionInfo = new ArrayList<QuestionsGroupBO>();
+		try {
+			groupQuestionInfo = testService.getDetailsForSelectedGroup(selectedGId);
+			totalQuestionsAddedForSelectGroup = groupQuestionInfo.size();
+			data.put("groupQuestionInfo", groupQuestionInfo);
+			data.put("totalQuestionsAddedForSelectGroup", totalQuestionsAddedForSelectGroup);
+		}catch(Exception e) {
+			LOG.error("Error while getting questions for select group", e);
+		}
+		 
 		LOG.info("GroupAction---- allAddedQuestionsOfSelectedGroup--- end");
-		return "success";
+		return writeJsonResponse(data);
 	}
 	
 	public String deleteSelectedGroup() throws Exception{
 		testService.deleteSelectedGroup(selectedGroupID);
+		return "success";
+	}
+	
+	public String showGroupReport() {
 		return "success";
 	}
 //	
