@@ -356,6 +356,7 @@ var isAlreadyChecked = false;
 			]
 		});
 	}
+	
 	function deleteOption(cnt){
 		if($('.delete-option-icon').length == 1){
 			alert('At least one option must be available');
